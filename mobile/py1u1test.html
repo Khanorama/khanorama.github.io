@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz</h1>
+        <form id="quiz-form">
+            <!-- Questions -->
+            <div class="question">
+                <label>1. What is 2 + 2?</label><br>
+                <input type="radio" name="q1" value="3"> 3<br>
+                <input type="radio" name="q1" value="4"> 4<br>
+                <input type="radio" name="q1" value="5"> 5<br>
+                <input type="radio" name="q1" value="6"> 6
+            </div>
+            <div class="question">
+                <label>2. What is 5 + 3?</label><br>
+                <input type="radio" name="q2" value="6"> 6<br>
+                <input type="radio" name="q2" value="7"> 7<br>
+                <input type="radio" name="q2" value="8"> 8<br>
+                <input type="radio" name="q2" value="9"> 9
+            </div>
+            <div class="question">
+                <label>3. What is the capital of France?</label><br>
+                <input type="radio" name="q3" value="Berlin"> Berlin<br>
+                <input type="radio" name="q3" value="Madrid"> Madrid<br>
+                <input type="radio" name="q3" value="Paris"> Paris<br>
+                <input type="radio" name="q3" value="Rome"> Rome
+            </div>
+            <div class="question">
+                <label>4. What is the largest planet in our solar system?</label><br>
+                <input type="radio" name="q4" value="Earth"> Earth<br>
+                <input type="radio" name="q4" value="Mars"> Mars<br>
+                <input type="radio" name="q4" value="Jupiter"> Jupiter<br>
+                <input type="radio" name="q4" value="Saturn"> Saturn
+            </div>
+            <div class="question">
+                <label>5. What is the chemical symbol for water?</label><br>
+                <input type="radio" name="q5" value="H2"> H2<br>
+                <input type="radio" name="q5" value="H2O"> H2O<br>
+                <input type="radio" name="q5" value="HO2"> HO2<br>
+                <input type="radio" name="q5" value="O2"> O2
+            </div>
+            <div class="question">
+                <label>6. Who wrote 'Hamlet'?</label><br>
+                <input type="radio" name="q6" value="Charles Dickens"> Charles Dickens<br>
+                <input type="radio" name="q6" value="William Shakespeare"> William Shakespeare<br>
+                <input type="radio" name="q6" value="Jane Austen"> Jane Austen<br>
+                <input type="radio" name="q6" value="Mark Twain"> Mark Twain
+            </div>
+            <div class="question">
+                <label>7. What is the square root of 64?</label><br>
+                <input type="radio" name="q7" value="6"> 6<br>
+                <input type="radio" name="q7" value="7"> 7<br>
+                <input type="radio" name="q7" value="8"> 8<br>
+                <input type="radio" name="q7" value="9"> 9
+            </div>
+            <div class="question">
+                <label>8. Which of these is a primary color?</label><br>
+                <input type="radio" name="q8" value="Green"> Green<br>
+                <input type="radio" name="q8" value="Red"> Red<br>
+                <input type="radio" name="q8" value="Purple"> Purple<br>
+                <input type="radio" name="q8" value="Brown"> Brown
+            </div>
+            <div class="question">
+                <label>9. What is the boiling point of water in Celsius?</label><br>
+                <input type="radio" name="q9" value="90°C"> 90°C<br>
+                <input type="radio" name="q9" value="95°C"> 95°C<br>
+                <input type="radio" name="q9" value="100°C"> 100°C<br>
+                <input type="radio" name="q9" value="105°C"> 105°C
+            </div>
+            <div class="question">
+                <label>10. What is the speed of light?</label><br>
+                <input type="radio" name="q10" value="300,000 km/s"> 300,000 km/s<br>
+                <input type="radio" name="q10" value="150,000 km/s"> 150,000 km/s<br>
+                <input type="radio" name="q10" value="100,000 km/s"> 100,000 km/s<br>
+                <input type="radio" name="q10" value="50,000 km/s"> 50,000 km/s
+            </div>
+
+            <button type="button" class="submit-btn" id="submit-quiz">Submit Quiz</button>
+        </form>
+    </div>
+
+    <script>
+        // Prevent navigation
+        window.addEventListener("beforeunload", function (e) {
+            e.preventDefault();
+            e.returnValue = "Are you sure you want to leave? Your progress will not be saved.";
+        });
+
+        // Detect page visibility (user switches tabs)
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                alert("You have switched tabs. Please stay on this page to complete the quiz.");
+            }
+        });
+
+        // Submit the quiz
+        document.getElementById("submit-quiz").addEventListener("click", function () {
+            // Check if all questions are answered
+            const form = document.getElementById("quiz-form");
+            const formData = new FormData(form);
+            const totalQuestions = 10; // Adjust based on number of questions
+            let answered = 0;
+
+            formData.forEach((value, key) => {
+                if (value) answered++;
+            });
+
+            if (answered < totalQuestions) {
+                alert(`Please answer all questions. You have answered ${answered}/${totalQuestions}.`);
+            } else {
+                alert("Quiz submitted successfully!");
+                window.removeEventListener("beforeunload", () => {}); // Allow navigation after submission
+            }
+        });
+    </script>
+</body>
+</html>
