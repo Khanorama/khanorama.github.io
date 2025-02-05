@@ -10,6 +10,15 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <script>
+      if (window.innerWidth <= 768) {
+        window.location.href = "mobile/index.html"; // Redirect for mobile devices
+      } 
+      // else if (window.innerWidth > 768 && window.innerWidth <= 1024) {
+      //   window.location.href = "tablet-version.html"; // Redirect for tablets
+      // }
+      // else {window.location.href = index.html}
+    </script>
   </head>
   <body>
     <header class="header">
@@ -27,81 +36,46 @@
         <a href="../contact.html">Contact</a>
       </nav>
     </header>
-
-    <div class="container">
-      <h1>PYTHON I Course Registration</h1>
-      <form
-        method="post"
-        action="https://script.google.com/macros/s/AKfycbwOeKPO0PPPOjdmApyagRfhKDueq_vN_97fr13-lOXYlRfMHZV5NKIAWvVCRbo25ICx/exec"
-        name="registrationForm"
-        id="registrationForm"
-      >
-        <span class="red">* indicates required fields</span>
-        <label for="studentName">Student Name <span class="red">*</span></label>
-        <input type="text" id="studentName" name="studentName" />
-
-        <label for="studentEmail">Student Email</label>
-        <input type="email" id="studentEmail" name="studentEmail" />
-
-        <label for="parentName">Parent Name <span class="red">*</span></label>
-        <input type="text" id="parentName" name="parentName" />
-
-        <label for="parentEmail">Parent Email <span class="red">*</span></label>
-        <input type="email" id="parentEmail" name="parentEmail" />
-
-        <label for="parentPhone"
-          >Parent Phone Number <span class="red">*</span></label
-        >
-        <input type="tel" id="parentPhone" name="parentPhone" />
-        <br /><br />
-        <input type="submit" value="Submit" id="submit" />
-      </form>
-    </div>
+    <div class="mission-section">
+      <div class="text">
+        <h3>Weekday Spring Session<br>
+          <span class="subgreen">4/3 - 5/20</span><br>
+          <span class="red">Registration Deadline: 3/31</span></h3>
+        <p>
+          The Python I course aims to equip you with a solid foundation in Python programming.
+          Throughout the course, we will explore a variety of essential concepts and skills that
+           form the foundation of programming in Python. By the end of this course, you will be
+            ready to attempt the CSPB Python Certification exam, the first in the Python 
+            certification series.
+        </p>
+        <a href="python1reg.html">Register Now!</a>
+      </div>
+      <img
+        src="images/python1weekday.png"
+        alt="python1"
+      />
+    </div>  
+    <div class="mission-section">
+      <div class="text">
+        <h3>Weekend Spring Session<br>
+          <span class="subgreen">4/6 - 5/4</span><br>
+          <span class="red">Registration Deadline: 4/2</span></h3>
+        <p>
+          The Python I course aims to equip you with a solid foundation in Python programming.
+          Throughout the course, we will explore a variety of essential concepts and skills that
+           form the foundation of programming in Python. By the end of this course, you will be
+            ready to attempt the CSPB Python Certification exam, the first in the Python 
+            certification series.
+        </p>
+        <a href="python1wknd.html">Register Now!</a>
+      </div>
+      <img
+        src="images/python1weekend.png"
+        alt="python1"
+      />
+    </div>  
+    
 
     <footer>&copy; 2024 CodeStar. All rights reserved.</footer>
   </body>
-
-  <script>
-    const scriptURL =
-      "https://script.google.com/macros/s/AKfycbwOeKPO0PPPOjdmApyagRfhKDueq_vN_97fr13-lOXYlRfMHZV5NKIAWvVCRbo25ICx/exec";
-    const form = document.forms["registrationForm"];
-
-    // Function to validate required fields
-    function validateForm() {
-      const requiredFields = [
-        "studentName",
-        "parentName",
-        "parentEmail",
-        "parentPhone",
-      ];
-      const missingFields = [];
-
-      requiredFields.forEach((fieldId) => {
-        const field = document.getElementById(fieldId);
-        if (!field.value.trim()) {
-          missingFields.push(fieldId);
-        }
-      });
-
-      if (missingFields.length > 0) {
-        alert("Please fill out all required fields before submitting.");
-        return false; // Prevent form submission
-      }
-
-      return true; // Allow form submission
-    }
-
-    // Handle form submission
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      if (validateForm()) {
-        fetch(scriptURL, { method: "POST", body: new FormData(form) })
-          .then((response) => {
-            window.location.href = "registrationcomplete.html";
-          })
-          .catch((error) => console.error("Error!", error.message));
-      }
-    });
-  </script>
 </html>

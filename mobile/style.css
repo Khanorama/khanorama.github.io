@@ -82,6 +82,105 @@ body {
     text-align: center;
   }
   
+  .red {
+    color: red;
+    font-weight: bold;
+  }
+
+  form label {
+    color: #eaeaea; /* Light text color */
+    font-weight: bold;
+    display: block;
+    margin-top: 20px;
+    font-size: 1.1rem;
+  }
+
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="tel"] {
+    width: calc(100% - 20px); /* Adjust width to keep padding inside */
+    padding: 10px;
+    font-size: 1rem;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid #0462ce; /* Medium blue */
+    border-radius: 5px;
+    background-color: #1a1a2e; /* Background color for text fields */
+    color: #eaeaea; /* Text color */
+    box-sizing: border-box; /* Ensures padding is included in total width */
+  }
+  
+  form input[type="text"]:focus,
+  form input[type="email"]:focus,
+  form input[type="tel"]:focus {
+    border-color: #00a3e0; /* Lighter blue on focus */
+    outline: none;
+  }
+  
+  form input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  form label[for="promoEmails"],
+  form label[for="compliance"] {
+    display: flex;
+    align-items: center;
+    color: #eaeaea;
+    font-weight: normal;
+    font-size: 1rem;
+  }
+
+  #submit {
+    width: 10em;
+    position: relative;
+    height: 3.5em;
+    border: 3px ridge #149CEA;
+    outline: none;
+    background-color: transparent;
+    color: white;
+    transition: 1s;
+    border-radius: 0.3em;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: Montserrat;
+  }
+  
+  
+  
+  #submit::after{
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 3%;
+    width: 95%;
+    height: 40%;
+    background-color: #212121;
+    transition: 0.5s;
+    transform-origin: center;
+  }
+  
+  #submit::before{
+    content: "";
+    transform-origin: center;
+    position: absolute;
+    top: 80%;
+    left: 3%;
+    width: 95%;
+    height: 40%;
+    background-color: #212121;
+    transition: 0.5s;
+  }
+  
+  #submit:hover::before, button:hover::after {
+    transform: scale(0)
+  }
+  
+  #submit:hover {
+    box-shadow: inset 0px 0px 25px #1479EA;
+  }
+
   .review-text {
     font-size: 1.2rem;
     margin: 20px 0;
@@ -224,13 +323,13 @@ body {
 .codehome {
   color: #ffffff; /* White */
   font-weight: bold;
-  font-size: 4rem;
+  font-size: 3rem;
 }
 
 .starhome {
   color: #0462ce; /* Medium blue */
   font-weight: bold;
-  font-size: 4rem;
+  font-size: 3rem;
 }
 
 .menu .star {

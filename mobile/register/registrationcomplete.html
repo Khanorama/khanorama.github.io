@@ -3,22 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Course Registration</title>
+    <title>CodeStar</title>
     <link rel="stylesheet" href="../style.css" />
-    <link rel="stylesheet" href="betterstyle.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <script>
+      if (window.innerWidth > 768) {
+        window.location.href = "../index.html"; // Redirect for mobile devices
+      }
+      // else if (window.innerWidth > 768 && window.innerWidth <= 1024) {
+      //   window.location.href = "tablet-version.html"; // Redirect for tablets
+      // }
+      // else {window.location.href = "../index.html"}
+    </script>
   </head>
   <body>
-    <header class="header">
+    <div class="menu">
       <h1>
-        <a href="../index.html" class="home-link"
-          ><span class="code">CODE</span><span class="star">STAR</span></a
-        >
+        <a href="index.html" class="home-link">
+          <span class="code">CODE</span><span class="star">STAR</span>
+        </a>
       </h1>
-      <nav>
+      <label class="hamburger">
+        <input type="checkbox" id="menu-toggle" />
+        <svg viewBox="0 0 32 32">
+          <path
+            class="line line-top-bottom"
+            d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
+          ></path>
+          <path class="line" d="M7 16 27 16"></path>
+        </svg>
+      </label>
+      <nav class="menu-links">
         <a href="../index.html">Home</a>
         <a href="../about.html">About</a>
         <a href="../courses.html">Courses</a>
@@ -26,13 +44,27 @@
         <a href="../projects.html">Projects</a>
         <a href="../contact.html">Contact</a>
       </nav>
-    </header>   <div class="container">
+    </div>
+    </header>   
+    <div class="container">
         <h1>
-          <span class="reviews container">THANK YOU FOR REGISTERING!</span>
+          <span class="blue">THANK YOU FOR REGISTERING!</span>
+        </h1>
       </div>
   
      <div class="mission-section">
-      <p>Please check your email for information regarding the course. We are pleased to have you join us.
+      <p>You will recieve an email with additional information
+        two weeks prior to the first session. 
+        We are pleased to have you join us.
+        If you have additional questions, please email us@email.com
       </p></div></div>
   </body>
+  <script>
+    const menuToggle = document.getElementById("menu-toggle");
+    const menuLinks = document.querySelector(".menu-links");
+
+    menuToggle.addEventListener("change", () => {
+      menuLinks.classList.toggle("collapsed");
+    });
+  </script>
 </html>
