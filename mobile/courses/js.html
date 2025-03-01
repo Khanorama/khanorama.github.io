@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CodeStar</title>
+    <title>LeapCode</title>
     <link rel="stylesheet" href="../style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
@@ -11,19 +11,15 @@
     />
     <script>
       if (window.innerWidth > 768) {
-        window.location.href = "../index.html"; // Redirect for mobile devices
+        window.location.href = "../../courses/js.html"; // Redirect for mobile devices
       }
-      // else if (window.innerWidth > 768 && window.innerWidth <= 1024) {
-      //   window.location.href = "tablet-version.html"; // Redirect for tablets
-      // }
-      // else {window.location.href = "../index.html"}
     </script>
   </head>
   <body>
     <div class="menu">
       <h1>
-        <a href="index.html" class="home-link">
-          <span class="code">CODE</span><span class="star">STAR</span>
+        <a href="../index.html" class="home-link">
+          <span class="star">LEAP</span><span class="code">CODE</span>
         </a>
       </h1>
       <label class="hamburger">
@@ -62,7 +58,7 @@
           foundation for front-end development. By the end of this course, you’ll be prepared to attempt the CSJSB 
           JavaScript Certification exam.
         </p>
-        <a href="../register.html">Register Now!</a>
+        <a>Registration Opens 3/15</a>
       </div><br>
       <img
         src="../images/python1.png"
@@ -79,7 +75,7 @@
           programming and working with APIs. By the end of this course, you’ll be ready to take on more 
           challenging projects and attempt the CSJSA JavaScript Certification exam.
         </p>
-        <a href="../register.html">Register Now!</a>
+        <a>Currently Unavailable</a>
       </div><br>
       <img
         src="../images/js2.png"
@@ -87,14 +83,22 @@
         height="255"
       />
     </div>
-    <footer>&copy; 2024 CodeStar. All rights reserved.</footer>
+    <footer>2025 LeapCode | Contact us at support@leapcode.org</footer>
 
     <script>
       const menuToggle = document.getElementById("menu-toggle");
       const menuLinks = document.querySelector(".menu-links");
-
+    
       menuToggle.addEventListener("change", () => {
         menuLinks.classList.toggle("collapsed");
+      });
+    
+      // Reset the menu toggle when a link is clicked
+      document.querySelectorAll(".menu-links a").forEach(link => {
+        link.addEventListener("click", () => {
+          menuToggle.checked = false;
+          menuLinks.classList.remove("collapsed");
+        });
       });
     </script>
   </body>

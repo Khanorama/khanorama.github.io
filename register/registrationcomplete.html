@@ -1,38 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Course Registration</title>
-    <link rel="stylesheet" href="../style.css" />
-    <link rel="stylesheet" href="betterstyle.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <header class="header">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Course Registration</title>
+  <link rel="icon" href="../images/minilogo.png" type="image/png">
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="betterstyle.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <script>
+    if (window.innerWidth <= 768) {
+      window.location.href = "../mobile/register/python1wknd.html";
+    } 
+  </script>
+</head>
+
+<body>
+  <header class="header">
+    <h1>
+      <a href="../index.html" class="home-link"><span class="star">LEAP</span><span class="code">CODE</span></a>
+    </h1>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../courses.html">Courses</a>
+      <a href="../certifications.html">Certifications</a>
+      <a href="../projects.html">Projects</a>
+      <a href="../contact.html">Contact</a>
+    </nav>
+  </header>
+  <div class="container">
+    <div class="text">
       <h1>
-        <a href="../index.html" class="home-link"
-          ><span class="code">CODE</span><span class="star">STAR</span></a
-        >
-      </h1>
-      <nav>
-        <a href="../index.html">Home</a>
-        <a href="../about.html">About</a>
-        <a href="../courses.html">Courses</a>
-        <a href="../certifications.html">Certifications</a>
-        <a href="../projects.html">Projects</a>
-        <a href="../contact.html">Contact</a>
-      </nav>
-    </header>   <div class="container">
-        <h1>
-          <span class="reviews container">THANK YOU FOR REGISTERING!</span>
-      </div>
-  
-     <div class="mission-section">
-      <p>Please check your email for information regarding the course. We are pleased to have you join us.
-      </p></div></div>
-  </body>
+        <span class="reviews container">THANK YOU FOR REGISTERING!</span>
+    </div>
+
+    <div class="mission-section">
+      <p>We are pleased to have you join us.
+        Students are required to have a working computer/laptop prior to the first session.
+        You will recieve an email with additional information
+        two weeks prior to the first session. 
+        If you have questions, corrections, or would like to cancel your registration, please email us at: support@leapcode.org
+      </p><br>
+    </div>
+    <div class="reviews container">
+      <h1>This is what we received:</h1>
+      <div id="mission-section-data"></div>
+    </div>
+  </div>
+
+
+  <footer>2025 LeapCode | Contact us at support@leapcode.org</footer>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const formData = JSON.parse(localStorage.getItem("formData"));
+      if (formData) {
+        let displayText = "";
+        for (const [key, value] of Object.entries(formData)) {
+          // Format key: add spaces and capitalize "Student" and "Parent"
+          let formattedKey = key.replace(/([A-Z])/g, ' $1').trim();
+          formattedKey = formattedKey.replace(/\b(student|parent)\b/gi, match => match.charAt(0).toUpperCase() + match.slice(1));
+          displayText += `<p style="margin-bottom: 10px;"><strong>${formattedKey}:</strong> ${value}</p>`;
+        }
+        document.getElementById("mission-section-data").innerHTML = displayText;
+      }
+    });
+  </script>
+</body>
+
 </html>

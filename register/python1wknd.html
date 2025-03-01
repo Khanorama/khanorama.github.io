@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Course Registration</title>
+    <link rel="icon" href="../images/minilogo.png" type="image/png">
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="betterstyle.css" />
     <link
@@ -12,19 +13,15 @@
     />
     <script>
       if (window.innerWidth <= 768) {
-        window.location.href = "mobile/index.html"; // Redirect for mobile devices
+        window.location.href = "../mobile/register/python1wknd.html";
       } 
-      // else if (window.innerWidth > 768 && window.innerWidth <= 1024) {
-      //   window.location.href = "tablet-version.html"; // Redirect for tablets
-      // }
-      // else {window.location.href = index.html}
     </script>
   </head>
   <body>
     <header class="header">
       <h1>
         <a href="../index.html" class="home-link"
-          ><span class="code">CODE</span><span class="star">STAR</span></a
+          ><span class="star">LEAP</span><span class="code">CODE</span></a
         >
       </h1>
       <nav>
@@ -64,10 +61,11 @@
         <input type="tel" id="parentPhone" name="parentPhone" />
         <br /><br />
         <input type="submit" value="Submit" id="submit" />
+        <br><br><div id="text"></div>
       </form>
     </div>
 
-    <footer>&copy; 2024 CodeStar. All rights reserved.</footer>
+    <footer>2025 LeapCode | Contact us at support@leapcode.org</footer>
   </body>
 
   <script>
@@ -102,15 +100,26 @@
 
     // Handle form submission
     form.addEventListener("submit", (e) => {
-      e.preventDefault();
+    e.preventDefault();
 
-      if (validateForm()) {
-        fetch(scriptURL, { method: "POST", body: new FormData(form) })
-          .then((response) => {
-            window.location.href = "registrationcomplete.html";
-          })
-          .catch((error) => console.error("Error!", error.message));
-      }
-    });
+    if (validateForm()) {
+      document.getElementById("submit").value = "Submitting...";
+      document.getElementById("text").innerHTML = "Please do not close or refresh the page!";
+
+      // Store form data in localStorage
+      const formData = new FormData(form);
+      let formObject = {};
+      formData.forEach((value, key) => {
+        formObject[key] = value;
+      });
+      localStorage.setItem("formData", JSON.stringify(formObject));
+
+      fetch(scriptURL, { method: "POST", body: formData })
+        .then((response) => {
+          window.location.href = "registrationcomplete.html";
+        })
+        .catch((error) => console.error("Error!", error.message));
+    }
+  });
   </script>
 </html>

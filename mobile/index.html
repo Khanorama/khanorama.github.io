@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CodeStar</title>
+    <title>LeapCode</title>
     <link rel="stylesheet" href="style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
@@ -13,17 +13,13 @@
       if (window.innerWidth > 768) {
         window.location.href = "../index.html"; // Redirect for mobile devices
       }
-      // else if (window.innerWidth > 768 && window.innerWidth <= 1024) {
-      //   window.location.href = "tablet-version.html"; // Redirect for tablets
-      // }
-      // else {window.location.href = "../index.html"}
     </script>
   </head>
   <body>
     <div class="menu">
       <h1>
         <a href="index.html" class="home-link">
-          <span class="code">CODE</span><span class="star">STAR</span>
+          <span class="star">LEAP</span><span class="code">CODE</span>
         </a>
       </h1>
       <label class="hamburger">
@@ -58,7 +54,7 @@
       <div class="text">
         <h3>Our Mission</h3>
         <p>
-          At CodeStar, we equip learners with the essential coding skills and
+          At LeapCode, we equip learners with the essential coding skills and
           knowledge needed to excel in today’s tech-driven world. Our
           interactive courses, competitions, and vibrant community provide a
           complete learning experience, from beginners to those with an
@@ -66,7 +62,7 @@
           certifications, join challenges, and grow with a community that’s
           passionate about coding.
           <br /><br />
-          <a href="about.html">Learn more about CodeStar</a>
+          <a href="about.html">Learn more about LeapCode</a>
         </p>
       </div>
       <img src="images/mission.png" alt="Mission Image" />
@@ -86,7 +82,7 @@
           <a href="courses.html">Learn more about our Courses</a>
         </p>
       </div>
-      <img src="images/courses.png" alt="Courses Image" />
+      <img src="images/courses.png" alt="Courses Image" width="325"/>
     </div>
 
     <div class="mission-section">
@@ -129,16 +125,24 @@
       <img src="images/project.png" alt="Projects Image" />
     </div>
 
-    <footer>&copy; 2024 CodeStar. All rights reserved.</footer>
+    <footer>2025 LeapCode | Contact us at support@leapcode.org</footer>
 
     <script>
       const menuToggle = document.getElementById("menu-toggle");
       const menuLinks = document.querySelector(".menu-links");
-
+    
       menuToggle.addEventListener("change", () => {
         menuLinks.classList.toggle("collapsed");
       });
-
+    
+      // Reset the menu toggle when a link is clicked
+      document.querySelectorAll(".menu-links a").forEach(link => {
+        link.addEventListener("click", () => {
+          menuToggle.checked = false;
+          menuLinks.classList.remove("collapsed");
+        });
+      });
     </script>
+    
   </body>
 </html>

@@ -3,27 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CodeStar</title>
+    <title>LeapCode</title>
+    <link rel="icon" href="../images/minilogo.png" type="image/png">
     <link rel="stylesheet" href="../style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <script>
-      if (window.innerWidth > 768) {
-        window.location.href = "../index.html"; // Redirect for mobile devices
-      }
-      // else if (window.innerWidth > 768 && window.innerWidth <= 1024) {
-      //   window.location.href = "tablet-version.html"; // Redirect for tablets
-      // }
-      // else {window.location.href = "../index.html"}
-    </script>
   </head>
   <body>
     <div class="menu">
       <h1>
-        <a href="index.html" class="home-link">
-          <span class="code">CODE</span><span class="star">STAR</span>
+        <a href="../index.html" class="home-link">
+          <span class="star">LEAP</span><span class="code">CODE</span>
         </a>
       </h1>
       <label class="hamburger">
@@ -47,17 +39,26 @@
     </div>
     </header>   
     <div class="container">
+      <div class="text">
         <h1>
           <span class="blue">THANK YOU FOR REGISTERING!</span>
-        </h1>
       </div>
   
-     <div class="mission-section">
-      <p>You will recieve an email with additional information
-        two weeks prior to the first session. 
-        We are pleased to have you join us.
-        If you have additional questions, please email us@email.com
-      </p></div></div>
+      <div class="mission-section">
+        <p>We are pleased to have you join us.
+          Students are required to have a working computer/laptop prior to the first session.
+          You will recieve an email with additional information
+          two weeks prior to the first session. 
+          If you have questions, corrections, or would like to cancel your registration, please email us at: support@leapcode.org
+        </p><br>
+      </div>
+      <div class="blue">
+        <h1>This is what we received:</h1>
+      </div>
+        <div id="mission-section-data"></div>
+      </div>
+    </div>
+  
   </body>
   <script>
     const menuToggle = document.getElementById("menu-toggle");
@@ -65,6 +66,20 @@
 
     menuToggle.addEventListener("change", () => {
       menuLinks.classList.toggle("collapsed");
+    });
+    
+    document.addEventListener("DOMContentLoaded", function () {
+      const formData = JSON.parse(localStorage.getItem("formData"));
+      if (formData) {
+        let displayText = "";
+        for (const [key, value] of Object.entries(formData)) {
+          // Format key: add spaces and capitalize "Student" and "Parent"
+          let formattedKey = key.replace(/([A-Z])/g, ' $1').trim();
+          formattedKey = formattedKey.replace(/\b(student|parent)\b/gi, match => match.charAt(0).toUpperCase() + match.slice(1));
+          displayText += `<p style="margin-bottom: 10px;"><strong>${formattedKey}:</strong> ${value}</p>`;
+        }
+        document.getElementById("mission-section-data").innerHTML = displayText;
+      }
     });
   </script>
 </html>

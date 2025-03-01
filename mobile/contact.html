@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LeapCode</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+    <script>
+        if (window.innerWidth > 768) {
+            window.location.href = "../contact.html"; // Redirect for mobile devices
+        }
+    </script>
+</head>
+
+  <body>
+    <div class="menu">
+      <h1>
+        <a href="index.html" class="home-link">
+          <span class="star">LEAP</span><span class="code">CODE</span>
+        </a>
+      </h1>
+      <label class="hamburger">
+        <input type="checkbox" id="menu-toggle" />
+        <svg viewBox="0 0 32 32">
+          <path
+            class="line line-top-bottom"
+            d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
+          ></path>
+          <path class="line" d="M7 16 27 16"></path>
+        </svg>
+      </label>
+      <nav class="menu-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="courses.html">Courses</a>
+        <a href="certifications.html">Certifications</a>
+        <a href="projects.html">Projects</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+    
+        <div class="container">
+            <h1>
+                <span class="reviews container">Contact Us</span>
+                <br>
+                <span class="starhome">LEAP</span><span class="codehome">CODE</span>
+    
+        </div>
+    
+        <br>
+        <div class="mission-section">
+            <div style="max-width: 50%; padding: 0 20px;">
+                <h3>Email - General: <br>support@leapcode.org</h3>
+            </div>
+            <div style="max-width: 50%; padding: 0 20px;">
+                <h3>Email - Feedback: <br>feedback@leapcode.org</h3>
+            </div>
+            <div style="max-width: 75%; padding: 0 20px;">
+                <h3>Email - President: <br><span class="tagline">Ayaan Khan</span><br> khan@leapcode.org</h3>
+            </div>
+            <div style="max-width: 75%; padding: 0 20px;">
+                <h3>Email - VP General: <br><span class="tagline">Bryden Li</span><br>li@leapcode.org</h3>
+            </div>
+            <div style="max-width: 75%; padding: 0 20px;">
+                <h3>Email - Course Director: <br><span class="tagline">Aayan Syed</span><br>syed@leapcode.org</h3>
+            </div>
+            <div style="max-width: 75%; padding: 0 20px;">
+                <h3>Email - Social Media Head:  <br><span class="tagline">Timothy Chang</span><br>chang@leapcode.org</h3>
+            </div>
+        </div>
+    
+
+    <footer>2025 LeapCode | Contact us at support@leapcode.org</footer>
+
+    <script>
+        const menuToggle = document.getElementById("menu-toggle");
+        const menuLinks = document.querySelector(".menu-links");
+
+        menuToggle.addEventListener("change", () => {
+            menuLinks.classList.toggle("collapsed");
+        });
+
+        // Reset the menu toggle when a link is clicked
+        document.querySelectorAll(".menu-links a").forEach(link => {
+            link.addEventListener("click", () => {
+                menuToggle.checked = false;
+                menuLinks.classList.remove("collapsed");
+            });
+        });
+    </script>
+
+</body>
+
+</html>
