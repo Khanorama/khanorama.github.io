@@ -103,6 +103,22 @@ body {
   border-radius: 8px;
 }
 
+.mission-section-text {
+  display: flex;
+  align-items: center;
+  margin: 40px auto;
+  background-color: #0f3460;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 800px;
+}
+
+.mission-section-text img {
+  border-radius: 8px;
+  height: 230px;
+  width: 230px;
+}
+
 .mission-section .text {
   max-width: 50%;
   padding: 0 20px;
@@ -113,6 +129,8 @@ body {
   color: aquamarine;
   font-weight: bolder;
 }
+
+
 
 .mission-section.reverse {
   flex-direction: row-reverse;
