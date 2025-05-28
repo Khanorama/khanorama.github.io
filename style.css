@@ -1,26 +1,34 @@
 /* --- CSS Variables --- */
 :root {
   /* Light Mode Defaults */
-  --bg-page: #f4f7f9; /* Light, slightly cool grey */
+  --bg-page: #f4f7f9;
+  /* Light, slightly cool grey */
   --bg-card: #ffffff;
   --bg-header: #ffffff;
   --bg-footer: #e9ecef;
-  --bg-alt-section: #e9ecef; /* For alternating sections */
+  --bg-alt-section: #e9ecef;
+  /* For alternating sections */
   --bg-input: #ffffff;
   --bg-button-cta: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
   --bg-button-cta-hover: linear-gradient(135deg, #0069d9 0%, #004085 100%);
 
-  --text-primary: #212529; /* Dark grey for main text */
-  --text-secondary: #495057; /* Muted grey */
-  --text-headings: #003d73; /* Darker blue for headings */
+  --text-primary: #212529;
+  /* Dark grey for main text */
+  --text-secondary: #495057;
+  /* Muted grey */
+  --text-headings: #003d73;
+  /* Darker blue for headings */
   --text-on-cta: #ffffff;
   --text-link: #0056b3;
   --text-link-hover: #003d73;
 
-  --accent-primary: #007bff; /* Primary Blue */
+  --accent-primary: #007bff;
+  /* Primary Blue */
   --accent-primary-rgb: 0, 123, 255;
-  --accent-secondary: #00FF7F; /* CHANGED: Vibrant Green */
-  --accent-secondary-rgb: 0, 255, 127; /* CHANGED: Vibrant Green RGB */
+  --accent-secondary: #00FF7F;
+  /* CHANGED: Vibrant Green */
+  --accent-secondary-rgb: 0, 255, 127;
+  /* CHANGED: Vibrant Green RGB */
 
   --border-color-soft: #dee2e6;
   --border-color-strong: #ced4da;
@@ -35,7 +43,8 @@
   /* Specific to dark theme, defined here but used in .dark-mode */
   --shadow-glow-primary: 0 0 15px rgba(var(--accent-primary-rgb), 0.3),
     0 0 5px rgba(var(--accent-primary-rgb), 0.2);
-  --shadow-glow-secondary: 0 0 15px rgba(var(--accent-secondary-rgb), 0.3); /* Will use new green RGB */
+  --shadow-glow-secondary: 0 0 15px rgba(var(--accent-secondary-rgb), 0.3);
+  /* Will use new green RGB */
   --shadow-inset-dark: inset 0 0 10px rgba(0, 0, 0, 0.3);
 
   --font-primary: "Montserrat", sans-serif;
@@ -52,30 +61,31 @@ body.dark-mode {
   --bg-card: #1a2029;
   --bg-header: #1a2029;
   --bg-footer: #1a2029;
-  --bg-alt-section: #161c24; /* Darker alt section */
+  --bg-alt-section: #161c24;
+  /* Darker alt section */
   --bg-input: #12181f;
-  --bg-button-cta: linear-gradient(
-    135deg,
-    var(--accent-primary-dark) 0%,
-    color-mix(in srgb, var(--accent-primary-dark) 70%, var(--accent-secondary-dark) 30%) 100%
-  );
-  --bg-button-cta-hover: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--accent-primary-dark) 90%, white 10%) 0%,
-    color-mix(in srgb, var(--accent-primary-dark) 60%, var(--accent-secondary-dark) 40%) 100%
-  );
+  --bg-button-cta: linear-gradient(135deg,
+      var(--accent-primary-dark) 0%,
+      color-mix(in srgb, var(--accent-primary-dark) 70%, var(--accent-secondary-dark) 30%) 100%);
+  --bg-button-cta-hover: linear-gradient(135deg,
+      color-mix(in srgb, var(--accent-primary-dark) 90%, white 10%) 0%,
+      color-mix(in srgb, var(--accent-primary-dark) 60%, var(--accent-secondary-dark) 40%) 100%);
 
   --text-primary: #e0e5ec;
   --text-secondary: #b0b8c4;
   --text-headings: #ffffff;
-  --text-on-cta: #0a1931; /* Keep dark text for bright button */
+  --text-on-cta: #0a1931;
+  /* Keep dark text for bright button */
   --text-link: var(--accent-primary-dark);
   --text-link-hover: color-mix(in srgb, var(--accent-primary-dark) 80%, white);
 
-  --accent-primary-dark: #00c6ff; /* Electric Blue / Cyan for Dark Mode */
+  --accent-primary-dark: #00c6ff;
+  /* Electric Blue / Cyan for Dark Mode */
   --accent-primary-rgb-dark: 0, 198, 255;
-  --accent-secondary-dark: #00FF7F; /* CHANGED: Vibrant Green for Dark Mode */
-  --accent-secondary-rgb-dark: 0, 255, 127; /* CHANGED: Vibrant Green RGB for Dark Mode */
+  --accent-secondary-dark: #00FF7F;
+  /* CHANGED: Vibrant Green for Dark Mode */
+  --accent-secondary-rgb-dark: 0, 255, 127;
+  /* CHANGED: Vibrant Green RGB for Dark Mode */
   /* Re-map main accents to their dark mode versions */
   --accent-primary: var(--accent-primary-dark);
   --accent-primary-rgb: var(--accent-primary-rgb-dark);
@@ -85,10 +95,12 @@ body.dark-mode {
   --border-color-soft: rgba(255, 255, 255, 0.1);
   --border-color-strong: rgba(255, 255, 255, 0.15);
   --border-color-accent: rgba(var(--accent-primary-rgb-dark), 0.3);
-  --border-input: var(--bg-card); /* Often inputs are inset or slightly diff bg */
+  --border-input: var(--bg-card);
+  /* Often inputs are inset or slightly diff bg */
   --border-input-focus: var(--accent-primary-dark);
 
-  --shadow-soft: 0 2px 10px rgba(0, 0, 0, 0.3); /* Darker, more pronounced shadows */
+  --shadow-soft: 0 2px 10px rgba(0, 0, 0, 0.3);
+  /* Darker, more pronounced shadows */
   --shadow-medium: 0 5px 25px rgba(0, 0, 0, 0.25);
   --shadow-focus-ring: 0 0 0 0.2rem rgba(var(--accent-primary-rgb-dark), 0.25);
 
@@ -133,10 +145,12 @@ h1 {
   font-size: 2.8rem;
   line-height: 1.2;
 }
+
 h2 {
   font-size: 2.2rem;
   line-height: 1.25;
 }
+
 h3 {
   font-size: 1.8rem;
   line-height: 1.3;
@@ -148,6 +162,7 @@ p {
   color: var(--text-secondary);
   transition: color 0.3s ease;
 }
+
 .content-card p {
   color: var(--text-primary);
 }
@@ -162,6 +177,7 @@ a:hover {
   color: var(--text-link-hover);
   text-decoration: none;
 }
+
 body.dark-mode a:hover {
   /* Add glow only in dark mode if desired */
   text-shadow: 0 0 5px rgba(var(--accent-primary-rgb), 0.5);
@@ -188,6 +204,7 @@ img {
   box-shadow: var(--shadow-soft);
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
+
 .header-controls {
   display: flex;
   align-items: center;
@@ -242,11 +259,11 @@ img {
   transition: 0.4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: #303136;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   left: calc(100% - (var(--size-of-icon, 1.4em) + var(--slider-offset, 0.3em)));
   background: #303136;
   /* change the value of second inset in box-shadow to change the angle and direction of the moon  */
@@ -269,17 +286,21 @@ input:checked + .slider:before {
   color: var(--accent-primary);
   transition: color 0.3s ease;
 }
+
 body.dark-mode .header .star {
   text-shadow: var(--shadow-glow-primary);
 }
 
 .header .code {
   /* CODE */
-  color: var(--accent-secondary); /* Will now use the new green */
+  color: var(--accent-secondary);
+  /* Will now use the new green */
   transition: color 0.3s ease;
 }
+
 body.dark-mode .header .code {
-  text-shadow: var(--shadow-glow-secondary); /* Will use the new green glow */
+  text-shadow: var(--shadow-glow-secondary);
+  /* Will use the new green glow */
 }
 
 .main-nav {
@@ -288,7 +309,8 @@ body.dark-mode .header .code {
 }
 
 .main-nav a {
-  color: var(--text-primary); /* Use primary text for nav links */
+  color: var(--text-primary);
+  /* Use primary text for nav links */
   font-weight: 500;
   font-size: 0.95rem;
   text-decoration: none;
@@ -310,6 +332,7 @@ body.dark-mode .header .code {
   background-color: var(--accent-primary);
   transition: width 0.3s ease, background-color 0.3s ease;
 }
+
 body.dark-mode .main-nav a::after {
   box-shadow: var(--shadow-glow-primary);
 }
@@ -320,7 +343,8 @@ body.dark-mode .main-nav a::after {
 }
 
 .main-nav a:hover {
-  color: var(--text-link-hover); /* Or var(--accent-primary) if preferred */
+  color: var(--text-link-hover);
+  /* Or var(--accent-primary) if preferred */
   text-shadow: none;
 }
 
@@ -330,14 +354,16 @@ body.dark-mode .main-nav a::after {
   border: none;
   cursor: pointer;
   padding: var(--spacing-unit);
-  color: var(--text-primary); /* For hamburger color */
+  color: var(--text-primary);
+  /* For hamburger color */
 }
 
 .hamburger {
   display: block;
   width: 25px;
   height: 2px;
-  background-color: currentColor; /* Inherits color from parent (.mobile-nav-toggle) */
+  background-color: currentColor;
+  /* Inherits color from parent (.mobile-nav-toggle) */
   position: relative;
   transition: background-color 0.3s ease;
 }
@@ -356,6 +382,7 @@ body.dark-mode .main-nav a::after {
 .hamburger::before {
   top: -7px;
 }
+
 .hamburger::after {
   top: 7px;
 }
@@ -363,11 +390,13 @@ body.dark-mode .main-nav a::after {
 .mobile-nav-toggle[aria-expanded="true"] .hamburger {
   background-color: transparent;
 }
+
 .mobile-nav-toggle[aria-expanded="true"] .hamburger::before {
   transform: rotate(45deg);
   top: 0;
   background-color: var(--accent-primary);
 }
+
 .mobile-nav-toggle[aria-expanded="true"] .hamburger::after {
   transform: rotate(-45deg);
   top: 0;
@@ -376,7 +405,8 @@ body.dark-mode .main-nav a::after {
 
 /* --- Hero Section --- */
 .hero-section {
-  background-color: var(--bg-page); /* Or a specific hero bg */
+  background-color: var(--bg-page);
+  /* Or a specific hero bg */
   color: var(--text-headings);
   padding: calc(var(--spacing-unit) * 8) calc(var(--spacing-unit) * 3);
   text-align: center;
@@ -397,14 +427,13 @@ body.dark-mode .hero-section::before {
   left: -50px;
   width: 200px;
   height: 200px;
-  background: radial-gradient(
-    circle,
-    rgba(var(--accent-primary-rgb), 0.15) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      rgba(var(--accent-primary-rgb), 0.15) 0%,
+      transparent 70%);
   filter: blur(20px);
   z-index: 0;
 }
+
 body.dark-mode .hero-section::after {
   content: "";
   position: absolute;
@@ -412,11 +441,10 @@ body.dark-mode .hero-section::after {
   right: -50px;
   width: 250px;
   height: 250px;
-  background: radial-gradient(
-    circle,
-    rgba(var(--accent-secondary-rgb), 0.1) 0%, /* Will use new green RGB */
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      rgba(var(--accent-secondary-rgb), 0.1) 0%,
+      /* Will use new green RGB */
+      transparent 70%);
   filter: blur(20px);
   z-index: 0;
 }
@@ -438,18 +466,24 @@ body.dark-mode .hero-section::after {
   text-transform: uppercase;
   transition: color 0.3s ease, text-shadow 0.3s ease;
 }
+
 .hero-content .starhome {
   color: var(--accent-primary);
 }
+
 .hero-content .codehome {
-  color: var(--accent-secondary); /* Will now use the new green */
+  color: var(--accent-secondary);
+  /* Will now use the new green */
 }
+
 body.dark-mode .hero-content .starhome {
   text-shadow: 0 0 15px rgba(var(--accent-primary-rgb), 0.5),
     0 0 30px rgba(var(--accent-primary-rgb), 0.3);
 }
+
 body.dark-mode .hero-content .codehome {
-  text-shadow: 0 0 15px rgba(var(--accent-secondary-rgb), 0.5), /* Will use new green shadow */
+  text-shadow: 0 0 15px rgba(var(--accent-secondary-rgb), 0.5),
+    /* Will use new green shadow */
     0 0 30px rgba(var(--accent-secondary-rgb), 0.3);
 }
 
@@ -481,22 +515,28 @@ body.dark-mode .hero-content .codehome {
   border: none;
   box-shadow: var(--shadow-medium);
 }
+
 body.dark-mode .cta-button {
   /* Dark mode specific CTA shadow */
   box-shadow: 0 4px 15px rgba(var(--accent-primary-rgb), 0.3),
-    0 2px 5px rgba(var(--accent-secondary-rgb), 0.2); /* Will use new green shadow */
+    0 2px 5px rgba(var(--accent-secondary-rgb), 0.2);
+  /* Will use new green shadow */
 }
 
 .cta-button:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: var(--shadow-medium); /* General hover shadow */
+  box-shadow: var(--shadow-medium);
+  /* General hover shadow */
   background: var(--bg-button-cta-hover);
   text-shadow: none;
-  color: var(--text-on-cta); /* Ensure text color remains */
+  color: var(--text-on-cta);
+  /* Ensure text color remains */
 }
+
 body.dark-mode .cta-button:hover {
   box-shadow: 0 6px 20px rgba(var(--accent-primary-rgb), 0.4),
-    0 3px 8px rgba(var(--accent-secondary-rgb), 0.3); /* Will use new green shadow */
+    0 3px 8px rgba(var(--accent-secondary-rgb), 0.3);
+  /* Will use new green shadow */
 }
 
 /* --- Content Sections & Cards --- */
@@ -505,6 +545,7 @@ body.dark-mode .cta-button:hover {
   border-bottom: 1px solid var(--border-color-soft);
   transition: border-color 0.3s ease;
 }
+
 .content-section.alt-bg {
   background-color: var(--bg-alt-section);
   transition: background-color 0.3s ease;
@@ -520,13 +561,17 @@ body.dark-mode .cta-button:hover {
   margin: 0 auto;
   overflow: hidden;
   border: 1px solid var(--border-color-soft);
-  box-shadow: var(--shadow-soft); /* Default shadow for light */
+  box-shadow: var(--shadow-soft);
+  /* Default shadow for light */
   transition: background-color 0.3s ease, border-color 0.3s ease,
     box-shadow 0.3s ease;
 }
+
 body.dark-mode .content-card {
-  border: var(--shadow-card-border, 1px solid transparent); /* Use variable or default */
-  box-shadow: var(--shadow-card-main, none); /* Use variable or default */
+  border: var(--shadow-card-border, 1px solid transparent);
+  /* Use variable or default */
+  box-shadow: var(--shadow-card-main, none);
+  /* Use variable or default */
 }
 
 .content-card .text-content {
@@ -555,6 +600,7 @@ body.dark-mode .content-card {
 .content-card .image-content img {
   border-radius: var(--border-radius-sm);
 }
+
 body.dark-mode .content-card .image-content img {
   filter: saturate(1.1) contrast(1.05);
 }
@@ -562,18 +608,22 @@ body.dark-mode .content-card .image-content img {
 .content-card.reverse {
   flex-direction: row-reverse;
 }
+
 .content-card.reverse .text-content h2 {
   border-left: none;
-  border-right: 3px solid var(--accent-secondary); /* Will use new green */
+  border-right: 3px solid var(--accent-secondary);
+  /* Will use new green */
   padding-left: 0;
   padding-right: var(--spacing-unit);
   text-align: right;
 }
+
 .content-card.reverse .text-content {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 }
+
 .content-card.reverse .text-content p {
   text-align: right;
 }
@@ -592,25 +642,34 @@ body.dark-mode .content-card .image-content img {
   font-size: 0.9rem;
   letter-spacing: 0.5px;
 }
+
 .content-card.reverse .learn-more-link {
-  color: var(--accent-secondary); /* Will use new green */
-  border-color: var(--accent-secondary); /* Will use new green */
+  color: var(--accent-secondary);
+  /* Will use new green */
+  border-color: var(--accent-secondary);
+  /* Will use new green */
 }
 
 .learn-more-link:hover {
   background-color: var(--accent-primary);
-  color: var(--bg-card); /* Text color on hover should contrast with accent */
+  color: var(--bg-card);
+  /* Text color on hover should contrast with accent */
   text-shadow: none;
 }
+
 body.dark-mode .learn-more-link:hover {
   box-shadow: var(--shadow-glow-primary);
 }
+
 .content-card.reverse .learn-more-link:hover {
-  background-color: var(--accent-secondary); /* Will use new green */
+  background-color: var(--accent-secondary);
+  /* Will use new green */
   color: var(--bg-card);
 }
+
 body.dark-mode .content-card.reverse .learn-more-link:hover {
-  box-shadow: var(--shadow-glow-secondary); /* Will use new green glow */
+  box-shadow: var(--shadow-glow-secondary);
+  /* Will use new green glow */
 }
 
 /* --- Footer --- */
@@ -649,6 +708,7 @@ body.dark-mode .content-card.reverse .learn-more-link:hover {
   border: 1px solid var(--border-color-soft);
   box-shadow: var(--shadow-soft);
 }
+
 body.dark-mode .form-container {
   border-color: var(--border-color-accent);
   box-shadow: var(--shadow-card-main, none);
@@ -658,9 +718,11 @@ body.dark-mode .form-container {
   text-align: center;
   margin-bottom: calc(var(--spacing-unit) * 3);
 }
+
 .form-group {
   margin-bottom: calc(var(--spacing-unit) * 2.5);
 }
+
 .form-group label {
   display: block;
   font-weight: 500;
@@ -670,6 +732,7 @@ body.dark-mode .form-container {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="tel"],
@@ -685,6 +748,7 @@ body.dark-mode .form-container {
   transition: border-color 0.2s ease, box-shadow 0.2s ease,
     background-color 0.3s ease, color 0.3s ease;
 }
+
 .form-group input[type="text"]:focus,
 .form-group input[type="email"]:focus,
 .form-group input[type="tel"]:focus,
@@ -693,6 +757,7 @@ body.dark-mode .form-container {
   box-shadow: var(--shadow-focus-ring);
   outline: none;
 }
+
 .form-group textarea {
   min-height: 120px;
   resize: vertical;
@@ -714,9 +779,11 @@ body.dark-mode .form-container {
   letter-spacing: 1px;
   display: inline-block;
 }
+
 .form-button:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-medium); /* General hover shadow */
+  box-shadow: var(--shadow-medium);
+  /* General hover shadow */
   background: var(--bg-button-cta-hover);
 }
 
@@ -725,6 +792,7 @@ body.dark-mode .form-container {
   max-width: 800px;
   margin: calc(var(--spacing-unit) * 4) auto;
 }
+
 .dropdown {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color-soft);
@@ -732,6 +800,7 @@ body.dark-mode .form-container {
   margin-bottom: var(--spacing-unit);
   box-shadow: var(--shadow-soft);
 }
+
 body.dark-mode .dropdown {
   border-color: var(--border-color-accent);
   box-shadow: var(--shadow-card-main, none);
@@ -751,9 +820,11 @@ body.dark-mode .dropdown {
   border: none;
   text-align: left;
 }
+
 .dropdown .trigger:hover {
   color: var(--text-link-hover);
 }
+
 .dropdown .trigger::after {
   /* Chevron */
   content: "▼";
@@ -761,6 +832,7 @@ body.dark-mode .dropdown {
   color: var(--accent-primary);
   transition: transform 0.3s ease, color 0.3s ease;
 }
+
 .dropdown input[type="checkbox"] {
   /* sr-only */
   position: absolute;
@@ -773,26 +845,31 @@ body.dark-mode .dropdown {
   white-space: nowrap;
   border-width: 0;
 }
-.dropdown input[type="checkbox"]:checked + .trigger::after {
+
+.dropdown input[type="checkbox"]:checked+.trigger::after {
   transform: rotate(180deg);
 }
+
 .dropdown .list {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
   padding: 0 calc(var(--spacing-unit) * 2);
-  background-color: var(--bg-page); /* Content area slightly different from card bg */
+  background-color: var(--bg-page);
+  /* Content area slightly different from card bg */
 }
-.dropdown input[type="checkbox"]:checked ~ .list {
+
+.dropdown input[type="checkbox"]:checked~.list {
   max-height: 500px;
-  padding: var(--spacing-unit) calc(var(--spacing-unit) * 2)
-    calc(var(--spacing-unit) * 2);
+  padding: var(--spacing-unit) calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2);
   border-top: 1px solid var(--border-color-soft);
 }
+
 .dropdown .listitem {
   list-style: none;
   margin-bottom: var(--spacing-unit);
 }
+
 .dropdown .article {
   background-color: var(--bg-alt-section);
   padding: calc(var(--spacing-unit) * 1.5);
@@ -801,43 +878,58 @@ body.dark-mode .dropdown {
   font-size: 0.95rem;
   color: var(--text-secondary);
 }
+
 .dropdown .article a {
   font-weight: 500;
-  color: var(--accent-secondary); /* Will use new green */
+  color: var(--accent-secondary);
+  /* Will use new green */
 }
+
 .dropdown .article a:hover {
-  color: color-mix(in srgb, var(--accent-secondary) 80%, var(--text-primary)); /* Will use new green */
+  color: color-mix(in srgb, var(--accent-secondary) 80%, var(--text-primary));
+  /* Will use new green */
 }
 
 /* --- Team Section Specific --- */
 .team-members-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* Center the team members */
-  gap: calc(var(--spacing-unit) * 4); /* Space between members */
+  justify-content: center;
+  /* Center the team members */
+  gap: calc(var(--spacing-unit) * 4);
+  /* Space between members */
   margin-top: calc(var(--spacing-unit) * 3);
 }
 
 .team-member {
-  flex: 0 1 280px; /* Allow items to grow/shrink but prefer a base width */
+  flex: 0 1 280px;
+  /* Allow items to grow/shrink but prefer a base width */
   text-align: center;
-  margin-bottom: calc(var(--spacing-unit) * 2); /* Space below each member */
+  margin-bottom: calc(var(--spacing-unit) * 2);
+  /* Space below each member */
 }
 
 .team-member img {
-  width: 150px; /* Adjust size as needed */
-  height: 150px; /* Keep aspect ratio */
-  border-radius: 50%; /* Make them circular */
+  width: 150px;
+  /* Adjust size as needed */
+  height: 150px;
+  /* Keep aspect ratio */
+  border-radius: 50%;
+  /* Make them circular */
   object-fit: cover;
-  margin: 0 auto calc(var(--spacing-unit) * 2); /* Center and space below */
-  border: 3px solid var(--accent-primary); /* Add a border */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for images */
+  margin: 0 auto calc(var(--spacing-unit) * 2);
+  /* Center and space below */
+  border: 3px solid var(--accent-primary);
+  /* Add a border */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  /* Soft shadow for images */
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 body.dark-mode .team-member img {
   border-color: var(--accent-primary-dark);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Stronger shadow in dark mode */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  /* Stronger shadow in dark mode */
 }
 
 .team-member h3 {
@@ -847,7 +939,8 @@ body.dark-mode .team-member img {
 }
 
 .team-member h3 .subgreen {
-  color: var(--accent-secondary); /* Will use new green */
+  color: var(--accent-secondary);
+  /* Will use new green */
   font-size: 0.9em;
   font-weight: 500;
   transition: color 0.3s ease;
@@ -857,7 +950,8 @@ body.dark-mode .team-member img {
   font-size: 1.3em;
   font-weight: 700;
   color: var(--text-headings);
-  display: block; /* Ensure name is on its own line */
+  display: block;
+  /* Ensure name is on its own line */
   margin-top: var(--spacing-unit);
   margin-bottom: var(--spacing-unit);
   transition: color 0.3s ease;
@@ -868,9 +962,11 @@ body.dark-mode .team-member img {
   .header {
     padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
   }
+
   .header-logo h1 {
     font-size: 1.6rem;
   }
+
   /* Removed .theme-toggle-button specific styles */
 
   .main-nav {
@@ -880,12 +976,14 @@ body.dark-mode .team-member img {
     top: 100%;
     left: 0;
     width: 100%;
-    background-color: var(--bg-header); /* Match header for nav dropdown */
+    background-color: var(--bg-header);
+    /* Match header for nav dropdown */
     padding: var(--spacing-unit);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-top: 1px solid var(--border-color-soft);
     gap: 0;
   }
+
   body.dark-mode .main-nav {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   }
@@ -893,14 +991,17 @@ body.dark-mode .team-member img {
   .main-nav.active {
     display: flex;
   }
+
   .main-nav a {
     padding: calc(var(--spacing-unit) * 1.5) var(--spacing-unit);
     width: 100%;
     border-bottom: 1px solid var(--border-color-soft);
   }
+
   .main-nav a:last-child {
     border-bottom: none;
   }
+
   .main-nav a::after {
     display: none;
   }
@@ -913,10 +1014,12 @@ body.dark-mode .team-member img {
     padding: calc(var(--spacing-unit) * 6) calc(var(--spacing-unit) * 2);
     min-height: 60vh;
   }
+
   .hero-content .starhome,
   .hero-content .codehome {
     font-size: clamp(2.8rem, 12vw, 5.5rem);
   }
+
   .tagline {
     font-size: clamp(1rem, 4vw, 1.4rem);
   }
@@ -924,11 +1027,13 @@ body.dark-mode .team-member img {
   .content-card {
     flex-direction: column !important;
   }
+
   .content-card .text-content,
   .content-card .image-content {
     flex-basis: 100%;
     padding: calc(var(--spacing-unit) * 3);
   }
+
   .content-card .text-content h2,
   .content-card.reverse .text-content h2 {
     text-align: left;
@@ -937,16 +1042,20 @@ body.dark-mode .team-member img {
     padding-left: var(--spacing-unit);
     padding-right: 0;
   }
+
   .content-card.reverse .text-content {
     align-items: flex-start;
   }
+
   .content-card.reverse .text-content p {
     text-align: left;
   }
+
   .content-card .image-content {
     max-height: 250px;
     padding-top: 0;
   }
+
   .content-card .image-content img {
     max-height: 230px;
     object-fit: contain;
@@ -955,9 +1064,11 @@ body.dark-mode .team-member img {
   h1 {
     font-size: 2.2rem;
   }
+
   h2 {
     font-size: 1.8rem;
   }
+
   .dropdown-container {
     width: 90%;
   }
@@ -966,11 +1077,13 @@ body.dark-mode .team-member img {
   .team-members-grid {
     flex-direction: column;
     align-items: center;
-    gap: calc(var(--spacing-unit) * 6); /* More vertical space on small screens */
+    gap: calc(var(--spacing-unit) * 6);
+    /* More vertical space on small screens */
   }
 
   .team-member {
-    flex: 0 1 auto; /* No flex-basis on smaller screens, let it take full width */
+    flex: 0 1 auto;
+    /* No flex-basis on smaller screens, let it take full width */
     width: 100%;
   }
 }
@@ -979,98 +1092,118 @@ body.dark-mode .team-member img {
 
 /* Override problematic styles from .content-card.reverse .text-content
    specifically for the #team section to allow full width for its content. */
-   #team .content-card .text-content {
-    display: block; /* Revert from flex to block layout */
-    width: 100%;   /* Ensure it utilizes the full width of the .content-card */
-    align-items: initial; /* Reset any flex alignment */
-    /* The inline style="text-align: center" on your HTML element
+#team .content-card .text-content {
+  display: block;
+  /* Revert from flex to block layout */
+  width: 100%;
+  /* Ensure it utilizes the full width of the .content-card */
+  align-items: initial;
+  /* Reset any flex alignment */
+  /* The inline style="text-align: center" on your HTML element
        will now effectively center the h2 and the .team-members-grid block. */
-    padding: calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 3); /* Adjust padding if needed, or ensure it matches general .text-content */
-  }
-  
-  /* Style the heading within the team section's text-content */
-  #team .content-card .text-content h2 {
-    text-align: center; /* Ensure the heading itself is centered */
-    border-left: none;  /* Remove borders inherited from .content-card.reverse .text-content h2 */
-    border-right: none;
-    padding-left: 0;
-    padding-right: 0;
-    margin-bottom: calc(var(--spacing-unit) * 4); /* Increased space below heading */
-  }
-  
-  /* If there were any paragraphs specifically in the team's text-content, ensure they are centered */
-  #team .content-card .text-content p {
-      text-align: center; /* Override any right-alignment from .content-card.reverse */
-  }
-  
-  /* Adjust .team-members-grid for better one-line layout on desktop */
-  .team-members-grid {
-    display: flex;
-    flex-wrap: wrap; /* Allow wrapping only if space is extremely constrained before mobile breakpoint */
-    justify-content: space-around; /* Distribute members evenly with space around */
-    gap: calc(var(--spacing-unit) * 2.5); /* Space between members (e.g., 20px if unit is 8px) */
-    margin-top: calc(var(--spacing-unit) * 3);
-    /* The grid itself will be centered by the parent's text-align:center if it's not width:100%
+  padding: calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 3);
+  /* Adjust padding if needed, or ensure it matches general .text-content */
+}
+
+/* Style the heading within the team section's text-content */
+#team .content-card .text-content h2 {
+  text-align: center;
+  /* Ensure the heading itself is centered */
+  border-left: none;
+  /* Remove borders inherited from .content-card.reverse .text-content h2 */
+  border-right: none;
+  padding-left: 0;
+  padding-right: 0;
+  margin-bottom: calc(var(--spacing-unit) * 4);
+  /* Increased space below heading */
+}
+
+/* If there were any paragraphs specifically in the team's text-content, ensure they are centered */
+#team .content-card .text-content p {
+  text-align: center;
+  /* Override any right-alignment from .content-card.reverse */
+}
+
+/* Adjust .team-members-grid for better one-line layout on desktop */
+.team-members-grid {
+  display: flex;
+  flex-wrap: wrap;
+  /* Allow wrapping only if space is extremely constrained before mobile breakpoint */
+  justify-content: space-around;
+  /* Distribute members evenly with space around */
+  gap: calc(var(--spacing-unit) * 2.5);
+  /* Space between members (e.g., 20px if unit is 8px) */
+  margin-top: calc(var(--spacing-unit) * 3);
+  /* The grid itself will be centered by the parent's text-align:center if it's not width:100%
        However, its items are flex-distributed by justify-content. */
-  }
-  
-  .team-member {
-    flex: 0 1 280px; /* Allow shrinking from a base of 280px, don't allow growing.
+}
+
+.team-member {
+  flex: 0 1 280px;
+  /* Allow shrinking from a base of 280px, don't allow growing.
                         This works well with justify-content: space-around. */
-    /* Alternative for more responsive growth/shrink:
+  /* Alternative for more responsive growth/shrink:
     flex: 1 1 260px;
     min-width: 220px; // Prevent excessive shrinking
     max-width: 300px; // Prevent excessive growing
     */
-    text-align: center;
-    margin-bottom: calc(var(--spacing-unit) * 2);
-  }
-  
-  /* Styles for team member images, names, and titles remain as they are,
+  text-align: center;
+  margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+/* Styles for team member images, names, and titles remain as they are,
      for example: */
-  .team-member img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 0 auto calc(var(--spacing-unit) * 2);
-    border: 3px solid var(--accent-primary);
-    box-shadow: var(--shadow-soft); /* Use theme variable for shadow */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  body.dark-mode .team-member img {
-    border-color: var(--accent-primary-dark); /* Ensure this variable is defined if different from --accent-primary in dark mode */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Or use a dark theme shadow variable */
-  }
-  
-  .team-member h3 {
-    margin-bottom: 0;
-    line-height: 1.3;
-    color: var(--text-primary); /* Email color */
-  }
-  
-  .team-member h3 .subgreen { /* Title */
-    color: var(--accent-secondary);
-    font-size: 0.9em;
-    font-weight: 500;
-    transition: color 0.3s ease;
-    display: block; /* Ensure title is on its own line or adjust as needed */
-    margin-bottom: calc(var(--spacing-unit) * 0.5);
-  }
-  
-  .team-member h3 .tagline { /* Name */
-    font-size: 1.3em;
-    font-weight: 700;
-    color: var(--text-headings);
-    display: block;
-    margin-top: 0; /* Adjust if .subgreen is also block */
-    margin-bottom: calc(var(--spacing-unit) * 0.5);
-    transition: color 0.3s ease;
-  }
-  
-  
-  /* NOTE: Your existing @media (max-width: 768px) rules for
+.team-member img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto calc(var(--spacing-unit) * 2);
+  border: 3px solid var(--accent-primary);
+  box-shadow: var(--shadow-soft);
+  /* Use theme variable for shadow */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.dark-mode .team-member img {
+  border-color: var(--accent-primary-dark);
+  /* Ensure this variable is defined if different from --accent-primary in dark mode */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  /* Or use a dark theme shadow variable */
+}
+
+.team-member h3 {
+  margin-bottom: 0;
+  line-height: 1.3;
+  color: var(--text-primary);
+  /* Email color */
+}
+
+.team-member h3 .subgreen {
+  /* Title */
+  color: var(--accent-secondary);
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  display: block;
+  /* Ensure title is on its own line or adjust as needed */
+  margin-bottom: calc(var(--spacing-unit) * 0.5);
+}
+
+.team-member h3 .tagline {
+  /* Name */
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--text-headings);
+  display: block;
+  margin-top: 0;
+  /* Adjust if .subgreen is also block */
+  margin-bottom: calc(var(--spacing-unit) * 0.5);
+  transition: color 0.3s ease;
+}
+
+
+/* NOTE: Your existing @media (max-width: 768px) rules for
      .team-members-grid and .team-member should remain unchanged.
      They correctly handle stacking on smaller screens:
   
@@ -1088,42 +1221,50 @@ body.dark-mode .team-member img {
   }
   */
 
-  .form-hero {
-    min-height: 30vh; /* Adjust as needed */
-    /* Or specific padding */
-    padding-top: calc(var(--spacing-unit) * 6);
-    padding-bottom: calc(var(--spacing-unit) * 6);
-  }
-  .form-hero h1 {
-      font-size: clamp(2.2rem, 8vw, 4rem); /* Adjust H1 size for form pages */
-  }
+.form-hero {
+  min-height: 30vh;
+  /* Adjust as needed */
+  /* Or specific padding */
+  padding-top: calc(var(--spacing-unit) * 6);
+  padding-bottom: calc(var(--spacing-unit) * 6);
+}
 
-  .text-required {
-    color: var(--accent-secondary); /* Uses your theme's secondary accent (now green) */
-    font-weight: bold; /* Or use a specific error/warning color variable */
-  }
+.form-hero h1 {
+  font-size: clamp(2.2rem, 8vw, 4rem);
+  /* Adjust H1 size for form pages */
+}
 
-  .form-note {
-    font-size: 0.9em;
-    color: var(--text-secondary);
-    margin-bottom: calc(var(--spacing-unit) * 2);
-  }
-  
-  .form-submission-status {
-    margin-top: calc(var(--spacing-unit) * 2);
-    font-style: italic;
-    color: var(--text-secondary);
-    min-height: 1.5em; /* Reserve space to prevent layout jump */
-  }
+.text-required {
+  color: var(--accent-secondary);
+  /* Uses your theme's secondary accent (now green) */
+  font-weight: bold;
+  /* Or use a specific error/warning color variable */
+}
 
-  /* --- Form Styling (Additions/Modifications) --- */
+.form-note {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.form-submission-status {
+  margin-top: calc(var(--spacing-unit) * 2);
+  font-style: italic;
+  color: var(--text-secondary);
+  min-height: 1.5em;
+  /* Reserve space to prevent layout jump */
+}
+
+/* --- Form Styling (Additions/Modifications) --- */
 
 /* Container to center the form button */
 .form-button-container {
   display: flex;
   justify-content: center;
-  margin-top: calc(var(--spacing-unit) * 3); /* Space above the button */
-  margin-bottom: calc(var(--spacing-unit) * 1.5); /* Space between button and status message */
+  margin-top: calc(var(--spacing-unit) * 3);
+  /* Space above the button */
+  margin-bottom: calc(var(--spacing-unit) * 1.5);
+  /* Space between button and status message */
 }
 
 /* Ensure the .form-button class is styled as before.
@@ -1166,57 +1307,76 @@ body.dark-mode .team-member img {
 
 /* --- 404 Error Page Specific Styles --- */
 .error-page-hero {
-  min-height: calc(100vh - var(--header-height, 100px) - var(--footer-height, 100px)); /* Adjust header/footer heights if known, or use a fixed vh value */
+  min-height: calc(100vh - var(--header-height, 100px) - var(--footer-height, 100px));
+  /* Adjust header/footer heights if known, or use a fixed vh value */
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center; /* Ensures content within hero-content is centered */
-  padding-top: calc(var(--spacing-unit) * 4); /* Add some padding */
+  text-align: center;
+  /* Ensures content within hero-content is centered */
+  padding-top: calc(var(--spacing-unit) * 4);
+  /* Add some padding */
   padding-bottom: calc(var(--spacing-unit) * 4);
 }
 
 .error-page-hero .hero-content {
-  max-width: 700px; /* Constrain width of the error message block */
+  max-width: 700px;
+  /* Constrain width of the error message block */
   width: 90%;
 }
 
-.error-code-title { /* For the big "404" */
-  font-size: clamp(6rem, 25vw, 12rem); /* Very large, responsive */
+.error-code-title {
+  /* For the big "404" */
+  font-size: clamp(6rem, 25vw, 12rem);
+  /* Very large, responsive */
   line-height: 1;
-  margin-bottom: 0; /* Remove default h1 margin if .starhome doesn't already do this */
+  margin-bottom: 0;
+  /* Remove default h1 margin if .starhome doesn't already do this */
   font-weight: 900;
   /* color: var(--accent-primary); // Optional: color the 404 number */
 }
+
 /* Ensure .starhome used in error-code-title retains its accent color */
 .error-code-title .starhome {
-    color: var(--accent-primary); /* Or your desired color for the 404 digits */
+  color: var(--accent-primary);
+  /* Or your desired color for the 404 digits */
 }
+
 body.dark-mode .error-code-title .starhome {
-    color: var(--accent-primary-dark);
-    /* Remove text-shadow if it's too much for the large 404 */
-    /* text-shadow: 0 0 15px rgba(var(--accent-primary-rgb),0.5), 0 0 30px rgba(var(--accent-primary-rgb),0.3); */
+  color: var(--accent-primary-dark);
+  /* Remove text-shadow if it's too much for the large 404 */
+  /* text-shadow: 0 0 15px rgba(var(--accent-primary-rgb),0.5), 0 0 30px rgba(var(--accent-primary-rgb),0.3); */
 }
 
 
-.error-page-hero h2 { /* For "Page Not Found" */
-  font-size: clamp(1.8rem, 6vw, 2.8rem); /* Responsive "Page Not Found" text */
-  margin-top: calc(var(--spacing-unit) * 0.5); /* Reduced space after big 404 */
+.error-page-hero h2 {
+  /* For "Page Not Found" */
+  font-size: clamp(1.8rem, 6vw, 2.8rem);
+  /* Responsive "Page Not Found" text */
+  margin-top: calc(var(--spacing-unit) * 0.5);
+  /* Reduced space after big 404 */
   margin-bottom: calc(var(--spacing-unit) * 2);
   color: var(--text-headings);
   font-weight: 700;
 }
+
 /* Ensure .codehome used here gets appropriate styling if needed */
 .error-page-hero h2 .codehome {
-    color: var(--text-headings); /* Or a contrasting accent */
+  color: var(--text-headings);
+  /* Or a contrasting accent */
 }
+
 body.dark-mode .error-page-hero h2 .codehome {
-    color: var(--text-headings);
+  color: var(--text-headings);
 }
 
 
-.error-page-hero .tagline { /* For the descriptive message */
-  font-size: clamp(1rem, 3vw, 1.25rem); /* Responsive tagline */
-  max-width: 500px; /* Constrain width of the tagline */
+.error-page-hero .tagline {
+  /* For the descriptive message */
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  /* Responsive tagline */
+  max-width: 500px;
+  /* Constrain width of the tagline */
   margin-left: auto;
   margin-right: auto;
   color: var(--text-secondary);
@@ -1225,7 +1385,8 @@ body.dark-mode .error-page-hero h2 .codehome {
 .error-actions {
   margin-top: calc(var(--spacing-unit) * 5);
   display: flex;
-  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+  flex-wrap: wrap;
+  /* Allow buttons to wrap on smaller screens */
   justify-content: center;
   gap: calc(var(--spacing-unit) * 2);
 }
@@ -1235,7 +1396,8 @@ body.dark-mode .error-page-hero h2 .codehome {
   background: transparent;
   color: var(--accent-primary);
   border: 2px solid var(--accent-primary);
-  box-shadow: none; /* Remove main cta shadow if it exists */
+  box-shadow: none;
+  /* Remove main cta shadow if it exists */
 }
 
 body.dark-mode .cta-button.secondary {
@@ -1245,14 +1407,323 @@ body.dark-mode .cta-button.secondary {
 
 .cta-button.secondary:hover {
   background: var(--accent-primary);
-  color: var(--text-on-cta); /* Or var(--bg-card) for light mode if preferred */
+  color: var(--text-on-cta);
+  /* Or var(--bg-card) for light mode if preferred */
   border-color: var(--accent-primary);
-  transform: translateY(-2px); /* Keep hover effect consistent */
-  box-shadow: var(--shadow-medium); /* Add a subtle shadow on hover */
+  transform: translateY(-2px);
+  /* Keep hover effect consistent */
+  box-shadow: var(--shadow-medium);
+  /* Add a subtle shadow on hover */
 }
 
 body.dark-mode .cta-button.secondary:hover {
   background: var(--accent-primary-dark);
-  color: var(--text-on-cta); /* Or suitable dark mode contrast */
+  color: var(--text-on-cta);
+  /* Or suitable dark mode contrast */
   border-color: var(--accent-primary-dark);
+}
+
+/* --- Fine-tuning for Very Small Mobile Devices --- */
+@media (max-width: 420px) {
+
+  /* --- General Text Alignment & Spacing --- */
+  /* Ensure main content blocks within cards, heroes, and forms don't have unexpected right alignment
+     and have slightly reduced padding if they feel too cramped. */
+
+  .hero-content,
+  .content-card .text-content,
+  .form-container {
+    padding-left: calc(var(--spacing-unit) * 2);
+    /* Reduce horizontal padding */
+    padding-right: calc(var(--spacing-unit) * 2);
+    font-size: 0.80rem;
+    overflow-wrap: anywhere;
+  }
+
+  /* Explicitly ensure text alignment within these common containers.
+     The 768px breakpoint should already handle most of this, but this reinforces it. */
+  .content-card .text-content,
+  .content-card .text-content p,
+  .form-container,
+  .form-container p,
+  .form-container label {
+    text-align: left;
+    /* Default for most content */
+  }
+
+  /* Center hero text elements if they weren't already centered by their specific rules */
+  .hero-section .hero-content,
+  .hero-section .hero-content h1,
+  .hero-section .hero-content .tagline {
+    text-align: center;
+  }
+
+  /* Center 404 page hero content */
+  .error-page-hero .hero-content,
+  .error-page-hero .hero-content h1,
+  .error-page-hero .hero-content h2,
+  .error-page-hero .hero-content .tagline {
+    text-align: center;
+  }
+
+  /* Center team section text-content if it was block */
+  #team .content-card .text-content {
+    text-align: center;
+    /* If this container is block, its text children will center */
+  }
+
+  #team .content-card .text-content h2 {
+    text-align: center;
+    /* Ensure heading is centered */
+  }
+
+  /* Individual team members are already text-align: center */
+
+
+  /* --- Button Sizing and Overflow --- */
+
+  .cta-button,
+  .form-button,
+  .cta-button.secondary,
+  .learn-more-link {
+    /* Apply to learn-more links if they are styled as buttons */
+    padding: calc(var(--spacing-unit) * 1.2) calc(var(--spacing-unit) * 1.5);
+    /* Further reduce padding */
+    font-size: 0.77rem;
+    /* Smaller font for very small screens */
+    /* Ensure buttons don't exceed container width if they are inline-block */
+    max-width: 100%;
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width and height */
+  }
+
+  /* For containers with multiple buttons that might be in a row */
+  .error-actions {
+    gap: calc(var(--spacing-unit) * 1.5);
+    /* Reduce gap between buttons */
+  }
+
+  .error-actions .cta-button,
+  .error-actions .cta-button.secondary {
+    width: 100%;
+    /* Stack buttons in error actions */
+    margin-bottom: var(--spacing-unit);
+    /* Add space between stacked buttons */
+  }
+
+  .error-actions .cta-button:last-child,
+  .error-actions .cta-button.secondary:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Ensure the single submit button in its centered container doesn't overflow */
+  .form-button-container .form-button {
+    width: auto;
+    /* Let it size by content and padding */
+    display: inline-block;
+    /* Ensure it doesn't force full width unless content is very long */
+    max-width: 100%;
+    /* Prevent overflow if text is extremely long */
+    min-width: 0;
+    /* Allow it to be smaller than any desktop min-width */
+  }
+
+
+  /* --- Header Adjustments for very small screens --- */
+  .header {
+    padding-left: var(--spacing-unit);
+    padding-right: var(--spacing-unit);
+  }
+
+  .header-logo h1 {
+    font-size: 1.3rem;
+    /* Slightly smaller logo text */
+  }
+
+  .header-controls {
+    gap: var(--spacing-unit);
+    /* Reduce gap between theme toggle and hamburger */
+  }
+
+  /* Theme toggle switch adjustments if it's too wide */
+  .switch {
+    --width-of-switch: 3em;
+    /* Reduce width */
+    --height-of-switch: 1.7em;
+    /* Reduce height */
+    --size-of-icon: 1.2em;
+    /* Reduce icon size */
+    --slider-offset: 0.25em;
+    /* Adjust offset */
+  }
+
+  /* Adjust font sizes for hero sections if they are too dominant */
+  .hero-section h1,
+  .hero-section .starhome,
+  .hero-section .codehome {
+    font-size: clamp(2rem, 10vw, 3.5rem);
+    /* Further reduce hero heading sizes */
+  }
+
+  .hero-section .tagline {
+    font-size: clamp(0.85rem, 4vw, 1.1rem);
+  }
+
+  .error-code-title {
+    font-size: clamp(4rem, 20vw, 8rem);
+    /* Reduce the giant 404 text */
+  }
+
+  .error-page-hero h2 {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+
+  /* --- Form Elements --- */
+  .form-group label {
+    font-size: 0.85rem;
+    /* Slightly smaller labels */
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="tel"],
+  .form-group input[type="number"],
+  .form-group textarea {
+    font-size: 0.9rem;
+    /* Slightly smaller input text */
+    padding: calc(var(--spacing-unit) * 1.25);
+    /* Adjust padding if needed */
+  }
+
+  .form-note {
+    font-size: 0.8rem;
+  }
+
+  /* 1. Make all cards truly full-width and include padding in their box size */
+  .content-card {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+    padding-left: calc(var(--spacing-unit) * 2);
+    padding-right: calc(var(--spacing-unit) * 2);
+    overflow: hidden;
+    /* keep any accidental overflow hidden */
+  }
+
+  /* 2. Ensure paragraph text wraps instead of overflowing */
+  .content-card .text-content p,
+  .hero-content .tagline,
+  #location-discord .text-content p {}
+
+  /* 3. Prevent heading and link texts from widening their containers */
+  .content-card .text-content h2,
+  .learn-more-link {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  /* 4. Specifically for the “Meet Our Team” names & emails */
+  .team-member h3 {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    /* override any inherited nowrap */
+  }
+
+  /* === Remove asymmetric left padding on tiny screens === */
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Reset any large container padding, then re-apply minimal symmetric padding */
+  .content-container,
+  .content-card,
+  .team-members-section,
+  .hero-content,
+  #mission-statement {
+    padding-left: var(--spacing-unit);
+    padding-right: var(--spacing-unit);
+  }
+
+  .content-container,
+  .content-card,
+  .team-members-section,
+  .hero-content,
+  #team {
+    padding-left: var(--spacing-unit);
+    padding-right: var(--spacing-unit);
+  }
+
+  .content-container,
+  .content-card,
+  .team-members-section,
+  .hero-content,
+  #location-website {
+    padding-left: var(--spacing-unit);
+    padding-right: var(--spacing-unit);
+  }
+
+  .content-container,
+  .content-card,
+  .team-members-section,
+  .hero-content,
+  #location-discord {
+    padding-left: var(--spacing-unit);
+    padding-right: var(--spacing-unit);
+  }
+
+  .content-container,
+  .content-card,
+  .team-members-section,
+  .hero-content,
+  #location-instagram {
+    padding-left: var(--spacing-unit);
+    padding-right: var(--spacing-unit);
+  }
+
+  /* === Generic symmetric padding for all "container"-like elements === */
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  /* catch any element whose class name contains container, section, card, or content */
+  [class*="container"],
+  [class*="section"],
+  [class*="card"],
+  [class*="content"] {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+    padding-left: var(--spacing-unit);
+    padding-right: var(--spacing-unit);
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* ensure text still wraps */
+  [class*="container"] *,
+  [class*="section"] *,
+  [class*="card"] *,
+  [class*="content"] * {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+
+  /* If you’d rather no padding at all, just use:
+    .content-container,
+    .content-card,
+    .team-members-section,
+    .hero-content,
+    #location-discord {
+      padding: 0;
+    }
+    */
+
+
 }
