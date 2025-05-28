@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Support | LeapCode</title>
+    <link rel="icon" href="images/favicon2.png" type="image/png" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
+    rel="stylesheet"
+  />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="header-logo">
+        <h1>
+          <a href="index.html" class="home-link"
+            ><span class="star">LEAP</span><span class="code">CODE</span></a
+          >
+        </h1>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="courses.html">Courses</a>
+        <a href="library.html">Library</a>
+        <a href="support.html">Support</a>
+      </nav>
+      <div class="header-controls">
+        <label class="switch">
+          <input type="checkbox" id="theme-checkbox" />
+          <span class="slider"></span>
+        </label>
+        <button
+          class="mobile-nav-toggle"
+          aria-label="Toggle navigation"
+          aria-expanded="false"
+        >
+          <span class="hamburger"></span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-section">
+        <div class="hero-content">
+          <h1>
+            <span class="starhome">Support</span><br><span class="codehome">LeapCode</span>
+          </h1>
+          <p class="tagline">Be part of a powerful cause.</p>
+        </div>
+      </section>
+      
+      <section id="location-instagram" class="content-section">
+        <div class="content-card">
+          <div class="text-content">
+            <h2>Donate to LeapCode</h2>
+            <p>
+                All of our courses are completely free, but keeping everything running takes significant effort. From maintaining the website to hosting live classes and providing quality resources, it's all made possible by your support. If you believe in our mission, please consider helping us continue this work.  
+            </p>
+            <a
+              href="https://gofund.me/08c3fcfe"
+              target="_blank"
+              class="learn-more-link"
+              >Visit our GoFundMe &rarr;</a
+            >
+          </div>
+          <div class="image-content">
+            <img src="images/gfm.png"/>
+          </div>
+        </div>
+      </section>
+      <section id="location-discord" class="content-section alt-bg">
+        <div class="content-card reverse">
+          <div class="text-content">
+            <h2>Volunteer With LeapCode</h2>
+            <p>
+                At LeapCode, we're always looking for passionate individuals to join our mission. Whether it's teaching online courses or coordinating in-person events, every helping hand makes a difference — and we truly appreciate it.  
+            </p>
+            <a
+              class="learn-more-link"
+              >Contact us for more information</a
+            >
+          </div>
+          <div class="image-content">
+            <img src="images/minilogo.png" alt="Discord Logo" />
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <span id="currentYear"></span> LeapCode | Contact us at
+        <a href="mailto:support@leapcode.org">support@leapcode.org</a>
+      </p>
+    </footer>
+
+    <script>
+      // --- Theme Toggle ---
+      const themeCheckbox = document.getElementById('theme-checkbox');
+      const body = document.body;
+
+      // Function to apply theme and update checkbox state
+      function applyTheme(theme) {
+        if (theme === 'dark') {
+          body.classList.add('dark-mode');
+          themeCheckbox.checked = true; // Sets the checkbox to checked for dark mode
+        } else {
+          body.classList.remove('dark-mode');
+          themeCheckbox.checked = false; // Sets the checkbox to unchecked for light mode
+        }
+      }
+
+      // Determine the initial theme
+      const savedTheme = localStorage.getItem('theme');
+      let initialTheme = 'dark'; // Default to dark mode
+
+      if (savedTheme) {
+        initialTheme = savedTheme; // Use saved theme if available
+      }
+
+      // Apply the determined initial theme immediately on script execution
+      applyTheme(initialTheme);
+
+      // Listen for changes on the checkbox (user interaction)
+      themeCheckbox.addEventListener('change', () => {
+        let newTheme = themeCheckbox.checked ? 'dark' : 'light';
+        localStorage.setItem('theme', newTheme);
+        applyTheme(newTheme);
+      });
+
+      // --- Mobile Nav Toggle ---
+      const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+      const mainNav = document.querySelector('.main-nav');
+
+      if (mobileNavToggle && mainNav) {
+        // Ensure elements exist
+        mobileNavToggle.addEventListener('click', () => {
+          const isExpanded = mainNav.classList.toggle('active');
+          mobileNavToggle.setAttribute('aria-expanded', isExpanded);
+        });
+      }
+
+      // --- Set current year in footer ---
+      const currentYearElement = document.getElementById('currentYear');
+      if (currentYearElement) {
+        // Ensure element exists
+        currentYearElement.textContent = new Date().getFullYear();
+      }
+    </script>
+  </body>
+</html>

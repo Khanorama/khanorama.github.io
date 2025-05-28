@@ -1,78 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Class Selection</title>
-    <link rel="icon" href="../images/favicon2.png" type="image/png">
-    <link rel="stylesheet" href="../style.css" />
-    <link rel="stylesheet" href="betterstyle.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <script>
-      if (window.innerWidth <= 768) {
-        window.location.href = "../mobile/register/python1.html";
-      } 
-    </script>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Courses | LeapCode</title>
+  <link rel="icon" href="images/favicon2.png" type="image/png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
   </head>
-  <body>
-    <header class="header">
+
+<body>
+  <header class="header">
+    <div class="header-logo">
       <h1>
         <a href="../index.html" class="home-link"
           ><span class="star">LEAP</span><span class="code">CODE</span></a
         >
       </h1>
-      <nav>
-        <a href="../index.html">Home</a>
-        <a href="../about.html">About</a>
-        <a href="../courses.html">Courses</a>
-        <a href="../certifications.html">Certifications</a>
-        <a href="../projects.html">Projects</a>
-        <a href="../contact.html">Contact</a>
-      </nav>
-    </header>
-    <div class="mission-section">
-      <div class="text">
-        <h3>Weekday Spring Session<br>
-          <span class="subgreen">4/3 - 5/20</span><br>
-          <span class="red">Registration Deadline: 3/31</span></h3>
-        <p>
-          The Python I course aims to equip you with a solid foundation in Python programming.
-          Throughout the course, we will explore a variety of essential concepts and skills that
-           form the foundation of programming in Python. By the end of this course, you will be
-            ready to attempt the CSPB Python Certification exam, the first in the Python 
-            certification series.
-        </p>
-        <a href="python1reg.html">Register Now!</a>
-      </div>
-      <img
-        src="images/python1weekday.png"
-        alt="python1"
-      />
-    </div>  
-    <div class="mission-section">
-      <div class="text">
-        <h3>Weekend Spring Session<br>
-          <span class="subgreen">4/6 - 5/4</span><br>
-          <span class="red">Registration Deadline: 4/2</span></h3>
-        <p>
-          The Python I course aims to equip you with a solid foundation in Python programming.
-          Throughout the course, we will explore a variety of essential concepts and skills that
-           form the foundation of programming in Python. By the end of this course, you will be
-            ready to attempt the CSPB Python Certification exam, the first in the Python 
-            certification series.
-        </p>
-        <a href="python1wknd.html">Register Now!</a>
-      </div>
-      <img
-        src="images/python1weekend.png"
-        alt="python1"
-      />
-    </div>  
-    
+    </div>
+    <nav class="main-nav">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../courses.html">Courses</a>
+      <a href="../library.html">Library</a>
+      <a href="../support.html">Support</a>
+    </nav>
+    <div class="header-controls">
+      <label class="switch">
+        <input type="checkbox" id="theme-checkbox" />
+        <span class="slider"></span>
+      </label>
+      <button
+        class="mobile-nav-toggle"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+      >
+        <span class="hamburger"></span>
+      </button>
+    </div>
+  </header>
 
-    <footer>2025 LeapCode | Contact us at support@leapcode.org</footer>
-  </body>
+  <main>
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1>
+          <span class="starhome">Cohort</span><br><span class="codehome">Selection</span>
+        </h1>
+      </div>
+    </section>
+
+    <section id="python-courses" class="content-section">
+      <div class="content-card">
+        <div class="text-content">
+          <h2>Cohort I</h2>
+          <p>
+            ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ
+              <h4>Dates: 6/23 - 7/3 M-Th (8 Sessions)</h4>
+              <h4>TIME: 2-4 PM CDT</h4>
+              <h4>Registration Deadline: 6/20</h4>
+              <h4>Fee: $0
+              <h4>Instructor: Ayaan Khan</h4>
+          </p>
+          <a href="../register/python1reg.html" class="learn-more-link">Register Now! &rarr;</a>
+        </div>
+        <div class="image-content">
+          <img src="../images/python.png" alt="Python Programming Language Logo" />
+        </div>
+      </div>
+    </section>
+
+    <section id="js-courses" class="content-section alt-bg">
+      <div class="content-card reverse">
+        <div class="text-content">
+          <h2>Cohort II</h2>
+          <p>
+            ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ
+              <h4>Dates: 7/21 - 7/31 M-Th (8 Sessions)
+              <h4>TIME: TBD</h4>
+              <h4>Registration Deadline: 7/18</h4>
+              <h4>Fee: $0</h4>
+              <h4>Instructor: Bryden Li</h4>
+          </p>
+          <a class="learn-more-link">Registration Opens 6/21</a>
+        </div>
+        <div class="image-content">
+          <img src="../images/python.png" alt="JavaScript Programming Language Logo" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      <span id="currentYear"></span> LeapCode | Contact us at
+      <a href="mailto:support@leapcode.org">support@leapcode.org</a>
+    </p>
+  </footer>
+
+  <script>
+    // --- Theme Toggle ---
+    const themeCheckbox = document.getElementById('theme-checkbox');
+    const body = document.body;
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        body.classList.add('dark-mode');
+        if (themeCheckbox) themeCheckbox.checked = true;
+      } else {
+        body.classList.remove('dark-mode');
+        if (themeCheckbox) themeCheckbox.checked = false;
+      }
+    }
+
+    const savedTheme = localStorage.getItem('theme');
+    // Default to dark or light based on your preference or system setting
+    let initialTheme = 'light'; // You can change this default
+    if (savedTheme) {
+      initialTheme = savedTheme;
+    } else {
+      // Optional: Check for system preference if no theme is saved
+      // if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      //   initialTheme = 'dark';
+      // }
+    }
+    applyTheme(initialTheme);
+
+    if (themeCheckbox) {
+      themeCheckbox.addEventListener('change', () => {
+        let newTheme = themeCheckbox.checked ? 'dark' : 'light';
+        localStorage.setItem('theme', newTheme);
+        applyTheme(newTheme);
+      });
+    }
+
+    // --- Mobile Nav Toggle ---
+    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileNavToggle && mainNav) {
+      mobileNavToggle.addEventListener('click', () => {
+        const isExpanded = mainNav.classList.toggle('active');
+        mobileNavToggle.setAttribute('aria-expanded', isExpanded);
+      });
+    }
+
+    // --- Set current year in footer ---
+    const currentYearElement = document.getElementById('currentYear');
+    if (currentYearElement) {
+      currentYearElement.textContent = new Date().getFullYear();
+    }
+
+    // --- Active Nav Link ---
+    // (This is a simple version. For more complex sites, consider a more robust solution)
+    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    const navLinks = document.querySelectorAll('.main-nav a');
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      }
+    });
+  </script>
+</body>
 </html>

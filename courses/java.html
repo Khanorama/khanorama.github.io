@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Page Not Found | LeapCode</title>
-  <link rel="icon" href="images/favicon2.png" type="image/png">
-  <link rel="stylesheet" href="style.css" />
+  <title>Courses | LeapCode</title>
+  <link rel="icon" href="../images/favicon2.png" type="image/png" />
+  <link rel="stylesheet" href="../style.css" />
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
     rel="stylesheet"
@@ -15,24 +15,23 @@
     href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
     rel="stylesheet"
   />
-</head>
+  </head>
 
 <body>
   <header class="header">
     <div class="header-logo">
       <h1>
-        <a href="index.html" class="home-link"
+        <a href="../index.html" class="home-link"
           ><span class="star">LEAP</span><span class="code">CODE</span></a
         >
       </h1>
     </div>
     <nav class="main-nav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="courses.html">Courses</a>
-      <a href="certifications.html">Certifications</a>
-      <a href="projects.html">Projects</a>
-      <a href="contact.html">Contact</a>
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../courses.html">Courses</a>
+      <a href="../library.html">Library</a>
+      <a href="../support.html">Support</a>
     </nav>
     <div class="header-controls">
       <label class="switch">
@@ -50,20 +49,54 @@
   </header>
 
   <main>
-    <section class="hero-section error-page-hero">
+    <section class="hero-section">
       <div class="hero-content">
-        <h1 class="error-code-title"><span class="starhome">404</span></h1>
-        <h2><span class="codehome">Page Not Found</span></h2>
-        <p class="tagline">
-          Oops! It seems the page you're looking for doesn't exist or may have been moved.
-        </p>
-        <div class="error-actions">
-          <a href="index.html" class="cta-button">Go to Homepage</a>
+        <h1>
+          <span class="starhome">Java</span><br><span class="codehome">Courses</span>
+        </h1>
+      </div>
+    </section>
+
+    <section id="python-courses" class="content-section">
+      <div class="content-card">
+        <div class="text-content">
+          <h2>Java BOOTCAMP</h2>
+          <p>
+            The Java BOOTCAMP is a week long, faster-paced course meant for students with prior experience in another programming language.
+            Here, you will be equipped with a solid foundation in Java programming.
+            Throughout the course, we will explore a variety of essential concepts and skills that
+             form the foundation of programming in Java, solidifying the Object-Oriented (OOP) structure of the language.
+            At the end of this course, all students
+             will receive a certificate upon passing the final
+             exam.
+          </p>
+          <a href="../register/javab.html" class="learn-more-link">Register Now! &rarr;</a>
+        </div>
+        <div class="image-content">
+          <img src="../images/java1.png" alt="Python Programming Language Logo" />
+        </div>
+      </div>
+    </section>
+
+    <section id="js-courses" class="content-section alt-bg">
+      <div class="content-card reverse">
+        <div class="text-content">
+          <h2>Java I</h2>
+          <p>
+            The Java I course aims to equip you with a solid foundation in Java programming.
+            Throughout the course, we will explore a variety of essential concepts and skills that
+             form the foundation of programming in Java. At the end of this course, all students
+             will participate in a group Hackathon, and receive a certificate upon passing the final
+             exam.
+          </p>
+          <a class="learn-more-link">Registration is Closed </a>
+        </div>
+        <div class="image-content">
+          <img src="../images/java2.png" alt="JavaScript Programming Language Logo" />
         </div>
       </div>
     </section>
   </main>
-  <br><br>
 
   <footer class="site-footer">
     <p>
@@ -75,24 +108,25 @@
   <script>
     // --- Theme Toggle ---
     const themeCheckbox = document.getElementById('theme-checkbox');
-    const bodyEl = document.body;
+    const body = document.body;
 
     function applyTheme(theme) {
       if (theme === 'dark') {
-        bodyEl.classList.add('dark-mode');
+        body.classList.add('dark-mode');
         if (themeCheckbox) themeCheckbox.checked = true;
       } else {
-        bodyEl.classList.remove('dark-mode');
+        body.classList.remove('dark-mode');
         if (themeCheckbox) themeCheckbox.checked = false;
       }
     }
 
     const savedTheme = localStorage.getItem('theme');
-    let initialTheme = 'light'; 
+    // Default to dark or light based on your preference or system setting
+    let initialTheme = 'light'; // You can change this default
     if (savedTheme) {
       initialTheme = savedTheme;
     } else {
-      // Optional: Check for system preference
+      // Optional: Check for system preference if no theme is saved
       // if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       //   initialTheme = 'dark';
       // }
@@ -124,11 +158,11 @@
       currentYearElement.textContent = new Date().getFullYear();
     }
 
-    // --- Active Nav Link (not applicable for 404, but script can remain for consistency) ---
+    // --- Active Nav Link ---
+    // (This is a simple version. For more complex sites, consider a more robust solution)
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
     const navLinks = document.querySelectorAll('.main-nav a');
     navLinks.forEach(link => {
-      link.classList.remove('active');
       if (link.getAttribute('href') === currentPage) {
         link.classList.add('active');
       }

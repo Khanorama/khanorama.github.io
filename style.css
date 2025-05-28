@@ -1,318 +1,1258 @@
-body {
-  margin: 0;
-  font-family: "Montserrat", sans-serif;
-  background-color: #1a1a2e;
-  color: #eaeaea;
+/* --- CSS Variables --- */
+:root {
+  /* Light Mode Defaults */
+  --bg-page: #f4f7f9; /* Light, slightly cool grey */
+  --bg-card: #ffffff;
+  --bg-header: #ffffff;
+  --bg-footer: #e9ecef;
+  --bg-alt-section: #e9ecef; /* For alternating sections */
+  --bg-input: #ffffff;
+  --bg-button-cta: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  --bg-button-cta-hover: linear-gradient(135deg, #0069d9 0%, #004085 100%);
+
+  --text-primary: #212529; /* Dark grey for main text */
+  --text-secondary: #495057; /* Muted grey */
+  --text-headings: #003d73; /* Darker blue for headings */
+  --text-on-cta: #ffffff;
+  --text-link: #0056b3;
+  --text-link-hover: #003d73;
+
+  --accent-primary: #007bff; /* Primary Blue */
+  --accent-primary-rgb: 0, 123, 255;
+  --accent-secondary: #00FF7F; /* CHANGED: Vibrant Green */
+  --accent-secondary-rgb: 0, 255, 127; /* CHANGED: Vibrant Green RGB */
+
+  --border-color-soft: #dee2e6;
+  --border-color-strong: #ced4da;
+  --border-color-accent: var(--accent-primary);
+  --border-input: #ced4da;
+  --border-input-focus: var(--accent-primary);
+
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.07);
+  --shadow-medium: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --shadow-focus-ring: 0 0 0 0.2rem rgba(var(--accent-primary-rgb), 0.25);
+
+  /* Specific to dark theme, defined here but used in .dark-mode */
+  --shadow-glow-primary: 0 0 15px rgba(var(--accent-primary-rgb), 0.3),
+    0 0 5px rgba(var(--accent-primary-rgb), 0.2);
+  --shadow-glow-secondary: 0 0 15px rgba(var(--accent-secondary-rgb), 0.3); /* Will use new green RGB */
+  --shadow-inset-dark: inset 0 0 10px rgba(0, 0, 0, 0.3);
+
+  --font-primary: "Montserrat", sans-serif;
+  --font-secondary: "Roboto", sans-serif;
+
+  --spacing-unit: 8px;
+  --border-radius-sm: 4px;
+  --border-radius-md: 6px;
 }
 
+body.dark-mode {
+  /* Dark Mode Overrides */
+  --bg-page: #12181f;
+  --bg-card: #1a2029;
+  --bg-header: #1a2029;
+  --bg-footer: #1a2029;
+  --bg-alt-section: #161c24; /* Darker alt section */
+  --bg-input: #12181f;
+  --bg-button-cta: linear-gradient(
+    135deg,
+    var(--accent-primary-dark) 0%,
+    color-mix(in srgb, var(--accent-primary-dark) 70%, var(--accent-secondary-dark) 30%) 100%
+  );
+  --bg-button-cta-hover: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-primary-dark) 90%, white 10%) 0%,
+    color-mix(in srgb, var(--accent-primary-dark) 60%, var(--accent-secondary-dark) 40%) 100%
+  );
+
+  --text-primary: #e0e5ec;
+  --text-secondary: #b0b8c4;
+  --text-headings: #ffffff;
+  --text-on-cta: #0a1931; /* Keep dark text for bright button */
+  --text-link: var(--accent-primary-dark);
+  --text-link-hover: color-mix(in srgb, var(--accent-primary-dark) 80%, white);
+
+  --accent-primary-dark: #00c6ff; /* Electric Blue / Cyan for Dark Mode */
+  --accent-primary-rgb-dark: 0, 198, 255;
+  --accent-secondary-dark: #00FF7F; /* CHANGED: Vibrant Green for Dark Mode */
+  --accent-secondary-rgb-dark: 0, 255, 127; /* CHANGED: Vibrant Green RGB for Dark Mode */
+  /* Re-map main accents to their dark mode versions */
+  --accent-primary: var(--accent-primary-dark);
+  --accent-primary-rgb: var(--accent-primary-rgb-dark);
+  --accent-secondary: var(--accent-secondary-dark);
+  --accent-secondary-rgb: var(--accent-secondary-rgb-dark);
+
+  --border-color-soft: rgba(255, 255, 255, 0.1);
+  --border-color-strong: rgba(255, 255, 255, 0.15);
+  --border-color-accent: rgba(var(--accent-primary-rgb-dark), 0.3);
+  --border-input: var(--bg-card); /* Often inputs are inset or slightly diff bg */
+  --border-input-focus: var(--accent-primary-dark);
+
+  --shadow-soft: 0 2px 10px rgba(0, 0, 0, 0.3); /* Darker, more pronounced shadows */
+  --shadow-medium: 0 5px 25px rgba(0, 0, 0, 0.25);
+  --shadow-focus-ring: 0 0 0 0.2rem rgba(var(--accent-primary-rgb-dark), 0.25);
+
+  /* Use the specific glow/inset shadows for dark mode */
+  --shadow-card-border: 1px solid var(--border-color-accent);
+  --shadow-card-main: var(--shadow-inset-dark), var(--shadow-medium);
+}
+
+/* --- Global Styles & Resets --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-secondary);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-size: 16px;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  color: var(--text-headings);
+  margin-bottom: calc(var(--spacing-unit) * 2.5);
+  transition: color 0.3s ease;
+}
+
+h1 {
+  font-size: 2.8rem;
+  line-height: 1.2;
+}
+h2 {
+  font-size: 2.2rem;
+  line-height: 1.25;
+}
+h3 {
+  font-size: 1.8rem;
+  line-height: 1.3;
+}
+
+p {
+  margin-bottom: calc(var(--spacing-unit) * 2);
+  max-width: 65ch;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}
+.content-card p {
+  color: var(--text-primary);
+}
+
+a {
+  color: var(--text-link);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out, text-shadow 0.2s ease;
+}
+
+a:hover {
+  color: var(--text-link-hover);
+  text-decoration: none;
+}
+body.dark-mode a:hover {
+  /* Add glow only in dark mode if desired */
+  text-shadow: 0 0 5px rgba(var(--accent-primary-rgb), 0.5);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--border-radius-sm);
+}
+
+/* --- Header --- */
 .header {
-  background-color: #16213e;
-  padding: 20px;
+  background-color: var(--bg-header);
+  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border-color-soft);
+  box-shadow: var(--shadow-soft);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 1.5);
 }
 
-.header h1 {
+/* The switch - the box around the slider */
+.switch {
+  display: block;
+  --width-of-switch: 3.5em;
+  --height-of-switch: 2em;
+  /* size of sliding icon -- sun and moon */
+  --size-of-icon: 1.4em;
+  /* it is like a inline-padding of switch */
+  --slider-offset: 0.3em;
+  position: relative;
+  width: var(--width-of-switch);
+  height: var(--height-of-switch);
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f4f4f5;
+  transition: 0.4s;
+  border-radius: 30px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: var(--size-of-icon, 1.4em);
+  width: var(--size-of-icon, 1.4em);
+  border-radius: 20px;
+  left: var(--slider-offset, 0.3em);
+  top: 50%;
+  transform: translateY(-50%);
+  /* CHANGED: Pink to Green in gradient */
+  background: linear-gradient(40deg, #f7f311, #ff8c00 70%);
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #303136;
+}
+
+input:checked + .slider:before {
+  left: calc(100% - (var(--size-of-icon, 1.4em) + var(--slider-offset, 0.3em)));
+  background: #303136;
+  /* change the value of second inset in box-shadow to change the angle and direction of the moon  */
+  box-shadow: inset -3px -2px 5px -2px #8983f7, inset -10px -4px 0 0 #a3dafb;
+}
+
+.header-logo h1 {
   margin: 0;
-  font-size: 2.5rem;
-  font-weight: bold;
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
 }
 
 .header .home-link {
   text-decoration: none;
 }
 
-.header .code {
-  color: #ffffff; /* White */
-  font-weight: bold;
-}
-
-.codehome {
-  color: #ffffff; /* White */
-  font-weight: bold;
-  font-size: 6rem;
-}
-
 .header .star {
-  color: #0462ce; /* Medium blue */
-  font-weight: bold;
+  /* LEAP */
+  color: var(--accent-primary);
+  transition: color 0.3s ease;
 }
-.starhome {
-  color: #0462ce; /* Medium blue */
-  font-weight: bold;
-  font-size: 6rem;
+body.dark-mode .header .star {
+  text-shadow: var(--shadow-glow-primary);
+}
+
+.header .code {
+  /* CODE */
+  color: var(--accent-secondary); /* Will now use the new green */
+  transition: color 0.3s ease;
+}
+body.dark-mode .header .code {
+  text-shadow: var(--shadow-glow-secondary); /* Will use the new green glow */
+}
+
+.main-nav {
+  display: flex;
+  gap: calc(var(--spacing-unit) * 3);
+}
+
+.main-nav a {
+  color: var(--text-primary); /* Use primary text for nav links */
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+  padding: var(--spacing-unit) 0;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+.main-nav a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background-color: var(--accent-primary);
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+body.dark-mode .main-nav a::after {
+  box-shadow: var(--shadow-glow-primary);
+}
+
+.main-nav a:hover::after,
+.main-nav a.active::after {
+  width: 100%;
+}
+
+.main-nav a:hover {
+  color: var(--text-link-hover); /* Or var(--accent-primary) if preferred */
+  text-shadow: none;
+}
+
+.mobile-nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-unit);
+  color: var(--text-primary); /* For hamburger color */
+}
+
+.hamburger {
+  display: block;
+  width: 25px;
+  height: 2px;
+  background-color: currentColor; /* Inherits color from parent (.mobile-nav-toggle) */
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.hamburger::before,
+.hamburger::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 2px;
+  background-color: currentColor;
+  left: 0;
+  transition: transform 0.3s ease, top 0.3s ease;
+}
+
+.hamburger::before {
+  top: -7px;
+}
+.hamburger::after {
+  top: 7px;
+}
+
+.mobile-nav-toggle[aria-expanded="true"] .hamburger {
+  background-color: transparent;
+}
+.mobile-nav-toggle[aria-expanded="true"] .hamburger::before {
+  transform: rotate(45deg);
+  top: 0;
+  background-color: var(--accent-primary);
+}
+.mobile-nav-toggle[aria-expanded="true"] .hamburger::after {
+  transform: rotate(-45deg);
+  top: 0;
+  background-color: var(--accent-primary);
+}
+
+/* --- Hero Section --- */
+.hero-section {
+  background-color: var(--bg-page); /* Or a specific hero bg */
+  color: var(--text-headings);
+  padding: calc(var(--spacing-unit) * 8) calc(var(--spacing-unit) * 3);
+  text-align: center;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+/* Optional: Hero background effects for dark mode */
+body.dark-mode .hero-section::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(
+    circle,
+    rgba(var(--accent-primary-rgb), 0.15) 0%,
+    transparent 70%
+  );
+  filter: blur(20px);
+  z-index: 0;
+}
+body.dark-mode .hero-section::after {
+  content: "";
+  position: absolute;
+  bottom: -50px;
+  right: -50px;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(
+    circle,
+    rgba(var(--accent-secondary-rgb), 0.1) 0%, /* Will use new green RGB */
+    transparent 70%
+  );
+  filter: blur(20px);
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content h1 {
+  margin-bottom: calc(var(--spacing-unit) * 1);
+  font-weight: 900;
+}
+
+.hero-content .starhome,
+.hero-content .codehome {
+  font-size: clamp(3.5rem, 12vw, 8rem);
+  line-height: 1;
+  text-transform: uppercase;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.hero-content .starhome {
+  color: var(--accent-primary);
+}
+.hero-content .codehome {
+  color: var(--accent-secondary); /* Will now use the new green */
+}
+body.dark-mode .hero-content .starhome {
+  text-shadow: 0 0 15px rgba(var(--accent-primary-rgb), 0.5),
+    0 0 30px rgba(var(--accent-primary-rgb), 0.3);
+}
+body.dark-mode .hero-content .codehome {
+  text-shadow: 0 0 15px rgba(var(--accent-secondary-rgb), 0.5), /* Will use new green shadow */
+    0 0 30px rgba(var(--accent-secondary-rgb), 0.3);
 }
 
 .tagline {
-  color: #93d4fa;
-  font-style: italic;
-  font-size: 1.5rem;
-}
-
-.red {
-  color: red;
-  font-weight: bold;
-}
-
-.header nav {
-  display: flex;
-  gap: 15px;
-}
-
-.header nav a {
-  color: #eaeaea;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-.header nav a:hover {
-  color: #00a3e0; /* Medium blue */
-}
-
-.container {
-  padding: 40px;
-  max-width: 1000px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.container h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
-.container p {
-  font-size: 1.2rem;
-  line-height: 1.6;
-}
-
-.mission-section {
-  display: flex;
-  align-items: center;
-  margin: 40px auto;
-  background-color: #0f3460;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 800px;
-}
-
-.mission-section img {
-  max-width: 50%;
-  border-radius: 8px;
-}
-
-.mission-section-text {
-  display: flex;
-  align-items: center;
-  margin: 40px auto;
-  background-color: #0f3460;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 800px;
-}
-
-.mission-section-text img {
-  border-radius: 8px;
-  height: 230px;
-  width: 230px;
-}
-
-.mission-section .text {
-  max-width: 50%;
-  padding: 0 20px;
-}
-
-.subgreen {
-  max-width: 50%;
-  color: aquamarine;
-  font-weight: bolder;
-}
-
-
-
-.mission-section.reverse {
-  flex-direction: row-reverse;
-}
-
-.mission-section a {
-  color: #f0a500; /* Gold color for better contrast */
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.mission-section a:hover {
-  color: #c28b13; /* Slightly darker gold on hover */
-}
-
-.reviews {
-  margin: 40px auto;
-  max-width: 800px;
-  position: relative;
-  overflow: hidden;
-}
-
-.reviews h3 {
-  font-size: 1.5rem;
-  color: #00a3e0; /* Medium blue */
-}
-
-.review-text {
-  font-size: 1.2rem;
-  margin: 20px 0;
-  color: #f0a500; /* Orange for emphasis */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.5s ease;
-  height: 80px; /* Set a height to ensure consistent sizing */
-}
-
-.review-text.hide {
-  opacity: 0;
-  transform: translateY(-20px);
-}
-
-.arrows {
-  margin-top: -20px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.arrows button {
-  background-color: transparent;
-  border: none;
-  color: #00a3e0;
-  font-size: 2rem;
-  cursor: pointer;
-  outline: none;
-  padding: 10px;
-}
-
-.arrows button:hover {
-  color: #0073a8; /* Darker blue on hover */
-}
-
-footer {
-  margin-top: 40px;
-  padding: 20px;
-  background-color: #0f3460;
-  text-align: center;
-  color: #eaeaea;
-}
-
-/* General body and header styles remain the same */
-
-.container h1 {
-  font-size: 2.5rem;
-  color: #0462ce; /* Medium blue */
-  margin-bottom: 30px;
-}
-
-/* Form Styling */
-form {
-  background-color: #0f3460; /* Dark blue */
-  padding: 30px;
-  border-radius: 8px;
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-top: calc(var(--spacing-unit) * 2);
+  margin-bottom: calc(var(--spacing-unit) * 4);
   max-width: 600px;
-  margin: 0 auto;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-form label {
-  color: #eaeaea; /* Light text color */
-  font-weight: bold;
-  display: block;
-  margin-top: 20px;
-  font-size: 1.1rem;
-}
-
-form input[type="text"],
-form input[type="email"],
-form input[type="tel"] {
-  width: calc(100% - 20px); /* Adjust width to keep padding inside */
-  padding: 10px;
-  font-size: 1rem;
-  margin-top: 5px;
   margin-left: auto;
   margin-right: auto;
-  border: 2px solid #0462ce; /* Medium blue */
-  border-radius: 5px;
-  background-color: #1a1a2e; /* Background color for text fields */
-  color: #eaeaea; /* Text color */
-  box-sizing: border-box; /* Ensures padding is included in total width */
+  letter-spacing: 0.5px;
 }
 
-form input[type="text"]:focus,
-form input[type="email"]:focus,
-form input[type="tel"]:focus {
-  border-color: #00a3e0; /* Lighter blue on focus */
-  outline: none;
+.cta-button {
+  background: var(--bg-button-cta);
+  color: var(--text-on-cta);
+  padding: calc(var(--spacing-unit) * 1.75) calc(var(--spacing-unit) * 5);
+  border-radius: var(--border-radius-md);
+  font-weight: 700;
+  font-family: var(--font-primary);
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  box-shadow: var(--shadow-medium);
+}
+body.dark-mode .cta-button {
+  /* Dark mode specific CTA shadow */
+  box-shadow: 0 4px 15px rgba(var(--accent-primary-rgb), 0.3),
+    0 2px 5px rgba(var(--accent-secondary-rgb), 0.2); /* Will use new green shadow */
 }
 
-form input[type="checkbox"] {
-  margin-right: 10px;
+.cta-button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: var(--shadow-medium); /* General hover shadow */
+  background: var(--bg-button-cta-hover);
+  text-shadow: none;
+  color: var(--text-on-cta); /* Ensure text color remains */
+}
+body.dark-mode .cta-button:hover {
+  box-shadow: 0 6px 20px rgba(var(--accent-primary-rgb), 0.4),
+    0 3px 8px rgba(var(--accent-secondary-rgb), 0.3); /* Will use new green shadow */
 }
 
-form label[for="promoEmails"],
-form label[for="compliance"] {
+/* --- Content Sections & Cards --- */
+.content-section {
+  padding: calc(var(--spacing-unit) * 7) calc(var(--spacing-unit) * 3);
+  border-bottom: 1px solid var(--border-color-soft);
+  transition: border-color 0.3s ease;
+}
+.content-section.alt-bg {
+  background-color: var(--bg-alt-section);
+  transition: background-color 0.3s ease;
+}
+
+.content-card {
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-md);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--border-color-soft);
+  box-shadow: var(--shadow-soft); /* Default shadow for light */
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+body.dark-mode .content-card {
+  border: var(--shadow-card-border, 1px solid transparent); /* Use variable or default */
+  box-shadow: var(--shadow-card-main, none); /* Use variable or default */
+}
+
+.content-card .text-content {
+  flex: 1 1 55%;
+  padding: calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 5);
+  min-width: 300px;
+}
+
+.content-card .text-content h2 {
+  margin-top: 0;
+  color: var(--text-headings);
+  border-left: 3px solid var(--accent-primary);
+  padding-left: var(--spacing-unit);
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.content-card .image-content {
+  flex: 1 1 45%;
   display: flex;
   align-items: center;
-  color: #eaeaea;
-  font-weight: normal;
+  justify-content: center;
+  padding: calc(var(--spacing-unit) * 3);
+  min-width: 280px;
+}
+
+.content-card .image-content img {
+  border-radius: var(--border-radius-sm);
+}
+body.dark-mode .content-card .image-content img {
+  filter: saturate(1.1) contrast(1.05);
+}
+
+.content-card.reverse {
+  flex-direction: row-reverse;
+}
+.content-card.reverse .text-content h2 {
+  border-left: none;
+  border-right: 3px solid var(--accent-secondary); /* Will use new green */
+  padding-left: 0;
+  padding-right: var(--spacing-unit);
+  text-align: right;
+}
+.content-card.reverse .text-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.content-card.reverse .text-content p {
+  text-align: right;
+}
+
+.learn-more-link {
+  display: inline-block;
+  font-weight: 700;
+  color: var(--accent-primary);
+  text-decoration: none;
+  margin-top: calc(var(--spacing-unit) * 2.5);
+  padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 2);
+  border: 1px solid var(--accent-primary);
+  border-radius: var(--border-radius-sm);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+.content-card.reverse .learn-more-link {
+  color: var(--accent-secondary); /* Will use new green */
+  border-color: var(--accent-secondary); /* Will use new green */
+}
+
+.learn-more-link:hover {
+  background-color: var(--accent-primary);
+  color: var(--bg-card); /* Text color on hover should contrast with accent */
+  text-shadow: none;
+}
+body.dark-mode .learn-more-link:hover {
+  box-shadow: var(--shadow-glow-primary);
+}
+.content-card.reverse .learn-more-link:hover {
+  background-color: var(--accent-secondary); /* Will use new green */
+  color: var(--bg-card);
+}
+body.dark-mode .content-card.reverse .learn-more-link:hover {
+  box-shadow: var(--shadow-glow-secondary); /* Will use new green glow */
+}
+
+/* --- Footer --- */
+.site-footer {
+  background-color: var(--bg-footer);
+  color: var(--text-secondary);
+  text-align: center;
+  padding: calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 3);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border-color-soft);
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.site-footer a {
+  color: var(--text-link);
+  font-weight: 500;
+}
+
+.site-footer a:hover {
+  color: var(--text-link-hover);
+}
+
+/* --- Form Styling (Example) --- */
+.form-section {
+  padding: calc(var(--spacing-unit) * 5) calc(var(--spacing-unit) * 3);
+  background-color: var(--bg-page);
+}
+
+.form-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: calc(var(--spacing-unit) * 4);
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color-soft);
+  box-shadow: var(--shadow-soft);
+}
+body.dark-mode .form-container {
+  border-color: var(--border-color-accent);
+  box-shadow: var(--shadow-card-main, none);
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: calc(var(--spacing-unit) * 3);
+}
+.form-group {
+  margin-bottom: calc(var(--spacing-unit) * 2.5);
+}
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: var(--spacing-unit);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group textarea {
+  width: 100%;
+  padding: calc(var(--spacing-unit) * 1.5);
+  border: 1px solid var(--border-input);
+  border-radius: var(--border-radius-sm);
   font-size: 1rem;
+  font-family: var(--font-secondary);
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease,
+    background-color 0.3s ease, color 0.3s ease;
 }
-
-#submit {
-  width: 10em;
-  position: relative;
-  height: 3.5em;
-  border: 3px ridge #149CEA;
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group textarea:focus {
+  border-color: var(--border-input-focus);
+  box-shadow: var(--shadow-focus-ring);
   outline: none;
-  background-color: transparent;
-  color: white;
-  transition: 1s;
-  border-radius: 0.3em;
-  font-size: 16px;
-  font-weight: bold;
+}
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-button {
+  /* Adapts .cta-button style */
+  background: var(--bg-button-cta);
+  color: var(--text-on-cta);
+  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-weight: 700;
+  font-family: var(--font-primary);
   cursor: pointer;
-  font-family: Montserrat;
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-block;
+}
+.form-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium); /* General hover shadow */
+  background: var(--bg-button-cta-hover);
 }
 
+/* --- Dropdown / Accordion --- */
+.dropdown-container {
+  max-width: 800px;
+  margin: calc(var(--spacing-unit) * 4) auto;
+}
+.dropdown {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color-soft);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-unit);
+  box-shadow: var(--shadow-soft);
+}
+body.dark-mode .dropdown {
+  border-color: var(--border-color-accent);
+  box-shadow: var(--shadow-card-main, none);
+}
 
-
-#submit::after{
-  content: "";
+.dropdown .trigger {
+  background-color: transparent;
+  padding: calc(var(--spacing-unit) * 2);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  font-family: var(--font-primary);
+  color: var(--text-primary);
+  width: 100%;
+  border: none;
+  text-align: left;
+}
+.dropdown .trigger:hover {
+  color: var(--text-link-hover);
+}
+.dropdown .trigger::after {
+  /* Chevron */
+  content: "▼";
+  font-size: 0.8em;
+  color: var(--accent-primary);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.dropdown input[type="checkbox"] {
+  /* sr-only */
   position: absolute;
-  top: -10px;
-  left: 3%;
-  width: 95%;
-  height: 40%;
-  background-color: #212121;
-  transition: 0.5s;
-  transform-origin: center;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.dropdown input[type="checkbox"]:checked + .trigger::after {
+  transform: rotate(180deg);
+}
+.dropdown .list {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  padding: 0 calc(var(--spacing-unit) * 2);
+  background-color: var(--bg-page); /* Content area slightly different from card bg */
+}
+.dropdown input[type="checkbox"]:checked ~ .list {
+  max-height: 500px;
+  padding: var(--spacing-unit) calc(var(--spacing-unit) * 2)
+    calc(var(--spacing-unit) * 2);
+  border-top: 1px solid var(--border-color-soft);
+}
+.dropdown .listitem {
+  list-style: none;
+  margin-bottom: var(--spacing-unit);
+}
+.dropdown .article {
+  background-color: var(--bg-alt-section);
+  padding: calc(var(--spacing-unit) * 1.5);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color-soft);
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+.dropdown .article a {
+  font-weight: 500;
+  color: var(--accent-secondary); /* Will use new green */
+}
+.dropdown .article a:hover {
+  color: color-mix(in srgb, var(--accent-secondary) 80%, var(--text-primary)); /* Will use new green */
 }
 
-#submit::before{
-  content: "";
-  transform-origin: center;
-  position: absolute;
-  top: 80%;
-  left: 3%;
-  width: 95%;
-  height: 40%;
-  background-color: #212121;
-  transition: 0.5s;
+/* --- Team Section Specific --- */
+.team-members-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Center the team members */
+  gap: calc(var(--spacing-unit) * 4); /* Space between members */
+  margin-top: calc(var(--spacing-unit) * 3);
 }
 
-#submit:hover::before, button:hover::after {
-  transform: scale(0)
+.team-member {
+  flex: 0 1 280px; /* Allow items to grow/shrink but prefer a base width */
+  text-align: center;
+  margin-bottom: calc(var(--spacing-unit) * 2); /* Space below each member */
 }
 
-#submit:hover {
-  box-shadow: inset 0px 0px 25px #1479EA;
+.team-member img {
+  width: 150px; /* Adjust size as needed */
+  height: 150px; /* Keep aspect ratio */
+  border-radius: 50%; /* Make them circular */
+  object-fit: cover;
+  margin: 0 auto calc(var(--spacing-unit) * 2); /* Center and space below */
+  border: 3px solid var(--accent-primary); /* Add a border */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for images */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Footer styling remains the same */
+body.dark-mode .team-member img {
+  border-color: var(--accent-primary-dark);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Stronger shadow in dark mode */
+}
+
+.team-member h3 {
+  margin-bottom: 0;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+.team-member h3 .subgreen {
+  color: var(--accent-secondary); /* Will use new green */
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.team-member h3 .tagline {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--text-headings);
+  display: block; /* Ensure name is on its own line */
+  margin-top: var(--spacing-unit);
+  margin-bottom: var(--spacing-unit);
+  transition: color 0.3s ease;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+  .header {
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+  }
+  .header-logo h1 {
+    font-size: 1.6rem;
+  }
+  /* Removed .theme-toggle-button specific styles */
+
+  .main-nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-header); /* Match header for nav dropdown */
+    padding: var(--spacing-unit);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid var(--border-color-soft);
+    gap: 0;
+  }
+  body.dark-mode .main-nav {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .main-nav.active {
+    display: flex;
+  }
+  .main-nav a {
+    padding: calc(var(--spacing-unit) * 1.5) var(--spacing-unit);
+    width: 100%;
+    border-bottom: 1px solid var(--border-color-soft);
+  }
+  .main-nav a:last-child {
+    border-bottom: none;
+  }
+  .main-nav a::after {
+    display: none;
+  }
+
+  .mobile-nav-toggle {
+    display: block;
+  }
+
+  .hero-section {
+    padding: calc(var(--spacing-unit) * 6) calc(var(--spacing-unit) * 2);
+    min-height: 60vh;
+  }
+  .hero-content .starhome,
+  .hero-content .codehome {
+    font-size: clamp(2.8rem, 12vw, 5.5rem);
+  }
+  .tagline {
+    font-size: clamp(1rem, 4vw, 1.4rem);
+  }
+
+  .content-card {
+    flex-direction: column !important;
+  }
+  .content-card .text-content,
+  .content-card .image-content {
+    flex-basis: 100%;
+    padding: calc(var(--spacing-unit) * 3);
+  }
+  .content-card .text-content h2,
+  .content-card.reverse .text-content h2 {
+    text-align: left;
+    border-left: 3px solid var(--accent-primary);
+    border-right: none;
+    padding-left: var(--spacing-unit);
+    padding-right: 0;
+  }
+  .content-card.reverse .text-content {
+    align-items: flex-start;
+  }
+  .content-card.reverse .text-content p {
+    text-align: left;
+  }
+  .content-card .image-content {
+    max-height: 250px;
+    padding-top: 0;
+  }
+  .content-card .image-content img {
+    max-height: 230px;
+    object-fit: contain;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+  h2 {
+    font-size: 1.8rem;
+  }
+  .dropdown-container {
+    width: 90%;
+  }
+
+  /* Team section responsive adjustment */
+  .team-members-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 6); /* More vertical space on small screens */
+  }
+
+  .team-member {
+    flex: 0 1 auto; /* No flex-basis on smaller screens, let it take full width */
+    width: 100%;
+  }
+}
+
+/* --- Team Section Specific --- */
+
+/* Override problematic styles from .content-card.reverse .text-content
+   specifically for the #team section to allow full width for its content. */
+   #team .content-card .text-content {
+    display: block; /* Revert from flex to block layout */
+    width: 100%;   /* Ensure it utilizes the full width of the .content-card */
+    align-items: initial; /* Reset any flex alignment */
+    /* The inline style="text-align: center" on your HTML element
+       will now effectively center the h2 and the .team-members-grid block. */
+    padding: calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 3); /* Adjust padding if needed, or ensure it matches general .text-content */
+  }
+  
+  /* Style the heading within the team section's text-content */
+  #team .content-card .text-content h2 {
+    text-align: center; /* Ensure the heading itself is centered */
+    border-left: none;  /* Remove borders inherited from .content-card.reverse .text-content h2 */
+    border-right: none;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: calc(var(--spacing-unit) * 4); /* Increased space below heading */
+  }
+  
+  /* If there were any paragraphs specifically in the team's text-content, ensure they are centered */
+  #team .content-card .text-content p {
+      text-align: center; /* Override any right-alignment from .content-card.reverse */
+  }
+  
+  /* Adjust .team-members-grid for better one-line layout on desktop */
+  .team-members-grid {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping only if space is extremely constrained before mobile breakpoint */
+    justify-content: space-around; /* Distribute members evenly with space around */
+    gap: calc(var(--spacing-unit) * 2.5); /* Space between members (e.g., 20px if unit is 8px) */
+    margin-top: calc(var(--spacing-unit) * 3);
+    /* The grid itself will be centered by the parent's text-align:center if it's not width:100%
+       However, its items are flex-distributed by justify-content. */
+  }
+  
+  .team-member {
+    flex: 0 1 280px; /* Allow shrinking from a base of 280px, don't allow growing.
+                        This works well with justify-content: space-around. */
+    /* Alternative for more responsive growth/shrink:
+    flex: 1 1 260px;
+    min-width: 220px; // Prevent excessive shrinking
+    max-width: 300px; // Prevent excessive growing
+    */
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+  
+  /* Styles for team member images, names, and titles remain as they are,
+     for example: */
+  .team-member img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto calc(var(--spacing-unit) * 2);
+    border: 3px solid var(--accent-primary);
+    box-shadow: var(--shadow-soft); /* Use theme variable for shadow */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  body.dark-mode .team-member img {
+    border-color: var(--accent-primary-dark); /* Ensure this variable is defined if different from --accent-primary in dark mode */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Or use a dark theme shadow variable */
+  }
+  
+  .team-member h3 {
+    margin-bottom: 0;
+    line-height: 1.3;
+    color: var(--text-primary); /* Email color */
+  }
+  
+  .team-member h3 .subgreen { /* Title */
+    color: var(--accent-secondary);
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    display: block; /* Ensure title is on its own line or adjust as needed */
+    margin-bottom: calc(var(--spacing-unit) * 0.5);
+  }
+  
+  .team-member h3 .tagline { /* Name */
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--text-headings);
+    display: block;
+    margin-top: 0; /* Adjust if .subgreen is also block */
+    margin-bottom: calc(var(--spacing-unit) * 0.5);
+    transition: color 0.3s ease;
+  }
+  
+  
+  /* NOTE: Your existing @media (max-width: 768px) rules for
+     .team-members-grid and .team-member should remain unchanged.
+     They correctly handle stacking on smaller screens:
+  
+  @media (max-width: 768px) {
+    .team-members-grid {
+      flex-direction: column;
+      align-items: center;
+      gap: calc(var(--spacing-unit) * 6);
+    }
+  
+    .team-member {
+      flex: 0 1 auto;
+      width: 100%;
+    }
+  }
+  */
+
+  .form-hero {
+    min-height: 30vh; /* Adjust as needed */
+    /* Or specific padding */
+    padding-top: calc(var(--spacing-unit) * 6);
+    padding-bottom: calc(var(--spacing-unit) * 6);
+  }
+  .form-hero h1 {
+      font-size: clamp(2.2rem, 8vw, 4rem); /* Adjust H1 size for form pages */
+  }
+
+  .text-required {
+    color: var(--accent-secondary); /* Uses your theme's secondary accent (now green) */
+    font-weight: bold; /* Or use a specific error/warning color variable */
+  }
+
+  .form-note {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+  
+  .form-submission-status {
+    margin-top: calc(var(--spacing-unit) * 2);
+    font-style: italic;
+    color: var(--text-secondary);
+    min-height: 1.5em; /* Reserve space to prevent layout jump */
+  }
+
+  /* --- Form Styling (Additions/Modifications) --- */
+
+/* Container to center the form button */
+.form-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: calc(var(--spacing-unit) * 3); /* Space above the button */
+  margin-bottom: calc(var(--spacing-unit) * 1.5); /* Space between button and status message */
+}
+
+/* Ensure the .form-button class is styled as before.
+   It's typically display: inline-block or display: block.
+   If it's inline-block, flexbox will center it perfectly.
+   If it's display: block and has auto margins, this new container might override or be redundant,
+   but display: flex on the parent is a more direct way to center.
+   Your existing .form-button style should work fine with this.
+*/
+
+/* Existing style for .form-button (for context, no changes needed if already present and correct) */
+/*
+.form-button {
+  background: var(--bg-button-cta);
+  color: var(--text-on-cta);
+  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3); // Example padding
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-weight: 700;
+  font-family: var(--font-primary);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-block; // This works well with the flex container
+}
+.form-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+  background: var(--bg-button-cta-hover);
+}
+*/
+
+.form-divider {
+  border: none;
+  border-top: 1px solid var(--border-color-soft);
+  margin: calc(var(--spacing-unit) * 3) 0;
+}
+
+/* --- 404 Error Page Specific Styles --- */
+.error-page-hero {
+  min-height: calc(100vh - var(--header-height, 100px) - var(--footer-height, 100px)); /* Adjust header/footer heights if known, or use a fixed vh value */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* Ensures content within hero-content is centered */
+  padding-top: calc(var(--spacing-unit) * 4); /* Add some padding */
+  padding-bottom: calc(var(--spacing-unit) * 4);
+}
+
+.error-page-hero .hero-content {
+  max-width: 700px; /* Constrain width of the error message block */
+  width: 90%;
+}
+
+.error-code-title { /* For the big "404" */
+  font-size: clamp(6rem, 25vw, 12rem); /* Very large, responsive */
+  line-height: 1;
+  margin-bottom: 0; /* Remove default h1 margin if .starhome doesn't already do this */
+  font-weight: 900;
+  /* color: var(--accent-primary); // Optional: color the 404 number */
+}
+/* Ensure .starhome used in error-code-title retains its accent color */
+.error-code-title .starhome {
+    color: var(--accent-primary); /* Or your desired color for the 404 digits */
+}
+body.dark-mode .error-code-title .starhome {
+    color: var(--accent-primary-dark);
+    /* Remove text-shadow if it's too much for the large 404 */
+    /* text-shadow: 0 0 15px rgba(var(--accent-primary-rgb),0.5), 0 0 30px rgba(var(--accent-primary-rgb),0.3); */
+}
+
+
+.error-page-hero h2 { /* For "Page Not Found" */
+  font-size: clamp(1.8rem, 6vw, 2.8rem); /* Responsive "Page Not Found" text */
+  margin-top: calc(var(--spacing-unit) * 0.5); /* Reduced space after big 404 */
+  margin-bottom: calc(var(--spacing-unit) * 2);
+  color: var(--text-headings);
+  font-weight: 700;
+}
+/* Ensure .codehome used here gets appropriate styling if needed */
+.error-page-hero h2 .codehome {
+    color: var(--text-headings); /* Or a contrasting accent */
+}
+body.dark-mode .error-page-hero h2 .codehome {
+    color: var(--text-headings);
+}
+
+
+.error-page-hero .tagline { /* For the descriptive message */
+  font-size: clamp(1rem, 3vw, 1.25rem); /* Responsive tagline */
+  max-width: 500px; /* Constrain width of the tagline */
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--text-secondary);
+}
+
+.error-actions {
+  margin-top: calc(var(--spacing-unit) * 5);
+  display: flex;
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+  justify-content: center;
+  gap: calc(var(--spacing-unit) * 2);
+}
+
+/* Secondary Button Style (if you don't have one already) */
+.cta-button.secondary {
+  background: transparent;
+  color: var(--accent-primary);
+  border: 2px solid var(--accent-primary);
+  box-shadow: none; /* Remove main cta shadow if it exists */
+}
+
+body.dark-mode .cta-button.secondary {
+  color: var(--accent-primary-dark);
+  border-color: var(--accent-primary-dark);
+}
+
+.cta-button.secondary:hover {
+  background: var(--accent-primary);
+  color: var(--text-on-cta); /* Or var(--bg-card) for light mode if preferred */
+  border-color: var(--accent-primary);
+  transform: translateY(-2px); /* Keep hover effect consistent */
+  box-shadow: var(--shadow-medium); /* Add a subtle shadow on hover */
+}
+
+body.dark-mode .cta-button.secondary:hover {
+  background: var(--accent-primary-dark);
+  color: var(--text-on-cta); /* Or suitable dark mode contrast */
+  border-color: var(--accent-primary-dark);
+}

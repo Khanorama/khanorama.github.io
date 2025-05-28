@@ -3,173 +3,182 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LeapCode</title>
-    <link rel="icon" href="images/favicon2.png" type="image/png">
+    <title>LeapCode - Code. Compete. Connect.</title>
+    <link rel="icon" href="images/favicon2.png" type="image/png" />
     <link rel="stylesheet" href="style.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
       rel="stylesheet"
     />
-    <script>
-      if (window.innerWidth <= 768) {
-        window.location.href = "mobile/index.html";
-      } 
-    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <header class="header">
-      <h1>
-        <a href="index.html" class="home-link"
-          ><span class="star">LEAP</span><span class="code">CODE</span></a
-        >
-      </h1>
-      <nav>
+      <div class="header-logo">
+        <h1>
+          <a href="index.html" class="home-link"
+            ><span class="star">LEAP</span><span class="code">CODE</span></a
+          >
+        </h1>
+      </div>
+      <nav class="main-nav">
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
         <a href="courses.html">Courses</a>
-        <a href="certifications.html">Certifications</a>
-        <a href="projects.html">Projects</a>
-        <a href="contact.html">Contact</a>
+        <a href="library.html">Library</a>
+        <a href="support.html">Support</a>
       </nav>
+      <div class="header-controls">
+        <label class="switch">
+          <input type="checkbox" id="theme-checkbox" />
+          <span class="slider"></span>
+        </label>
+        <button
+          class="mobile-nav-toggle"
+          aria-label="Toggle navigation"
+          aria-expanded="false"
+        >
+          <span class="hamburger"></span>
+        </button>
+      </div>
     </header>
 
-    <div class="container">
-      <h1>
-        <span class="starhome">LEAP</span><span class="codehome">CODE</span><br>
-        <span class="tagline">Code. Compete. Connect. Unlock Your Potential.</span>
-    </div>
+    <main>
+      <section class="hero-section">
+        <div class="hero-content">
+          <h1>
+            <span class="starhome">LEAP</span><span class="codehome">CODE</span>
+          </h1>
+          <p class="tagline">Code. Compete. Connect. Unlock Your Potential.</p>
+          <a href="courses.html" class="cta-button hero-cta">Explore Courses</a>
+        </div>
+      </section>
 
-    <div class="mission-section">
-      <div class="text">
-        <h3>Our Mission</h3>
-        <p>
-          At LeapCode, we equip learners with the essential coding skills and knowledge
-           needed to excel in today’s tech-driven world. Our interactive courses, 
-           competitions, and vibrant community provide a complete learning experience, 
-           from beginners to those with an intermediate background in computer science. 
-           Earn credible certifications, join challenges, and grow with a community 
-           that’s passionate about coding.
-          <br /><br />
-          <a href="about.html">Learn more about LeapCode</a>
-        </p>
-      </div>
-      <img
-        src="images/mission.png"
-        alt="Mission Image"
-      />
-    </div>
+      <section id="mission" class="content-section">
+        <div class="content-card">
+          <div class="text-content">
+            <h2>Our Mission</h2>
+            <p>
+              At LeapCode, we equip learners with the essential coding skills and knowledge
+              needed to excel in today’s tech world. Our interactive courses,
+              competitions, and vibrant community provide a complete learning experience,
+              from beginners to those with an intermediate background in computer science.
+              Earn certifications, join challenges, study for APs, and grow with a community
+              that’s passionate about coding.
+            </p>
+            <a href="about.html" class="learn-more-link">Learn more about LeapCode &rarr;</a>
+          </div>
+          <div class="image-content">
+            <img src="images/mission.png" alt="Illustration of diverse people collaborating around a computer" />
+          </div>
+        </div>
+      </section>
 
-    <div class="mission-section reverse">
-      <div class="text">
-        <h3>Courses</h3>
-        <p>
-          Our LIVE, FREE courses equip you with essential coding skills and knowledge, offering 
-          a wide range of resources and practice projects to support you on your 
-          learning journey. Whether you're a beginner just starting out or someone 
-          with an intermediate foundation in computer science, our courses deliver 
-          the education you need to excel on the rapidly growing field of CS.
-          <br /><br />
-          <a href="courses.html">Learn more about our Courses</a>
-        </p>
-      </div>
-      <img
-        src="images/courses.png"
-        alt="Courses Image"
-      />
-    </div>
+      <section id="courses" class="content-section alt-bg">
+        <div class="content-card reverse">
+          <div class="text-content">
+            <h2>Our Courses</h2>
+            <p>
+              Our LIVE, FREE courses equip you with essential coding skills and knowledge, offering
+              a wide range of resources and practice projects to support you on your
+              learning journey. Whether you're a beginner just starting out or someone
+              with an intermediate foundation in computer science, our courses deliver
+              the education you need to excel in the rapidly growing field of CS.
+            </p>
+            <a href="courses.html" class="learn-more-link">Explore our Courses &rarr;</a>
+          </div>
+          <div class="image-content">
+            <img src="images/courses.png" alt="Illustration of online learning and course materials" />
+          </div>
+        </div>
+      </section>
 
-    <div class="mission-section">
-      <div class="text">
-        <h3>Certifications</h3>
-        <p>
-          Our post-course certifications validate your coding skills and knowledge, 
-          providing you with a credible and recognized way to showcase your expertise. 
-          These certifications serve as proof of your hard work and dedication, allowing 
-          you to confidently demonstrate your proficiency to potential employers, academic
-          institutions, or collaborators. Whether you're looking to advance in your career,
-          switch fields, or simply gain recognition for your skills, our certifications will
-          help open doors to new opportunities.
-          <br /><br />
-          <a href="certifications.html">Learn more about our Certifications</a>
-        </p>
-      </div>
-      <img
-        src="images/cert.png"
-        alt="Certifications Image"
-      />
-    </div>
+      <section id="certifications" class="content-section">
+        <div class="content-card">
+          <div class="text-content">
+            <h2>LeapCode Library</h2>
+            <p>
+              Our post-course certifications validate your coding skills and knowledge,
+              providing you with a credible and recognized way to showcase your expertise.
+              These certifications serve as proof of your hard work and dedication, allowing
+              you to confidently demonstrate your proficiency to potential employers, academic
+              institutions, or collaborators.
+            </p>
+            <a href="library.html" class="learn-more-link">Visit the Library &rarr;</a>
+          </div>
+          <div class="image-content">
+            <img src="images/library.png" alt="Illustration of a certificate and a graduate" />
+          </div>
+        </div>
+      </section>
+    </main>
 
-    <div class="mission-section reverse">
-      <div class="text">
-        <h3>Projects & Competitions</h3>
-        <p>
-          Our coding projects and competitions are your playground to put your skills to the test,
-          offering a fun and exciting way to show off your expertise. These hands-on challenges
-          let you flex your creativity and problem-solving skills, giving you something 
-          impressive to showcase to employers, schools, or collaborators. Whether you're looking
-          to boost your portfolio, level up your coding game, or just have a blast competing 
-          with peers, our projects and competitions are your ticket to unlocking new adventures
-          and opportunities in tech.
-          <br /><br />
-          <a href="projects.html">Learn more about our Projects & Competitions</a>
-        </p>
-      </div>
-      <img
-        src="images/project.png"
-        alt="Projects Image"
-      />
-    </div>
+    <footer class="site-footer">
+      <p>
+        <span id="currentYear"></span> LeapCode | Contact us at
+        <a href="mailto:support@leapcode.org">support@leapcode.org</a>
+      </p>
+    </footer>
 
-    <!-- <div class="reviews container">
-      <h3>What Our Users Say</h3>
-      <div id="reviewText" class="review-text">
-        <span
-          >"LeapCode has been a game changer for my coding skills!" - Sana
-          F.</span
-        >
-      </div>
-      <div class="arrows">
-        <button id="prev">&lt;</button>
-        <button id="next">&gt;</button>
-      </div>
-    </div> -->
-    <footer>2025 LeapCode | Contact us at support@leapcode.org</footer>
-<!-- 
     <script>
-      const reviews = [
-        '"LeapCode has been a game changer for my coding skills!" - Sana F.',
-        '"The community and resources are top-notch." - Uzair M.',
-        '"I love the challenges and learning opportunities." - Aditya P.',
-      ];
+      // --- Theme Toggle ---
+      const themeCheckbox = document.getElementById('theme-checkbox');
+      const body = document.body;
 
-      const reviewText = document.getElementById("reviewText");
-      let currentIndex = 0;
-
-      function showReview(index, direction) {
-        reviewText.style.transition = "none";
-        reviewText.style.transform = `translateX(${
-          direction === "left" ? "-100%" : "100%"
-        })`;
-        setTimeout(() => {
-          reviewText.innerHTML = "<span>" + reviews[index] + "</span>";
-          reviewText.style.transition = "transform 0.5s ease";
-          reviewText.style.transform = "translateX(0)";
-        }, 50);
+      // Function to apply theme and update checkbox state
+      function applyTheme(theme) {
+        if (theme === 'dark') {
+          body.classList.add('dark-mode');
+          themeCheckbox.checked = true; // Sets the checkbox to checked for dark mode
+        } else {
+          body.classList.remove('dark-mode');
+          themeCheckbox.checked = false; // Sets the checkbox to unchecked for light mode
+        }
       }
 
-      document.getElementById("prev").addEventListener("click", () => {
-        const prevIndex =
-          currentIndex > 0 ? currentIndex - 1 : reviews.length - 1;
-        showReview(prevIndex, "left");
-        currentIndex = prevIndex;
+      // Determine the initial theme
+      const savedTheme = localStorage.getItem('theme');
+      let initialTheme = 'dark'; // Default to dark mode
+
+      if (savedTheme) {
+        initialTheme = savedTheme; // Use saved theme if available
+      }
+      // No 'else' for system preference here, as you explicitly want a default.
+
+      // Apply the determined initial theme immediately on script execution
+      applyTheme(initialTheme);
+
+      // Listen for changes on the checkbox (user interaction)
+      themeCheckbox.addEventListener('change', () => {
+        let newTheme = themeCheckbox.checked ? 'dark' : 'light';
+        localStorage.setItem('theme', newTheme);
+        // The applyTheme function already sets the checkbox.
+        // It's technically redundant here to call applyTheme again just for the body class,
+        // as the 'change' event means the checkbox state *is* the source of truth now.
+        // But it doesn't hurt and ensures consistency.
+        applyTheme(newTheme);
       });
 
-      document.getElementById("next").addEventListener("click", () => {
-        const nextIndex =
-          currentIndex < reviews.length - 1 ? currentIndex + 1 : 0;
-        showReview(nextIndex, "right");
-        currentIndex = nextIndex;
-      });
-    </script> -->
+
+      // --- Mobile Nav Toggle ---
+      const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+      const mainNav = document.querySelector('.main-nav');
+
+      if (mobileNavToggle && mainNav) { // Ensure elements exist
+          mobileNavToggle.addEventListener('click', () => {
+            const isExpanded = mainNav.classList.toggle('active');
+            mobileNavToggle.setAttribute('aria-expanded', isExpanded);
+          });
+      }
+
+      // --- Set current year in footer ---
+      const currentYearElement = document.getElementById('currentYear');
+      if (currentYearElement) { // Ensure element exists
+        currentYearElement.textContent = new Date().getFullYear();
+      }
+    </script>
   </body>
 </html>

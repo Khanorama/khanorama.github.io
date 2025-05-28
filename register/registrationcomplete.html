@@ -4,24 +4,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Course Registration</title>
+  <title>Registration Successful | LeapCode</title>
   <link rel="icon" href="../images/favicon2.png" type="image/png">
   <link rel="stylesheet" href="../style.css" />
-  <link rel="stylesheet" href="betterstyle.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
-  <script>
-    if (window.innerWidth <= 768) {
-      window.location.href = "../mobile/register/registrationcomplete.html";
-    } 
-  </script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
 </head>
 
 <body>
   <header class="header">
-    <h1>
-      <a href="../index.html" class="home-link"><span class="star">LEAP</span><span class="code">CODE</span></a>
-    </h1>
-    <nav>
+    <div class="header-logo">
+      <h1>
+        <a href="../index.html" class="home-link"
+          ><span class="star">LEAP</span><span class="code">CODE</span></a
+        >
+      </h1>
+    </div>
+    <nav class="main-nav">
       <a href="../index.html">Home</a>
       <a href="../about.html">About</a>
       <a href="../courses.html">Courses</a>
@@ -29,44 +34,168 @@
       <a href="../projects.html">Projects</a>
       <a href="../contact.html">Contact</a>
     </nav>
+    <div class="header-controls">
+      <label class="switch">
+        <input type="checkbox" id="theme-checkbox" />
+        <span class="slider"></span>
+      </label>
+      <button
+        class="mobile-nav-toggle"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+      >
+        <span class="hamburger"></span>
+      </button>
+    </div>
   </header>
-  <div class="container">
-    <div class="text">
-      <h1>
-        <span class="reviews container">THANK YOU FOR REGISTERING!</span>
-    </div>
 
-    <div class="mission-section">
-      <p>We are pleased to have you join us.
-        Students are required to have a working computer/laptop prior to the first session.
-        You will recieve an email with additional information
-        two weeks prior to the first session. 
-        If you have questions, corrections, or would like to cancel your registration, please email us at: support@leapcode.org
-      </p><br>
-    </div>
-    <div class="reviews container">
-      <h1>This is what we received:</h1>
-      <div id="mission-section-data"></div>
-    </div>
-  </div>
+  <main>
+    <section class="hero-section form-hero">
+      <div class="hero-content">
+        <h1>THANK YOU FOR REGISTERING!</h1>
+        <p class="tagline">Your registration for PYTHON I has been received.</p>
+      </div>
+    </section>
 
+    <section class="content-section">
+      <div class="content-card">
+        <div class="text-content">
+          <h2>Confirmation & Next Steps</h2>
+          <p>
+            Both the student and parent should have received a confirmation email. An email with additional information will be sent out as the course date gets closer. Students must have a working computer prior to the first day of class.
+          </p>
+          <p>
+            We are excited to have you join us! If you have any additional questions, please don't hesitate to email us at <a href="mailto:support@leapcode.org">support@leapcode.org</a>.
+          </p>
+        </div>
+      </div>
+    </section>
 
-  <footer>2025 LeapCode | Contact us at support@leapcode.org</footer>
+    <section class="content-section alt-bg">
+      <div class="content-card">
+        <div class="text-content">
+          <h2>Your Submitted Information:</h2>
+          <div id="submitted-data-display" class="submitted-data-container">
+            <p>Loading your submitted details...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      <span id="currentYear"></span> LeapCode | Contact us at
+      <a href="mailto:support@leapcode.org">support@leapcode.org</a>
+    </p>
+  </footer>
+
   <script>
+    // --- Theme Toggle ---
+    const themeCheckbox = document.getElementById('theme-checkbox');
+    const bodyEl = document.body;
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        bodyEl.classList.add('dark-mode');
+        if (themeCheckbox) themeCheckbox.checked = true;
+      } else {
+        bodyEl.classList.remove('dark-mode');
+        if (themeCheckbox) themeCheckbox.checked = false;
+      }
+    }
+
+    const savedTheme = localStorage.getItem('theme');
+    let initialTheme = 'light'; 
+    if (savedTheme) {
+      initialTheme = savedTheme;
+    }
+    applyTheme(initialTheme);
+
+    if (themeCheckbox) {
+      themeCheckbox.addEventListener('change', () => {
+        let newTheme = themeCheckbox.checked ? 'dark' : 'light';
+        localStorage.setItem('theme', newTheme);
+        applyTheme(newTheme);
+      });
+    }
+
+    // --- Mobile Nav Toggle ---
+    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileNavToggle && mainNav) {
+      mobileNavToggle.addEventListener('click', () => {
+        const isExpanded = mainNav.classList.toggle('active');
+        mobileNavToggle.setAttribute('aria-expanded', isExpanded);
+      });
+    }
+
+    // --- Set current year in footer ---
+    const currentYearElement = document.getElementById('currentYear');
+    if (currentYearElement) {
+      currentYearElement.textContent = new Date().getFullYear();
+    }
+
+    // --- Display Submitted Form Data from localStorage ---
     document.addEventListener("DOMContentLoaded", function () {
-      const formData = JSON.parse(localStorage.getItem("formData"));
-      if (formData) {
-        let displayText = "";
-        for (const [key, value] of Object.entries(formData)) {
-          // Format key: add spaces and capitalize "Student" and "Parent"
-          let formattedKey = key.replace(/([A-Z])/g, ' $1').trim();
-          formattedKey = formattedKey.replace(/\b(student|parent)\b/gi, match => match.charAt(0).toUpperCase() + match.slice(1));
-          displayText += `<p style="margin-bottom: 10px;"><strong>${formattedKey}:</strong> ${value}</p>`;
+      const formDataString = localStorage.getItem("formData");
+      const displayElement = document.getElementById("submitted-data-display");
+
+      if (displayElement) {
+        if (formDataString) {
+          try {
+            const formData = JSON.parse(formDataString);
+            let displayText = "<ul>";
+            // Define the order or a mapping for display if specific order/labels are needed
+            const displayOrder = [
+              { key: "studentFullName", label: "Student Full Name" },
+              { key: "studentEmail", label: "Student Email" },
+              { key: "studentPhoneNumber", label: "Student Phone Number" },
+              { key: "studentGrade", label: "Student Grade" },
+              { key: "studentSchool", label: "Student School" },
+              { key: "parentName", label: "Parent Name" },
+              { key: "parentEmail", label: "Parent Email" },
+              { key: "parentPhoneNumber", label: "Parent Phone Number" }
+              // Add any other keys from your form in the desired order
+            ];
+
+            // Iterate based on displayOrder, but also include any other fields
+            // that might be in formData but not explicitly in displayOrder.
+            const displayedKeys = new Set();
+
+            displayOrder.forEach(item => {
+              if (formData.hasOwnProperty(item.key)) {
+                const value = formData[item.key];
+                displayText += `<li><strong>${item.label}:</strong> ${value || '<em>Not provided</em>'}</li>`;
+                displayedKeys.add(item.key);
+              }
+            });
+
+            // Display any remaining fields not in displayOrder
+            for (const [key, value] of Object.entries(formData)) {
+              if (!displayedKeys.has(key)) {
+                let formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
+                displayText += `<li><strong>${formattedKey}:</strong> ${value || '<em>Not provided</em>'}</li>`;
+              }
+            }
+            
+            displayText += "</ul>";
+            displayElement.innerHTML = displayText;
+            localStorage.removeItem("formData");
+
+            
+            // Optional: Clear the stored data after displaying it
+            // localStorage.removeItem("formData"); 
+          } catch (e) {
+            console.error("Error parsing formData from localStorage:", e);
+            displayElement.innerHTML = "<p>There was an error retrieving your submitted details. Please check your confirmation email.</p>";
+          }
+        } else {
+          displayElement.innerHTML = "<p>No submission details found. Please check your confirmation email for registration details.</p>";
         }
-        document.getElementById("mission-section-data").innerHTML = displayText;
       }
     });
   </script>
 </body>
-
 </html>

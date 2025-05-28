@@ -1,118 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Courses | LeapCode</title>
-    <link rel="icon" href="images/favicon2.png" type="image/png">
-    <link rel="stylesheet" href="style.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <script>
-      if (window.innerWidth <= 768) {
-        window.location.href = "mobile/courses.html";
-      } 
-    </script>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Courses | LeapCode</title>
+  <link rel="icon" href="images/favicon2.png" type="image/png" />
+  <link rel="stylesheet" href="style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
   </head>
-  <body>
-    <header class="header">
+
+<body>
+  <header class="header">
+    <div class="header-logo">
       <h1>
         <a href="index.html" class="home-link"
           ><span class="star">LEAP</span><span class="code">CODE</span></a
         >
       </h1>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="courses.html">Courses</a>
-        <a href="certifications.html">Certifications</a>
-        <a href="projects.html">Projects</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-    </header>
-
-    <div class="container">
-      <h1>
-        <span class="starhome">Courses</span><br>
-        <span class="tagline">Learn. Code. Debug. Repeat.</span>
     </div>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="courses.html">Courses</a>
+      <a href="library.html">Library</a>
+      <a href="support.html">Support</a>
+    </nav>
+    <div class="header-controls">
+      <label class="switch">
+        <input type="checkbox" id="theme-checkbox" />
+        <span class="slider"></span>
+      </label>
+      <button
+        class="mobile-nav-toggle"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+      >
+        <span class="hamburger"></span>
+      </button>
+    </div>
+  </header>
 
-    <div class="mission-section">
-      <div class="text">
-        <h3><span class="code">PYTHON Courses</span></h3>
-        <p>
+  <main>
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1>
+          <span class="starhome">Our</span><br><span class="codehome">Courses</span>
+        </h1>
+        <p class="tagline">Learn. Code. Debug. Repeat. Unlock Your Potential.</p>
+      </div>
+    </section>
+
+    <section id="python-courses" class="content-section">
+      <div class="content-card">
+        <div class="text-content">
+          <h2>Python Courses</h2>
+          <p>
             Python is a powerful, high-level programming language known for its simplicity
-             and ease of use. With a clean and readable syntax, it allows developers to 
-             write clear and concise code, making it ideal for beginners and experts alike.
-              Python supports multiple programming paradigms, including procedural, 
-              object-oriented, and functional programming, which makes it versatile for 
-              various applications. From web development to data science, artificial 
-              intelligence, and automation, Python’s extensive libraries and frameworks allow
-               for rapid development across different fields. Its active community and 
-               comprehensive documentation make it one of the most popular and accessible
-                programming languages today.
-                <br /><br />
-                <a href="courses/python.html">Learn more about our Python Courses</a>
-        </p>
+            and ease of use. With a clean and readable syntax, it allows developers to
+            write clear and concise code, making it ideal for beginners and experts alike.
+            Python supports multiple programming paradigms, including procedural,
+            object-oriented, and functional programming, which makes it versatile for
+            various applications.
+          </p>
+          <p>
+            From web development to data science, artificial
+            intelligence, and automation, Python’s extensive libraries and frameworks allow
+            for rapid development across different fields. Its active community and
+            comprehensive documentation make it one of the most popular and accessible
+            programming languages today.
+          </p>
+          <a href="courses/python.html" class="learn-more-link">Explore Python Courses &rarr;</a>
+        </div>
+        <div class="image-content">
+          <img src="images/python.png" alt="Python Programming Language Logo" />
+        </div>
       </div>
-      <img
-        src="images/python.png"
-        alt="Python Image"
-      />
-      
-    </div>
+    </section>
 
-    <div class="mission-section reverse">
-      <div class="text">
-        <h3><span class="code">JavaScript Courses</span></h3>
-        <p>
-            JavaScript is a popular programming language used mainly for making websites
-             interactive and dynamic. It runs directly in the browser, allowing developers
-              to change how a website looks or behaves based on user actions, like clicking
-               a button or filling out a form. JavaScript can also be used to create 
-               animations, update content without reloading the page, and communicate with 
-               web servers. It supports different ways of writing code, making it flexible 
-               for building various types of applications. With many helpful tools and a 
-               large community, JavaScript is one of the most widely used languages for 
-               web development today.
-               <br /><br />
-               <a href="courses/js.html">Learn more about our JavaScript Courses</a>
-        </p>
-      </div>
-      <img
-        src="images/js.png"
-        alt="JS Image"
-      />
-    </div>
-
-    <div class="mission-section">
-      <div class="text">
-        <h3>JAVA Courses</h3>
-        <p>
+    <section id="js-courses" class="content-section alt-bg">
+      <div class="content-card reverse">
+        <div class="text-content">
+          <h2>Java Courses</h2>
+          <p>
             Java is a widely-used, high-level programming language known for its reliability
-             and versatility. It’s designed to be platform-independent, meaning code written
-              in Java can run on any device with a Java Virtual Machine (JVM), making it 
-              ideal for building cross-platform applications. Java is often used to create
-               large-scale enterprise applications, mobile apps (especially for Android), and
-                web servers. Its object-oriented design helps developers organize code into 
-                reusable parts, making it easier to maintain and scale. Java’s strong 
-                performance, security features, and large community have made it a popular
-                 choice for many types of software development.
-                 <br /><br />
-                 <a href="courses/java.html">JAVA COURSES COMING SOON!!!</a>
-        </p>
+            and versatility. It’s designed to be platform-independent, meaning code written
+            in Java can run on any device with a Java Virtual Machine (JVM), making it
+            ideal for building cross-platform applications.
+          </p>
+          <p>
+            Java is often used to create
+            large-scale enterprise applications, mobile apps (especially for Android), and
+            web servers. Its object-oriented design helps developers organize code into
+            reusable parts, making it easier to maintain and scale. Java’s strong
+            performance, security features, and large community have made it a popular
+            choice for many types of software development.
+          </p>
+          <a href="courses/java.html" class="learn-more-link">Explore Java Courses &rarr;</a>
+        </div>
+        <div class="image-content">
+          <img src="images/java.png" alt="JavaScript Programming Language Logo" />
+        </div>
       </div>
-      <img
-        src="images/java.png"
-        alt="Certifications Image"
-      />
-    </div>
+    </section>
 
-    <footer>2025 LeapCode | Contact us at support@leapcode.org</footer>
+    <section id="java-courses" class="content-section">
+      <div class="content-card">
+        <div class="text-content">
+          <h2>Generative AI/ML Courses</h2>
+          <p>
+            Artificial Intelligence is the next step in the world of programming, with it being
+            integrated in almost all aspects of daily life. With the growth of LLMs such as ChatGPT,
+            and the advent of Machine Learning, AI has become more important today then ever before.
 
-    <script>
-    </script>
-  </body>
+          </p>
+          <p>
+            
+          </p>
+          <a class="learn-more-link disabled-link">Contact us for more Information</a>
+          </div>
+        <div class="image-content">
+          <img src="images/AI.png" alt="Java Programming Language Logo" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      <span id="currentYear"></span> LeapCode | Contact us at
+      <a href="mailto:support@leapcode.org">support@leapcode.org</a>
+    </p>
+  </footer>
+
+  <script>
+    // --- Theme Toggle ---
+    const themeCheckbox = document.getElementById('theme-checkbox');
+    const body = document.body;
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        body.classList.add('dark-mode');
+        if (themeCheckbox) themeCheckbox.checked = true;
+      } else {
+        body.classList.remove('dark-mode');
+        if (themeCheckbox) themeCheckbox.checked = false;
+      }
+    }
+
+    const savedTheme = localStorage.getItem('theme');
+    // Default to dark or light based on your preference or system setting
+    let initialTheme = 'light'; // You can change this default
+    if (savedTheme) {
+      initialTheme = savedTheme;
+    } else {
+      // Optional: Check for system preference if no theme is saved
+      // if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      //   initialTheme = 'dark';
+      // }
+    }
+    applyTheme(initialTheme);
+
+    if (themeCheckbox) {
+      themeCheckbox.addEventListener('change', () => {
+        let newTheme = themeCheckbox.checked ? 'dark' : 'light';
+        localStorage.setItem('theme', newTheme);
+        applyTheme(newTheme);
+      });
+    }
+
+    // --- Mobile Nav Toggle ---
+    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileNavToggle && mainNav) {
+      mobileNavToggle.addEventListener('click', () => {
+        const isExpanded = mainNav.classList.toggle('active');
+        mobileNavToggle.setAttribute('aria-expanded', isExpanded);
+      });
+    }
+
+    // --- Set current year in footer ---
+    const currentYearElement = document.getElementById('currentYear');
+    if (currentYearElement) {
+      currentYearElement.textContent = new Date().getFullYear();
+    }
+
+    // --- Active Nav Link ---
+    // (This is a simple version. For more complex sites, consider a more robust solution)
+    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    const navLinks = document.querySelectorAll('.main-nav a');
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      }
+    });
+  </script>
+</body>
 </html>
