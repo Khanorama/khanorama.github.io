@@ -1611,11 +1611,6 @@ body.dark-mode .cta-button.secondary:hover {
     /* keep any accidental overflow hidden */
   }
 
-  /* 2. Ensure paragraph text wraps instead of overflowing */
-  .content-card .text-content p,
-  .hero-content .tagline,
-  #location-discord .text-content p {}
-
   /* 3. Prevent heading and link texts from widening their containers */
   .content-card .text-content h2,
   .learn-more-link {

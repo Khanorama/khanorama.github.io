@@ -47,7 +47,7 @@
     <section class="form-section">
       <div class="form-container">
         <form method="post"
-          action="https://script.google.com/macros/s/AKfycby4EAiZh6Zzlb49UShbofiq9LDRzrrgUKBHxckUVgyCJywh71id-SiUEJ4KfhLRgxJq/exec"
+          action="https://script.google.com/macros/s/AKfycbw0hyxqezMqmqokClhI8dIBhUBUzvkcCL6UPn7O8sQwrP6zNz0Cf5yxsZFqa2itNb15/exec"
           name="registrationForm" id="registrationForm">
           <p class="form-note"><span class="text-required">*</span> Indicates required fields.</p>
 
@@ -125,7 +125,7 @@
     }
 
     const savedTheme = localStorage.getItem('theme');
-    let initialTheme = 'light';
+    let initialTheme = 'dark';
     if (savedTheme) {
       initialTheme = savedTheme;
     }
@@ -167,7 +167,7 @@
     });
 
     // --- Form Submission Logic ---
-    const scriptURL = "https://script.google.com/macros/s/AKfycby4EAiZh6Zzlb49UShbofiq9LDRzrrgUKBHxckUVgyCJywh71id-SiUEJ4KfhLRgxJq/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbw0hyxqezMqmqokClhI8dIBhUBUzvkcCL6UPn7O8sQwrP6zNz0Cf5yxsZFqa2itNb15/exec";
     const form = document.forms["registrationForm"];
     const submitButton = document.getElementById("submitButton");
     const submissionStatusDiv = document.getElementById("submissionStatus");
