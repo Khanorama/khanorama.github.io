@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Course Registration | LeapCode</title>
+  <link rel="icon" href="../images/favicon2.png" type="image/png">
+  <link rel="stylesheet" href="../style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <header class="header">
+    <div class="header-logo">
+      <h1>
+        <a href="../index.html" class="home-link"><span class="star">LEAP</span><span class="code">CODE</span></a>
+      </h1>
+    </div>
+    <nav class="main-nav">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../courses.html">Courses</a>
+      <a href="../library.html">Library</a>
+      <a href="../support.html">Support</a>
+    </nav>
+    <div class="header-controls">
+      <label class="switch">
+        <input type="checkbox" id="theme-checkbox" />
+        <span class="slider"></span>
+      </label>
+      <button class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="hamburger"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-section form-hero">
+      <div class="hero-content">
+        <h1>AI/ML Fundamentals Course Registration</h1>
+        <p class="tagline">Fill out the form below to register.</p>
+      </div>
+    </section>
+
+    <section class="form-section">
+      <div class="form-container">
+        <form method="post"
+          action="https://script.google.com/macros/s/AKfycbzmr8OYyOuFozbGE0LmGshVcv7gs-z6rRnff0GQ0nzgBkUG9lR2lNzs2oDz_v1r9VUP/exec"
+          name="registrationForm" id="registrationForm">
+          <p class="form-note"><span class="text-required">*</span> Indicates required fields.</p>
+
+          <div class="form-group">
+            <label for="studentFullName">Student Full Name <span class="text-required">*</span></label>
+            <input type="text" id="studentFullName" name="studentFullName" />
+          </div>
+
+          <div class="form-group">
+            <label for="studentEmail">Student Email <span class="text-required">*</span></label>
+            <input type="email" id="studentEmail" name="studentEmail" />
+          </div>
+
+          <div class="form-group">
+            <label for="studentPhoneNumber">Student Phone Number</label>
+            <input type="tel" id="studentPhoneNumber" name="studentPhoneNumber" placeholder="(Optional)" />
+          </div>
+
+          <div class="form-group">
+            <label for="studentGrade">Student Grade (1-12)</label>
+            <input type="number" id="studentGrade" name="studentGrade" min="1" max="12" placeholder="(Optional)" />
+          </div>
+
+          <div class="form-group">
+            <label for="studentSchool">Student School</label>
+            <input type="text" id="studentSchool" name="studentSchool" placeholder="(Optional)" />
+          </div>
+
+          <hr class="form-divider">
+
+          <div class="form-group">
+            <label for="parentName">Parent Name <span class="text-required">*</span></label>
+            <input type="text" id="parentName" name="parentName" />
+          </div>
+
+          <div class="form-group">
+            <label for="parentEmail">Parent Email <span class="text-required">*</span></label>
+            <input type="email" id="parentEmail" name="parentEmail" />
+          </div>
+
+          <div class="form-group">
+            <label for="parentPhoneNumber">Parent Phone Number <span class="text-required">*</span></label>
+            <input type="tel" id="parentPhoneNumber" name="parentPhoneNumber" />
+          </div>
+
+          <div class="form-button-container">
+            <button type="submit" class="form-button" id="submitButton">Submit Registration</button>
+          </div>
+          <div id="submissionStatus" class="form-submission-status"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      <span id="currentYear"></span> LeapCode | Contact us at
+      <a href="mailto:support@leapcode.org">support@leapcode.org</a>
+    </p>
+  </footer>
+
+  <script>
+    // --- Theme Toggle ---
+    const themeCheckbox = document.getElementById('theme-checkbox');
+    const bodyEl = document.body;
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        bodyEl.classList.add('dark-mode');
+        if (themeCheckbox) themeCheckbox.checked = true;
+      } else {
+        bodyEl.classList.remove('dark-mode');
+        if (themeCheckbox) themeCheckbox.checked = false;
+      }
+    }
+
+    const savedTheme = localStorage.getItem('theme');
+    let initialTheme = 'dark';
+    if (savedTheme) {
+      initialTheme = savedTheme;
+    }
+    applyTheme(initialTheme);
+
+    if (themeCheckbox) {
+      themeCheckbox.addEventListener('change', () => {
+        let newTheme = themeCheckbox.checked ? 'dark' : 'light';
+        localStorage.setItem('theme', newTheme);
+        applyTheme(newTheme);
+      });
+    }
+
+    // --- Mobile Nav Toggle ---
+    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (mobileNavToggle && mainNav) {
+      mobileNavToggle.addEventListener('click', () => {
+        const isExpanded = mainNav.classList.toggle('active');
+        mobileNavToggle.setAttribute('aria-expanded', isExpanded);
+      });
+    }
+
+    // --- Set current year in footer ---
+    const currentYearElement = document.getElementById('currentYear');
+    if (currentYearElement) {
+      currentYearElement.textContent = new Date().getFullYear();
+    }
+
+    // --- Active Nav Link ---
+    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    const navLinks = document.querySelectorAll('.main-nav a');
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href').endsWith("courses.html")) { // Example: Highlight "Courses" for reg pages
+        link.classList.add('active');
+      }
+    });
+
+    // --- Form Submission Logic ---
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzmr8OYyOuFozbGE0LmGshVcv7gs-z6rRnff0GQ0nzgBkUG9lR2lNzs2oDz_v1r9VUP/exec";
+    const form = document.forms["registrationForm"];
+    const submitButton = document.getElementById("submitButton");
+    const submissionStatusDiv = document.getElementById("submissionStatus");
+
+    function validateForm() {
+      // Updated required fields
+      const requiredFields = [
+        { id: "studentFullName", label: "Student Full Name" },
+        { id: "studentEmail", label: "Student Email" },
+        { id: "parentName", label: "Parent Name" },
+        { id: "parentEmail", label: "Parent Email" },
+        { id: "parentPhoneNumber", label: "Parent Phone Number" },
+      ];
+      const missingFieldsLabels = [];
+      let firstMissingFieldElement = null;
+
+      requiredFields.forEach((fieldInfo) => {
+        const fieldElement = document.getElementById(fieldInfo.id);
+        if (!fieldElement.value.trim()) {
+          missingFieldsLabels.push(fieldInfo.label);
+          if (!firstMissingFieldElement) {
+            firstMissingFieldElement = fieldElement;
+          }
+        }
+      });
+
+      if (missingFieldsLabels.length > 0) {
+        alert("Please fill out all required fields: \n- " + missingFieldsLabels.join("\n- "));
+        if (firstMissingFieldElement) {
+          firstMissingFieldElement.focus();
+        }
+        return false;
+      }
+
+      // Basic email validation for required email fields
+      const studentEmailField = document.getElementById("studentEmail");
+      if (studentEmailField.value.trim() && !studentEmailField.value.includes('@')) {
+        alert("Please enter a valid Student Email address.");
+        studentEmailField.focus();
+        return false;
+      }
+      const parentEmailField = document.getElementById("parentEmail");
+      if (parentEmailField.value.trim() && !parentEmailField.value.includes('@')) {
+        alert("Please enter a valid Parent Email address.");
+        parentEmailField.focus();
+        return false;
+      }
+      
+      return true;
+    }
+
+    if (form) {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        if (validateForm()) {
+          if (submitButton) submitButton.textContent = "Submitting...";
+          if (submitButton) submitButton.disabled = true;
+          if (submissionStatusDiv) submissionStatusDiv.textContent = "Please do not close or refresh the page!";
+
+          const formData = new FormData(form);
+
+          fetch(scriptURL, { method: "POST", body: formData })
+            .then((response) => {
+              // 1. Turn the FormData into a plain object:
+              const dataObj = {};
+              formData.forEach((value, key) => {
+                dataObj[key] = value;
+              });
+              // 2. Serialize and store it:
+              localStorage.setItem("formData", JSON.stringify(dataObj));
+              // 3. Redirect to the confirmation page:
+              window.location.href = "registrationcomplete.html";
+            })
+
+            .catch((error) => {
+              console.error("Error submitting form:", error.message);
+              if (submissionStatusDiv) submissionStatusDiv.textContent = "Submission failed. Please try again. Error: " + error.message;
+              if (submitButton) submitButton.textContent = "Submit Registration";
+              if (submitButton) submitButton.disabled = false;
+            });
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>
