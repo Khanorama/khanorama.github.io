@@ -25,7 +25,7 @@
   --accent-primary: #007bff;
   /* Primary Blue */
   --accent-primary-rgb: 0, 123, 255;
-  --accent-secondary: #00FF7F;
+  --accent-secondary: #00ff7f;
   /* CHANGED: Vibrant Green */
   --accent-secondary-rgb: 0, 255, 127;
   /* CHANGED: Vibrant Green RGB */
@@ -64,12 +64,26 @@ body.dark-mode {
   --bg-alt-section: #161c24;
   /* Darker alt section */
   --bg-input: #12181f;
-  --bg-button-cta: linear-gradient(135deg,
-      var(--accent-primary-dark) 0%,
-      color-mix(in srgb, var(--accent-primary-dark) 70%, var(--accent-secondary-dark) 30%) 100%);
-  --bg-button-cta-hover: linear-gradient(135deg,
-      color-mix(in srgb, var(--accent-primary-dark) 90%, white 10%) 0%,
-      color-mix(in srgb, var(--accent-primary-dark) 60%, var(--accent-secondary-dark) 40%) 100%);
+  --bg-button-cta: linear-gradient(
+    135deg,
+    var(--accent-primary-dark) 0%,
+    color-mix(
+        in srgb,
+        var(--accent-primary-dark) 70%,
+        var(--accent-secondary-dark) 30%
+      )
+      100%
+  );
+  --bg-button-cta-hover: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-primary-dark) 90%, white 10%) 0%,
+    color-mix(
+        in srgb,
+        var(--accent-primary-dark) 60%,
+        var(--accent-secondary-dark) 40%
+      )
+      100%
+  );
 
   --text-primary: #e0e5ec;
   --text-secondary: #b0b8c4;
@@ -82,7 +96,7 @@ body.dark-mode {
   --accent-primary-dark: #00c6ff;
   /* Electric Blue / Cyan for Dark Mode */
   --accent-primary-rgb-dark: 0, 198, 255;
-  --accent-secondary-dark: #00FF7F;
+  --accent-secondary-dark: #00ff7f;
   /* CHANGED: Vibrant Green for Dark Mode */
   --accent-secondary-rgb-dark: 0, 255, 127;
   /* CHANGED: Vibrant Green RGB for Dark Mode */
@@ -259,11 +273,11 @@ img {
   transition: 0.4s;
 }
 
-input:checked+.slider {
+input:checked + .slider {
   background-color: #303136;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   left: calc(100% - (var(--size-of-icon, 1.4em) + var(--slider-offset, 0.3em)));
   background: #303136;
   /* change the value of second inset in box-shadow to change the angle and direction of the moon  */
@@ -427,9 +441,11 @@ body.dark-mode .hero-section::before {
   left: -50px;
   width: 200px;
   height: 200px;
-  background: radial-gradient(circle,
-      rgba(var(--accent-primary-rgb), 0.15) 0%,
-      transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(var(--accent-primary-rgb), 0.15) 0%,
+    transparent 70%
+  );
   filter: blur(20px);
   z-index: 0;
 }
@@ -441,10 +457,11 @@ body.dark-mode .hero-section::after {
   right: -50px;
   width: 250px;
   height: 250px;
-  background: radial-gradient(circle,
-      rgba(var(--accent-secondary-rgb), 0.1) 0%,
-      /* Will use new green RGB */
-      transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(var(--accent-secondary-rgb), 0.1) 0%,
+    /* Will use new green RGB */ transparent 70%
+  );
   filter: blur(20px);
   z-index: 0;
 }
@@ -483,12 +500,12 @@ body.dark-mode .hero-content .starhome {
 
 body.dark-mode .hero-content .codehome {
   text-shadow: 0 0 15px rgba(var(--accent-secondary-rgb), 0.5),
-    /* Will use new green shadow */
-    0 0 30px rgba(var(--accent-secondary-rgb), 0.3);
+    /* Will use new green shadow */ 0 0 30px
+      rgba(var(--accent-secondary-rgb), 0.3);
 }
 
 .tagline {
-  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  font-size: clamp(1.0rem, 3vw, 1.0rem);
   font-weight: 400;
   color: var(--text-secondary);
   margin-top: calc(var(--spacing-unit) * 2);
@@ -846,7 +863,7 @@ body.dark-mode .dropdown {
   border-width: 0;
 }
 
-.dropdown input[type="checkbox"]:checked+.trigger::after {
+.dropdown input[type="checkbox"]:checked + .trigger::after {
   transform: rotate(180deg);
 }
 
@@ -859,9 +876,10 @@ body.dark-mode .dropdown {
   /* Content area slightly different from card bg */
 }
 
-.dropdown input[type="checkbox"]:checked~.list {
+.dropdown input[type="checkbox"]:checked ~ .list {
   max-height: 500px;
-  padding: var(--spacing-unit) calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2);
+  padding: var(--spacing-unit) calc(var(--spacing-unit) * 2)
+    calc(var(--spacing-unit) * 2);
   border-top: 1px solid var(--border-color-soft);
 }
 
@@ -902,7 +920,7 @@ body.dark-mode .dropdown {
 }
 
 .team-member {
-  flex: 0 1 280px;
+  flex: 0 1 180px;
   /* Allow items to grow/shrink but prefer a base width */
   text-align: center;
   margin-bottom: calc(var(--spacing-unit) * 2);
@@ -947,7 +965,7 @@ body.dark-mode .team-member img {
 }
 
 .team-member h3 .tagline {
-  font-size: 1.3em;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--text-headings);
   display: block;
@@ -1175,8 +1193,9 @@ body.dark-mode .team-member img {
 .team-member h3 {
   margin-bottom: 0;
   line-height: 1.3;
-  color: var(--text-primary);
+  color: "green";
   /* Email color */
+  font-size: 1.5em;
 }
 
 .team-member h3 .subgreen {
@@ -1201,7 +1220,6 @@ body.dark-mode .team-member img {
   margin-bottom: calc(var(--spacing-unit) * 0.5);
   transition: color 0.3s ease;
 }
-
 
 /* NOTE: Your existing @media (max-width: 768px) rules for
      .team-members-grid and .team-member should remain unchanged.
@@ -1307,7 +1325,9 @@ body.dark-mode .team-member img {
 
 /* --- 404 Error Page Specific Styles --- */
 .error-page-hero {
-  min-height: calc(100vh - var(--header-height, 100px) - var(--footer-height, 100px));
+  min-height: calc(
+    100vh - var(--header-height, 100px) - var(--footer-height, 100px)
+  );
   /* Adjust header/footer heights if known, or use a fixed vh value */
   display: flex;
   align-items: center;
@@ -1348,7 +1368,6 @@ body.dark-mode .error-code-title .starhome {
   /* text-shadow: 0 0 15px rgba(var(--accent-primary-rgb),0.5), 0 0 30px rgba(var(--accent-primary-rgb),0.3); */
 }
 
-
 .error-page-hero h2 {
   /* For "Page Not Found" */
   font-size: clamp(1.8rem, 6vw, 2.8rem);
@@ -1369,7 +1388,6 @@ body.dark-mode .error-code-title .starhome {
 body.dark-mode .error-page-hero h2 .codehome {
   color: var(--text-headings);
 }
-
 
 .error-page-hero .tagline {
   /* For the descriptive message */
@@ -1425,7 +1443,6 @@ body.dark-mode .cta-button.secondary:hover {
 
 /* --- Fine-tuning for Very Small Mobile Devices --- */
 @media (max-width: 420px) {
-
   /* --- General Text Alignment & Spacing --- */
   /* Ensure main content blocks within cards, heroes, and forms don't have unexpected right alignment
      and have slightly reduced padding if they feel too cramped. */
@@ -1436,7 +1453,7 @@ body.dark-mode .cta-button.secondary:hover {
     padding-left: calc(var(--spacing-unit) * 2);
     /* Reduce horizontal padding */
     padding-right: calc(var(--spacing-unit) * 2);
-    font-size: 0.80rem;
+    font-size: 0.8rem;
     overflow-wrap: anywhere;
   }
 
@@ -1478,7 +1495,6 @@ body.dark-mode .cta-button.secondary:hover {
   }
 
   /* Individual team members are already text-align: center */
-
 
   /* --- Button Sizing and Overflow --- */
 
@@ -1528,7 +1544,6 @@ body.dark-mode .cta-button.secondary:hover {
     /* Allow it to be smaller than any desktop min-width */
   }
 
-
   /* --- Header Adjustments for very small screens --- */
   .header {
     padding-left: var(--spacing-unit);
@@ -1577,7 +1592,6 @@ body.dark-mode .cta-button.secondary:hover {
   .error-page-hero h2 {
     font-size: clamp(1.5rem, 5vw, 2rem);
   }
-
 
   /* --- Form Elements --- */
   .form-group label {
@@ -1709,7 +1723,6 @@ body.dark-mode .cta-button.secondary:hover {
     overflow-wrap: anywhere;
   }
 
-
   /* If you’d rather no padding at all, just use:
     .content-container,
     .content-card,
@@ -1719,6 +1732,4 @@ body.dark-mode .cta-button.secondary:hover {
       padding: 0;
     }
     */
-
-
 }
