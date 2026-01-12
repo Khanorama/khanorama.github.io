@@ -146,9 +146,6 @@ body {
   text-align: left;
 }
 
-
-
-
 .reviews h3 {
   font-size: 1.5rem;
   color: #00a3e0; /* Medium blue */
@@ -265,7 +262,7 @@ form label[for="compliance"] {
   width: 10em;
   position: relative;
   height: 3.5em;
-  border: 3px ridge #149CEA;
+  border: 3px ridge #149cea;
   outline: none;
   background-color: transparent;
   color: white;
@@ -277,9 +274,7 @@ form label[for="compliance"] {
   font-family: Montserrat;
 }
 
-
-
-#submit::after{
+#submit::after {
   content: "";
   position: absolute;
   top: -10px;
@@ -291,7 +286,7 @@ form label[for="compliance"] {
   transform-origin: center;
 }
 
-#submit::before{
+#submit::before {
   content: "";
   transform-origin: center;
   position: absolute;
@@ -303,12 +298,37 @@ form label[for="compliance"] {
   transition: 0.5s;
 }
 
-#submit:hover::before, button:hover::after {
-  transform: scale(0)
+#submit:hover::before,
+button:hover::after {
+  transform: scale(0);
 }
 
 #submit:hover {
-  box-shadow: inset 0px 0px 25px #1479EA;
+  box-shadow: inset 0px 0px 25px #1479ea;
 }
 
 /* Footer styling remains the same */
+
+.form-group select {
+  width: 100%;
+  padding: calc(var(--spacing-unit) * 1.5);
+  border: 1px solid var(--border-input);
+  border-radius: var(--border-radius-sm);
+  font-size: 1rem;
+  font-family: var(--font-secondary);
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease,
+    background-color 0.3s ease, color 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20,50 70,90 120,50' fill='none' stroke='%23999' stroke-width='20'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 14px;
+}
+
+.form-group select:focus {
+  border-color: var(--border-input-focus);
+  box-shadow: var(--shadow-focus-ring);
+  outline: none;
+}
