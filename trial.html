@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Explorer — Research Trial</title>
+<script src="config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>:root {
+  --bg: #f5f2ed;
+  --white: #ffffff;
+  --ink: #18150f;
+  --mid: #7a6e60;
+  --border: #e4ddd3;
+  --accent: #c0430a;
+  --accent-lt: #faeee8;
+  --green: #2d6a4f;
+  --green-lt: #d8f3dc;
+  --blue: #1a4f8a;
+  --blue-lt: #dbeafe;
+  --gold: #b07d10;
+  --gold-lt: #fef3c7;
+  --purple: #5b3d8a;
+  --purple-lt: #ede9f8;
+  --r: 14px;
+  --sh: 0 2px 14px rgba(24,21,15,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center}
+#topbar{width:100%;background:var(--ink);color:#d8d0c6;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:54px;position:sticky;top:0;z-index:200;gap:12px}
+.tb-logo{font-family:'Fraunces',serif;font-size:1.05rem;white-space:nowrap;color:#f0ead8}
+.tb-logo em{color:#d4a84b;font-style:normal}
+#session-chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{font-size:.72rem;font-weight:600;padding:4px 12px;border-radius:100px;border:1px solid #3a342b;color:#a89c8c}
+.chip b{color:#f0ead8}
+#topbar-progress{position:absolute;bottom:0;left:0;width:100%;height:3px;background:#2a251e}
+#progress-fill{height:100%;background:#d4a84b;transition:width .5s ease;width:0%}
+#tb-struggle-wrap{display:none;align-items:center;gap:7px;flex-shrink:0}
+#tb-struggle-label{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b6055}
+#tb-struggle-badge{font-size:.8rem;font-weight:700;font-family:'DM Mono',monospace;padding:3px 11px;border-radius:100px;background:#2a251e;color:#d4a84b;border:1px solid #3a342b;transition:background .4s,color .4s}
+#tb-struggle-badge.GREEN {background:#1a3325;color:#52b788;border-color:#2d6a4f}
+#tb-struggle-badge.YELLOW{background:#3a2c00;color:#d4a84b;border-color:#b07d10}
+#tb-struggle-badge.ORANGE{background:#3a1800;color:#f4a261;border-color:#c0430a}
+#tb-struggle-badge.RED   {background:#3a0000;color:#f28b82;border-color:#b91c1c}
+#app{width:100%;max-width:760px;padding:36px 22px 100px;flex:1}
+.screen{display:none}.screen.active{display:block}
+.fade-in{animation:fi .35s ease both}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.slide-down{animation:sd .3s ease both}
+@keyframes sd{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.s-tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:14px}
+.tag-accent{background:var(--accent-lt);color:var(--accent)}
+.tag-blue{background:var(--blue-lt);color:var(--blue)}
+.tag-green{background:var(--green-lt);color:var(--green)}
+.tag-gold{background:var(--gold-lt);color:var(--gold)}
+.tag-purple{background:var(--purple-lt);color:var(--purple)}
+.section-h{font-family:'Fraunces',serif;font-size:clamp(1.6rem,4vw,2.3rem);font-weight:700;line-height:1.2;margin-bottom:12px}
+.section-sub{color:var(--mid);font-size:.97rem;line-height:1.6;max-width:480px;margin-bottom:28px}
+.card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:26px 28px;box-shadow:var(--sh);margin-bottom:16px}
+.card-sm{padding:18px 22px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.f-row.full{grid-template-columns:1fr}
+label.lbl{display:block;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
+input[type=text],input[type=number],select,textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.95rem;background:var(--bg);color:var(--ink);outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:80px;font-size:.82rem;font-family:'DM Mono',monospace;line-height:1.5}
+.seg{display:flex;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:3px;gap:3px}
+.seg button{flex:1;padding:8px 8px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;color:var(--mid);cursor:pointer;transition:all .2s;border-radius:7px}
+.seg button.on{background:var(--ink);color:#f0ead8;font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 26px;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.93rem;cursor:pointer;border:none;transition:all .18s;text-decoration:none}
+.btn-pri{background:var(--accent);color:#fff;box-shadow:0 3px 14px rgba(192,67,10,.28)}
+.btn-pri:hover{background:#a8380a;transform:translateY(-1px)}
+.btn-sec{background:var(--white);color:var(--ink);border:1.5px solid var(--border)}
+.btn-sec:hover{border-color:var(--accent);color:var(--accent)}
+.btn-ghost{background:transparent;color:var(--mid);padding:9px 14px;font-size:.83rem}
+.btn-ghost:hover{color:var(--ink)}
+.btn-full{width:100%}
+.btn-lg{padding:15px 34px;font-size:1rem}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+.mod-box{background:linear-gradient(135deg,#1a150e,#2d2418);border-radius:var(--r);padding:28px 32px;color:#f0ead8;margin-bottom:18px;position:relative;overflow:hidden}
+.mod-box::before{content:'';position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(212,168,75,.08)}
+.mod-box .mod-title{font-family:'Fraunces',serif;font-size:1.1rem;color:#d4a84b;margin-bottom:10px}
+.mod-box p{font-size:.93rem;line-height:1.65;color:#c8bfb0;margin-bottom:10px}
+.mod-box p:last-child{margin-bottom:0}
+.mod-box code{font-family:'DM Mono',monospace;background:rgba(255,255,255,.1);padding:2px 7px;border-radius:4px;font-size:.88rem;color:#f0c870}
+.example-row{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+.ex-pill{background:#f0ead8;border:1.5px solid var(--border);border-radius:10px;padding:10px 16px;font-family:'DM Mono',monospace;font-size:.9rem;color:var(--ink);text-align:center;font-weight:600}
+.ex-pill strong{color:var(--accent)}
+.ex-pill span{display:block;font-size:.88rem;color:var(--mid);margin-top:4px;font-family:'DM Sans',sans-serif;font-weight:400}
+.quiz-block{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-top:14px;box-shadow:var(--sh)}
+.quiz-block p{font-size:.9rem;font-weight:600;color:var(--ink);margin-bottom:12px}
+.survey-q{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:22px 26px;margin-bottom:14px;box-shadow:var(--sh)}
+.q-text{font-size:.97rem;font-weight:500;line-height:1.5;margin-bottom:16px}
+.q-optional-tag{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);margin-left:8px;opacity:.7}
+.likert{display:flex;gap:7px;margin-bottom:6px}
+.lk-opt{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
+.lk-opt .circle{width:40px;height:40px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:var(--mid);transition:all .18s}
+.lk-opt:hover .circle{border-color:var(--accent);color:var(--accent)}
+.lk-opt.sel .circle{background:var(--accent);border-color:var(--accent);color:#fff}
+.likert-ends{display:flex;justify-content:space-between;font-size:.68rem;color:var(--mid)}
+.survey-section-h{font-size:.78rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin:24px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--accent-lt)}
+.prob-meta{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:18px}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:5px 13px;border-radius:100px;font-size:.73rem;font-weight:700}
+.pill-r{background:var(--accent-lt);color:var(--accent)}
+.pill-d{background:var(--gold-lt);color:var(--gold)}
+.pill-c{background:var(--green-lt);color:var(--green)}
+.pill-n{background:var(--blue-lt);color:var(--blue)}
+.pill-topic{background:var(--purple-lt);color:var(--purple)}
+.prob-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:30px 32px;margin-bottom:18px;box-shadow:var(--sh);transition:border-color .3s}
+.prob-card.struggling{border-color:#e8c75a;box-shadow:0 0 0 3px rgba(212,168,75,.12)}
+.prob-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:10px}
+.prob-text{font-family:'Fraunces',serif;font-size:1.25rem;line-height:1.6;font-weight:600;margin-bottom:8px}
+.prob-note{font-size:.88rem;color:var(--mid);line-height:1.5;margin-bottom:22px}
+.answer-area{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.answer-area input{font-size:1.05rem;padding:11px 16px;max-width:180px;border-radius:10px;flex-shrink:0}
+#timer{font-size:.78rem;font-weight:700;color:var(--mid);background:var(--bg);padding:6px 13px;border-radius:100px;border:1.5px solid var(--border);margin-left:auto;font-family:'DM Mono',monospace;transition:all .3s}
+#timer.warn{color:var(--accent);border-color:var(--accent-lt);background:var(--accent-lt)}
+#signal-panel{display:none;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:18px 22px;margin-bottom:14px;box-shadow:var(--sh)}
+#signal-panel .sp-title{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.signal-bars{display:flex;flex-direction:column;gap:7px}
+.sig-row{display:flex;align-items:center;gap:9px}
+.sig-name{font-size:.72rem;color:var(--mid);width:190px;flex-shrink:0;font-family:'DM Mono',monospace}
+.sig-bar-wrap{flex:1;background:var(--bg);border-radius:100px;height:7px;overflow:hidden}
+.sig-bar{height:100%;border-radius:100px;background:var(--accent);transition:width .5s ease}
+.sig-val{font-size:.7rem;font-family:'DM Mono',monospace;color:var(--mid);width:38px;text-align:right;flex-shrink:0}
+.composite-row{display:flex;align-items:center;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.composite-score{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;color:var(--accent)}
+.composite-level{font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:100px}
+.lv-GREEN {background:var(--green-lt);color:var(--green)}
+.lv-YELLOW{background:var(--gold-lt);color:var(--gold)}
+.lv-ORANGE{background:var(--accent-lt);color:var(--accent)}
+.lv-RED   {background:#fff0f0;color:#b91c1c}
+#struggle-alert{display:none;background:linear-gradient(135deg,#fef9ed,var(--gold-lt));border:1.5px solid #e8c75a;border-radius:var(--r);padding:16px 22px;margin-bottom:16px;animation:fi .3s ease}
+#struggle-alert .sa-h{font-weight:700;color:var(--gold);margin-bottom:5px;font-size:.95rem}
+#struggle-alert p{font-size:.86rem;color:var(--mid)}
+#feedback{display:none;border-radius:var(--r);padding:20px 24px;margin-bottom:16px;border:1.5px solid}
+#feedback.ok{background:var(--green-lt);border-color:#74c69d}
+#feedback.err{background:#fff5f5;border-color:#f5c6cb}
+.fb-h{font-weight:700;font-size:.97rem;margin-bottom:6px}
+#feedback.ok .fb-h{color:var(--green)}
+#feedback.err .fb-h{color:#b92b2b}
+.fb-body{font-size:.88rem;line-height:1.55;color:var(--ink)}
+#hint-zone{display:none}
+.hint-btns{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.hbtn{padding:9px 18px;border-radius:8px;font-size:.83rem;font-weight:700;border:1.5px solid;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .18s}
+.hbtn:hover{transform:translateY(-1px);box-shadow:0 3px 9px rgba(0,0,0,.1)}
+.hbtn:disabled{opacity:.38;cursor:not-allowed;transform:none;box-shadow:none}
+.hbtn-minimal{background:var(--gold-lt);border-color:#e8c75a;color:var(--gold)}
+.hbtn-full{background:var(--green-lt);border-color:#74c69d;color:var(--green)}
+.hint-card{border-radius:var(--r);padding:18px 22px;margin-bottom:10px;border:1.5px solid;animation:fi .3s ease}
+.hint-card.minimal{background:var(--gold-lt);border-color:#e8c75a}
+.hint-card.full-hint{background:var(--green-lt);border-color:#74c69d}
+.hint-lbl{font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.hint-card.minimal .hint-lbl{color:var(--gold)}
+.hint-card.full-hint .hint-lbl{color:var(--green)}
+.hint-body{font-size:.9rem;line-height:1.6;color:var(--ink)}
+.hint-body code{font-family:'DM Mono',monospace;background:rgba(0,0,0,.06);padding:2px 6px;border-radius:4px;font-size:.85rem}
+.hint-loading{font-size:.88rem;color:var(--mid);font-style:italic;padding:10px 0;display:flex;align-items:center;gap:8px}
+.hint-loading::before{content:'';width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.adaptive-badge{display:inline-block;font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:100px;background:var(--purple-lt);color:var(--purple);margin-left:8px;vertical-align:middle}
+#skip-row{display:flex;justify-content:flex-end;margin-top:6px}
+.profile-panel{background:#f0edf7;border:1.5px solid #c4aff0;border-radius:var(--r);padding:20px 24px;margin-bottom:16px}
+.profile-panel h4{font-family:'Fraunces',serif;font-size:1rem;color:var(--purple);margin-bottom:6px}
+.profile-panel p{font-size:.83rem;color:#5b3d8a;line-height:1.5;margin-bottom:12px}
+.profile-loaded{background:var(--green-lt);border-color:#74c69d;border-radius:var(--r);padding:12px 18px;font-size:.84rem;color:var(--green);font-weight:600;display:none}
+#round-transition-wrap{text-align:center;padding:70px 24px}
+#round-transition-wrap h2{font-family:'Fraunces',serif;font-size:1.9rem;margin-bottom:14px}
+#round-transition-wrap p{color:var(--mid);font-size:.97rem;line-height:1.6;max-width:420px;margin:0 auto 32px}
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:26px}
+.stat{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:20px 22px;box-shadow:var(--sh)}
+.stat .s-lbl{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:7px}
+.stat .s-val{font-family:'Fraunces',serif;font-size:2.1rem;font-weight:700}
+.stat .s-sub{font-size:.75rem;color:var(--mid);margin-top:3px}
+.stat.hi{background:var(--accent);border-color:var(--accent)}
+.stat.hi .s-lbl,.stat.hi .s-val,.stat.hi .s-sub{color:#fff}
+.stat.purple-hi{background:var(--purple);border-color:var(--purple)}
+.stat.purple-hi .s-lbl,.stat.purple-hi .s-val,.stat.purple-hi .s-sub{color:#fff}
+.log-block{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:22px 26px;margin-bottom:16px;box-shadow:var(--sh)}
+.log-block h3{font-family:'Fraunces',serif;font-size:1.05rem;margin-bottom:14px}
+.data-table{width:100%;border-collapse:collapse;font-size:.81rem}
+.data-table th{text-align:left;font-weight:700;color:var(--mid);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;padding:7px 9px;border-bottom:1.5px solid var(--border)}
+.data-table td{padding:8px 9px;border-bottom:1px solid #f0ece4;vertical-align:top}
+.data-table tr:last-child td{border-bottom:none}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}
+.dot-ok{background:var(--green)}.dot-err{background:#e05252}.dot-skip{background:var(--mid)}.dot-assist{background:var(--gold)}
+.export-box{background:#18150f;color:#a89c8c;border-radius:var(--r);padding:18px 22px;font-family:'DM Mono',monospace;font-size:.73rem;line-height:1.6;max-height:240px;overflow-y:auto;margin-bottom:14px;word-break:break-all}
+.struggle-result-card{background:linear-gradient(135deg,#1a150e,#2d2418);border-radius:var(--r);padding:22px 26px;margin-bottom:16px;color:#f0ead8}
+.struggle-result-card h3{font-family:'Fraunces',serif;color:#d4a84b;margin-bottom:14px;font-size:1.05rem}
+.sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.sig-cell{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:10px 14px}
+.sig-cell .sc-lbl{font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a89c8c;margin-bottom:4px}
+.sig-cell .sc-val{font-family:'DM Mono',monospace;font-size:.95rem;color:#f0ead8}
+.concept-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.ctag{padding:4px 11px;border-radius:100px;font-size:.72rem;font-weight:700;background:rgba(212,168,75,.15);color:#d4a84b;border:1px solid rgba(212,168,75,.3)}
+#final-inner{text-align:center;padding:60px 24px}
+#final-inner h2{font-family:'Fraunces',serif;font-size:2.3rem;margin-bottom:14px}
+#final-inner p{color:var(--mid);font-size:.97rem;line-height:1.6;max-width:400px;margin:0 auto 30px}
+@media(max-width:520px){
+  .f-row{grid-template-columns:1fr}
+  .res-grid{grid-template-columns:1fr}
+  .sig-grid{grid-template-columns:1fr}
+  .likert{gap:4px}
+  .lk-opt .circle{width:34px;height:34px;font-size:.75rem}
+  .answer-area input{max-width:100%}
+  #topbar{padding:0 14px}
+  #session-chips{display:none}
+  .prob-card{padding:22px 18px}
+  .mod-box{padding:20px 18px}
+  #signal-panel{display:none!important}
+}
+#calc-toggle-btn{display:none;position:fixed;bottom:24px;right:24px;z-index:300;background:var(--ink);color:#f0ead8;border:none;border-radius:10px;padding:10px 18px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.85rem;cursor:pointer;box-shadow:0 3px 16px rgba(0,0,0,.22);align-items:center;gap:7px}
+#calc-toggle-btn:hover{background:#2d2418}
+#calc-panel{display:none;position:fixed;bottom:76px;right:24px;z-index:300;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:0 6px 28px rgba(0,0,0,.14);width:220px}
+#calc-display{background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;text-align:right;font-family:'DM Mono',monospace;font-size:1.15rem;min-height:46px;word-break:break-all;color:var(--ink);margin-bottom:10px;line-height:1.4}
+.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.cbtn{padding:11px 0;border-radius:7px;border:1.5px solid var(--border);background:var(--bg);font-family:'DM Mono',monospace;font-size:.93rem;font-weight:600;cursor:pointer;transition:background .15s;color:var(--ink)}
+.cbtn:hover{background:var(--border)}
+.cbtn.op{background:var(--gold-lt);border-color:#e8c75a;color:var(--gold)}
+.cbtn.op:hover{background:#e8c75a}
+.cbtn.eq{background:var(--accent);border-color:var(--accent);color:#fff}
+.cbtn.eq:hover{background:#a8380a}
+.cbtn.cl{background:var(--accent-lt);border-color:var(--accent-lt);color:var(--accent)}
+.cbtn.cl:hover{background:#f5c9b8}
+.cbtn.zero{grid-column:span 2}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="tb-logo">Math <em>Explorer</em></div>
+  <div id="session-chips">
+    <div class="chip">Student: <b id="tb-sid">—</b></div>
+    <div class="chip">Round: <b id="tb-rnd">—</b></div>
+    <div class="chip">Topic: <b id="tb-topic">—</b></div>
+  </div>
+  <div id="topbar-progress"><div id="progress-fill"></div></div>
+</div>
+
+<div id="app">
+
+<!-- ══════════════════════════════════════════════════════════════
+     WELCOME
+══════════════════════════════════════════════════════════════ -->
+<div id="s-welcome" class="screen active fade-in">
+  <div class="s-tag tag-accent">Research Trial</div>
+  <h1 class="section-h">Welcome to<br>Math Explorer</h1>
+  <p class="section-sub">You will learn a new type of math and solve some problems. There are no grades — just do your best.</p>
+
+  <div class="card">
+    <div class="s-tag tag-gold" style="margin-bottom:12px">Researcher Setup</div>
+    <div class="f-row">
+      <div><label class="lbl">Student ID</label><input type="text" id="inp-sid" placeholder="e.g. S-07" maxlength="10"></div>
+      <div><label class="lbl">Grade</label>
+        <select id="inp-grade">
+          <option value="9">Grade 9</option>
+          <option value="10" selected>Grade 10</option>
+          <option value="11">Grade 11</option>
+          <option value="12">Grade 12</option>
+        </select>
+      </div>
+    </div>
+    <div class="f-row">
+      <div><label class="lbl">Starting Round</label>
+        <select id="inp-round">
+          <option value="1">Round 1</option>
+          <option value="2">Round 2</option>
+          <option value="3">Round 3</option>
+        </select>
+      </div>
+      <div><label class="lbl">Topic for Round 1</label>
+        <select id="inp-topic">
+          <option value="combinatorics">Counting Principles</option>
+          <option value="probability">Probability</option>
+          <option value="exponential">Exponential Growth &amp; Decay</option>
+        </select>
+      </div>
+    </div>
+    <div class="f-row">
+      <div style="flex:1"><label class="lbl">OpenAI API Key</label><input type="password" id="inp-apikey" placeholder="sk-..." style="width:100%;font-family:monospace;font-size:.85rem"></div>
+    </div>
+    <div class="f-row">
+      <div style="flex:1"><label class="lbl">Google Sheets URL</label><input type="text" id="inp-sheetsurl" placeholder="https://script.google.com/macros/s/..." style="width:100%;font-family:monospace;font-size:.85rem"></div>
+    </div>
+  </div>
+
+  <button class="btn btn-pri btn-lg btn-full" onclick="startSession()">Begin Session</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     TUTORIAL
+══════════════════════════════════════════════════════════════ -->
+<div id="s-tutorial" class="screen fade-in">
+  <div class="s-tag tag-purple" id="tut-tag">New Concept — Round 1 of 3</div>
+  <h2 class="section-h" id="tut-title">Loading topic…</h2>
+  <p class="section-sub" id="tut-sub"></p>
+  <div id="tut-content"></div>
+
+  <div class="quiz-block" id="tut-quiz-block">
+    <p id="quiz-question"></p>
+    <div id="quiz-options" style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:10px"></div>
+    <div id="quiz-fb" style="font-size:.85rem;display:none;margin-top:6px"></div>
+  </div>
+
+  <div style="margin-top:24px">
+    <button class="btn btn-pri btn-lg btn-full" onclick="proceedFromTutorial()">I understand — continue</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PRE-SURVEY
+══════════════════════════════════════════════════════════════ -->
+<div id="s-pre-survey" class="screen fade-in">
+  <div class="s-tag tag-blue" id="pre-survey-tag">Pre-Session Survey</div>
+  <h2 class="section-h">Before we start</h2>
+  <p class="section-sub">Tell us how you are feeling right now about math. All questions are optional.</p>
+  <div id="pre-survey-qs"></div>
+  <button class="btn btn-pri btn-full" onclick="submitSurvey('pre')">Continue to Problems</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PROBLEMS
+══════════════════════════════════════════════════════════════ -->
+<div id="s-problems" class="screen">
+  <div class="prob-meta">
+    <span class="pill pill-r" id="pill-round">Round 1</span>
+    <span class="pill pill-topic" id="pill-topic">Topic</span>
+    <span class="pill pill-d" id="pill-diff">Medium</span>
+    <span class="pill pill-n" id="pill-count">1 of 8</span>
+  </div>
+
+  <div id="struggle-alert">
+    <div class="sa-h">Keep going — you can do this.</div>
+    <p id="struggle-alert-body">This problem seems difficult. Take a moment, then try again.</p>
+  </div>
+
+  <div class="prob-card" id="prob-card">
+    <div class="prob-label" id="prob-label">Problem 1</div>
+    <div class="prob-text" id="prob-text">Loading…</div>
+    <div class="answer-area">
+      <input type="text" id="ans-input" placeholder="Your answer…" autocomplete="off" onkeydown="if(event.key==='Enter')checkAns()">
+      <button class="btn btn-pri" onclick="checkAns()">Submit</button>
+      <div id="timer">0:00</div>
+    </div>
+  </div>
+
+  <div id="feedback"></div>
+
+  <div id="hint-zone">
+    <div class="hint-btns" id="hint-btns"></div>
+    <div id="hint-cards"></div>
+  </div>
+
+  <div id="skip-row">
+    <button class="btn btn-ghost" onclick="skipProb()">Skip this problem</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     BETWEEN ROUNDS
+══════════════════════════════════════════════════════════════ -->
+<div id="s-transition" class="screen">
+  <div id="round-transition-wrap">
+    <h2 id="tr-title">Round complete.</h2>
+    <p id="tr-body">Take a short break. When you are ready, press the button below.</p>
+    <button class="btn btn-pri btn-lg" onclick="beginNextRound()">I am ready</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     POST-SURVEY
+══════════════════════════════════════════════════════════════ -->
+<div id="s-post-survey" class="screen fade-in">
+  <div class="s-tag tag-blue" id="post-survey-tag">Post-Session Survey</div>
+  <h2 class="section-h">How did that feel?</h2>
+  <p class="section-sub">Tell us how you are feeling after those problems. All questions are optional.</p>
+  <div id="post-survey-qs"></div>
+  <button class="btn btn-pri btn-full" onclick="submitSurvey('post')">See Results</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     RESULTS
+══════════════════════════════════════════════════════════════ -->
+<div id="s-results" class="screen fade-in">
+  <div class="s-tag tag-accent">Session Complete</div>
+  <h2 class="section-h" id="res-title">Round Results</h2>
+  <p class="section-sub">Summary for this session. The researcher will save the data below.</p>
+
+  <div class="res-grid">
+    <div class="stat hi">
+      <div class="s-lbl">Independent Success</div>
+      <div class="s-val" id="res-indep">—</div>
+      <div class="s-sub">Solved with no hint used</div>
+    </div>
+    <div class="stat">
+      <div class="s-lbl">Overall Accuracy</div>
+      <div class="s-val" id="res-acc">—</div>
+      <div class="s-sub">Problems correct</div>
+    </div>
+    <div class="stat">
+      <div class="s-lbl">Hints Viewed</div>
+      <div class="s-val" id="res-hints">—</div>
+      <div class="s-sub">Total across all problems</div>
+    </div>
+    <div class="stat">
+      <div class="s-lbl">Avg Struggle Time</div>
+      <div class="s-val" id="res-struggle">—</div>
+      <div class="s-sub">Seconds from trigger to correct</div>
+    </div>
+    <div class="stat">
+      <div class="s-lbl">Error Recurrence</div>
+      <div class="s-val" id="res-erec">—</div>
+      <div class="s-sub">Avg extra attempts per problem</div>
+    </div>
+    <div class="stat">
+      <div class="s-lbl">Skip Rate</div>
+      <div class="s-val" id="res-skip">—</div>
+      <div class="s-sub">Problems skipped</div>
+    </div>
+  </div>
+
+  <div class="log-block">
+    <h3>Problem Log</h3>
+    <table class="data-table">
+      <thead><tr><th>#</th><th>Type</th><th>Status</th><th>Attempts</th><th>Hints</th><th>Time (s)</th><th>Struggle</th></tr></thead>
+      <tbody id="log-tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="log-block">
+    <h3>Post-Round Survey Responses</h3>
+    <table class="data-table">
+      <thead><tr><th>Item</th><th>Score (1–5)</th></tr></thead>
+      <tbody id="eff-tbody"></tbody>
+    </table>
+  </div>
+
+  <div id="sheets-status-wrap" style="margin-top:8px;min-height:1.5em">
+    <span id="sheets-status" style="font-size:.82rem"></span>
+  </div>
+
+  <div class="btn-row" style="margin-top:20px">
+    <button class="btn btn-pri" id="btn-next-round" onclick="goNextRound()" disabled>Next Round</button>
+    <button class="btn btn-sec" onclick="resetAll()">New Session</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     END-OF-TRIAL SURVEY
+══════════════════════════════════════════════════════════════ -->
+<div id="s-end-survey" class="screen fade-in">
+  <div class="s-tag tag-accent">End of Study</div>
+  <h2 class="section-h">Final Survey</h2>
+  <p class="section-sub">Please answer the following questions about your overall experience. Your responses are completely anonymous and are only used for analysis.</p>
+  <div style="background:var(--card-bg);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 18px;margin-bottom:20px;font-size:.85rem;color:var(--mid)">
+    <strong style="color:var(--text)">Scale:</strong> &nbsp;1 = Strongly Disagree &nbsp;·&nbsp; 3 = Neutral &nbsp;·&nbsp; 5 = Strongly Agree
+  </div>
+  <div id="end-survey-qs"></div>
+  <div id="end-survey-status" style="min-height:1.4em;font-size:.82rem;margin-bottom:8px"></div>
+  <button class="btn btn-pri btn-full" onclick="submitEndSurvey()">Submit &amp; Finish</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FINAL
+══════════════════════════════════════════════════════════════ -->
+<div id="s-final" class="screen fade-in">
+  <div id="final-inner">
+    <h2>All Three Rounds Complete</h2>
+    <p>You finished the entire study. Thank you for participating. The researcher will take it from here.</p>
+    <button class="btn btn-sec" onclick="resetAll()">Start a New Study Session</button>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<button id="calc-toggle-btn" onclick="toggleCalc()">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="12" x2="10" y2="12"/><line x1="14" y1="12" x2="16" y2="12"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>
+  Calculator
+</button>
+
+<div id="calc-panel">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <span style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid)">Calculator</span>
+    <button onclick="toggleCalc()" style="background:none;border:none;cursor:pointer;color:var(--mid);font-size:1.3rem;line-height:1;padding:0 2px">×</button>
+  </div>
+  <div id="calc-display">0</div>
+  <div class="calc-grid">
+    <button class="cbtn cl" onclick="calcClear()">C</button>
+    <button class="cbtn cl" onclick="calcBackspace()">⌫</button>
+    <button class="cbtn cl" onclick="calcPercent()">%</button>
+    <button class="cbtn op" onclick="calcOp('÷')">÷</button>
+    <button class="cbtn" onclick="calcDigit('7')">7</button>
+    <button class="cbtn" onclick="calcDigit('8')">8</button>
+    <button class="cbtn" onclick="calcDigit('9')">9</button>
+    <button class="cbtn op" onclick="calcOp('×')">×</button>
+    <button class="cbtn" onclick="calcDigit('4')">4</button>
+    <button class="cbtn" onclick="calcDigit('5')">5</button>
+    <button class="cbtn" onclick="calcDigit('6')">6</button>
+    <button class="cbtn op" onclick="calcOp('−')">−</button>
+    <button class="cbtn" onclick="calcDigit('1')">1</button>
+    <button class="cbtn" onclick="calcDigit('2')">2</button>
+    <button class="cbtn" onclick="calcDigit('3')">3</button>
+    <button class="cbtn op" onclick="calcOp('+')">+</button>
+    <button class="cbtn zero" onclick="calcDigit('0')">0</button>
+    <button class="cbtn" onclick="calcDigit('.')">.</button>
+    <button class="cbtn eq" onclick="calcEquals()">=</button>
+  </div>
+</div>
+
+<script>const TOPICS = {
+  combinatorics: {
+    name: 'Counting Principles',
+    tutTitle: 'Counting Principles & Arrangements',
+    tutSub: 'A powerful shortcut for counting choices and arrangements without listing everything out.',
+    tutHTML: `
+      <div class="mod-box">
+        <div class="mod-title">The Multiplication (Counting) Principle</div>
+        <p>If one task can be done in <em>m</em> ways and a separate task can be done in <em>n</em> ways, then both tasks together can be done in <em>m × n</em> ways.</p>
+        <p>Example: choosing an outfit from 3 shirts and 4 pairs of jeans → 3 × 4 = <strong>12</strong> possible outfits.</p>
+      </div>
+      <div class="card card-sm" style="margin-bottom:16px">
+        <p style="font-weight:600;margin-bottom:12px">Three worked examples:</p>
+        <div class="example-row">
+          <div class="ex-pill">2 coin flips<span>2 × 2 = <strong>4</strong> outcomes</span></div>
+          <div class="ex-pill">4 shirts, 3 jeans<span>4 × 3 = <strong>12</strong> outfits</span></div>
+          <div class="ex-pill">5 starters, 6 mains<span>5 × 6 = <strong>30</strong> meals</span></div>
+        </div>
+      </div>
+      <div class="card card-sm" style="margin-bottom:16px;border-left:4px solid var(--purple)">
+        <p style="font-weight:600;margin-bottom:8px">Arranging items in order (factorial):</p>
+        <p style="font-size:.91rem;color:var(--mid);line-height:1.6">To arrange <em>n</em> different items in order, there are <strong>n!</strong> ways (read "n factorial").</p>
+        <p style="font-size:.91rem;color:var(--mid);line-height:1.6;margin-top:6px"><strong>Example:</strong> 4 items → 4! = 4 × 3 × 2 × 1 = 24 arrangements.</p>
+        <p style="font-size:.91rem;color:var(--mid);line-height:1.6;margin-top:6px">The number of unique ordered ways to select <em>r</em> items from a group of <em>n</em>.</p>
+      </div>`,
+    quiz: {
+      q: 'Quick check — a restaurant offers 3 starters and 4 main courses. How many different two-course meals (one starter + one main) can you choose?',
+      opts: [
+        { val:'12', correct:true,  msg:'Correct! 3 starters × 4 mains = 12 combinations.' },
+        { val:'7',  correct:false, msg:'Not quite — when combining two independent choices, you multiply, not add. 3 × 4 = 12.' },
+        { val:'6',  correct:false, msg:'Not quite. There are 3 choices for starters and 4 for mains. Multiply: 3 × 4 = 12.' },
+        { val:'16', correct:false, msg:'Not quite. The multiplication principle says 3 × 4 = 12, not 4 × 4.' }
+      ]
+    },
+    problems: [
+      { text:'A combination lock has 3 dials, each showing digits 0–9. How many possible combinations are there?', note:'Each dial has 10 choices. Use the multiplication principle: multiply the choices for each dial.', ans:'1000', diff:'Easy', type:'Multiplication principle' },
+      { text:'A coffee shop offers 4 sizes and 5 flavours. How many different drinks can you order (one size + one flavour)?', note:'Multiply the number of choices for each decision.', ans:'20', diff:'Easy', type:'Multiplication principle' },
+      { text:'From 6 candidates, a president and a vice-president are chosen (different people). How many ways can this be done?', note:'Choose president first (6 options), then vice-president from the remaining 5.', ans:'30', diff:'Medium', type:'Ordered selection' },
+      { text:'How many 4-digit PINs (digits 0–9, no repeated digits) are possible?', note:'First digit: 10 choices. Second: 9 (one already used). Third: 8. Fourth: 7. Multiply all four.', ans:'5040', diff:'Hard', type:'Ordered selection' },
+      { text:'From a group of 5 friends, 3 are chosen to form a team. Order does not matter. How many different teams are possible?', note:'C(5,3) = (5 × 4 × 3) ÷ (3 × 2 × 1). Divide by 3! to remove duplicate orderings.', ans:'10', diff:'Hard', type:'Combinations' }
+    ]
+  },
+  probability: {
+    name: 'Probability',
+    tutTitle: 'Probability — Predicting Chance',
+    tutSub: 'Probability measures how likely an event is to happen, as a number from 0 (impossible) to 1 (certain).',
+    tutHTML: `
+      <div class="mod-box">
+        <div class="mod-title">What is Probability?</div>
+        <p>Probability is the chance that an event occurs. It is always between 0 and 1.</p>
+        <p>Formula: <code>P(event) = number of favourable outcomes ÷ total possible outcomes</code></p>
+      </div>
+      <div class="card card-sm" style="margin-bottom:16px">
+        <p style="font-weight:600;margin-bottom:12px">Four key rules:</p>
+        <div class="example-row">
+          <div class="ex-pill">P(A) = 3 ÷ 8<span>3 favourable of 8 total</span></div>
+          <div class="ex-pill">P(not A) = 1 − P(A)<span>Complement rule</span></div>
+          <div class="ex-pill">P(A and B) = P(A) × P(B)<span>If A and B are independent</span></div>
+          <div class="ex-pill">P(A or B) = P(A) + P(B) − P(A and B)<span>Addition rule</span></div>
+        </div>
+      </div>
+      <div class="card card-sm" style="margin-bottom:16px;border-left:4px solid var(--purple)">
+        <p style="font-weight:600;margin-bottom:8px">Independent events &amp; the addition rule:</p>
+        <p style="font-size:.91rem;color:var(--mid);line-height:1.6">Two events are <em>independent</em> if the result of one does not affect the other (e.g., rolling two dice). For independent events, multiply their probabilities.</p>
+        <p style="font-size:.91rem;color:var(--mid);line-height:1.6;margin-top:6px">To find P(A <em>or</em> B), add both probabilities then subtract the overlap: <code>P(A or B) = P(A) + P(B) − P(A and B)</code>. If A and B cannot both happen at once (mutually exclusive), the overlap is 0 and you simply add.</p>
+      </div>`,
+    quiz: {
+      q: 'Quick check — a bag has 4 red balls and 6 blue balls. One ball is picked at random. What is P(red)? Write as a fraction.',
+      opts: [
+        { val:'2/5', correct:true,  msg:'Correct! 4 red out of 10 total = 4/10 = 2/5.' },
+        { val:'4/6', correct:false, msg:'Not quite. The total is 10 balls (4 red + 6 blue), not 6. P(red) = 4/10 = 2/5.' },
+        { val:'1/5', correct:false, msg:'Not quite. There are 4 red balls out of 10 total. P(red) = 4/10 = 2/5.' },
+        { val:'3/5', correct:false, msg:'Not quite. That would be P(blue). P(red) = 4/10 = 2/5.' }
+      ]
+    },
+    problems: [
+      { text:'A fair six-sided die is rolled once. What is the probability of rolling a number greater than 4? Write as a fraction.', note:'List the numbers greater than 4 on a standard die. Divide by the total number of sides.', ans:'1/3', diff:'Easy', type:'Basic probability' },
+      { text:'A bag contains 7 red marbles, 5 blue marbles, and 4 green marbles. If one marble is drawn at random, what is the probability it is not green? Write as a fraction.', note:'Use the complement rule: P(not green) = 1 − P(green). First find the total number of marbles.', ans:'3/4', diff:'Easy', type:'Complement rule' },
+      { text:'In a class of 20 students, 12 are taking Math, 10 are taking Science, and 6 are taking both. What is the probability that a randomly chosen student is taking Math or Science? Write as a decimal.', note:'Use the addition rule: P(Math or Science) = P(Math) + P(Science) − P(both). Convert each count to a probability out of 20.', ans:'0.8', diff:'Medium', type:'Addition rule' },
+      { text:'A card is drawn from a standard 52-card deck. A standard deck has 52 cards split into 4 suits: hearts (♥) and diamonds (♦) are red; clubs (♣) and spades (♠) are black. Each suit has 13 cards: Ace (=1), 2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, King. Given that the drawn card is red, what is the probability it is either a heart with a value less than 8, or an even-numbered (non-face) diamond? Write as a fraction.', note:'You are choosing from the 26 red cards only. Count hearts less than 8 (Ace counts as 1, so: A,2,3,4,5,6,7 = 7 cards) and even-numbered diamonds (2,4,6,8,10 = 5 cards). These sets do not overlap. Apply P(A or B) = P(A) + P(B).', ans:'6/13', diff:'Hard', type:'Conditional probability' },
+      { text:'You roll two fair six-sided dice. What is the probability that the sum of the two numbers is 7? Write as a fraction.', note:'There are 6 × 6 = 36 equally likely outcomes. List the pairs that add to 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1).', ans:'1/6', diff:'Hard', type:'Sample space' }
+    ]
+  },
+  exponential: {
+    name: 'Exponential Growth & Decay',
+    tutTitle: 'Exponential Growth & Decay',
+    tutSub: 'When something multiplies by the same factor each time step, it grows or shrinks exponentially.',
+    tutHTML: `
+      <div class="mod-box">
+        <div class="mod-title">What is Exponential Growth?</div>
+        <p>When a quantity is multiplied by the same factor at each step, the change is called exponential.</p>
+        <p>Formula: <code>A = P × r^t</code> — P is the starting value, r is the growth factor, t is the number of steps.</p>
+      </div>
+      <div class="card card-sm" style="margin-bottom:16px">
+        <p style="font-weight:600;margin-bottom:12px">Three worked examples:</p>
+        <div class="example-row">
+          <div class="ex-pill">100 cells, doubles 3×<span>100 × 2^3 = <strong>800</strong></span></div>
+          <div class="ex-pill">$500, grows 10%/yr, 2 yr<span>500 × 1.1^2 = <strong>$605</strong></span></div>
+          <div class="ex-pill">80 g, halves each year<span>80 × 0.5^3 = <strong>10 g</strong> after 3 yr</span></div>
+        </div>
+      </div>
+      <div class="card card-sm" style="margin-bottom:16px;border-left:4px solid var(--purple)">
+        <p style="font-weight:600;margin-bottom:8px">Growth vs. Decay:</p>
+        <p style="font-size:.91rem;color:var(--mid);line-height:1.6">If the factor r is <strong>greater than 1</strong>, the quantity grows (e.g., 10% annual growth → r = 1.10). If r is <strong>between 0 and 1</strong>, the quantity shrinks/decays (e.g., loses 20% each year → r = 0.80).</p>
+      </div>`,
+    quiz: {
+      q: 'Quick check — a colony starts with 20 bacteria and doubles every hour. How many bacteria are there after 3 hours?',
+      opts: [
+        { val:'160', correct:true,  msg:'Correct! 20 × 2^3 = 20 × 8 = 160.' },
+        { val:'60',  correct:false, msg:'Not quite. Each hour the colony doubles (×2), not increases by 20. 20 × 2 × 2 × 2 = 160.' },
+        { val:'80',  correct:false, msg:'Not quite. That would be after 2 hours (20 × 4 = 80). After 3 hours: 20 × 8 = 160.' },
+        { val:'40',  correct:false, msg:'Not quite. That is after just 1 hour. After 3 hours of doubling: 20 × 2³ = 160.' }
+      ]
+    },
+    problems: [
+      { text:'A bacterial colony starts with 50 cells and doubles every hour. How many cells are there after 3 hours?', note:'Multiply by 2 three times: 50 × 2 × 2 × 2 (or 50 × 2^3).', ans:'400', diff:'Easy', type:'Exponential growth' },
+      { text:'A savings account starts with $100 and the amount doubles every year. How much is in the account after 4 years?', note:'Multiply by 2 four times: 100 × 2^4.', ans:'1600', diff:'Easy', type:'Exponential growth' },
+      { text:'A car is worth $15,000. It loses 20% of its value each year. What is it worth after 3 years?', note:'A 20% decrease means you multiply by (1 − 0.20) = 0.80 each year. Apply this three times: 15000 × (0.80)^3.', ans:'7680', diff:'Medium', type:'Exponential decay' },
+      { text:'A radioactive substance starts at 1.6 kg. It halves every year. 0.2 kg of the substance is added back at the end of every year. How many grams remain after 5 years? (1 kg = 1000 g)', note:'Work in kg, year by year: each year multiply by 0.5 then add 0.2. Year 1: 1.6×0.5+0.2=1.0. Year 2: 1.0×0.5+0.2=0.7. Continue to year 5, then convert to grams.', ans:'437.5', diff:'Hard', type:'Exponential decay' },
+      { text:'$1000 is invested at 25% annual compound interest. 4% of the account balance is spent each year on additional fees and expenses. How much is it worth after 2 years?', note:'Each year: multiply by 1.25 (25% interest), then multiply by 0.96 (4% fee deducted). Net factor per year = 1.25 × 0.96 = 1.20. After 2 years: 1000 × (1.20)^2.', ans:'1440', diff:'Hard', type:'Compound interest' }
+    ]
+  }
+};
+const TOPIC_ORDER_MAP = {
+  combinatorics: ['combinatorics', 'probability',    'exponential'],
+  probability:   ['probability',   'exponential',    'combinatorics'],
+  exponential:   ['exponential',   'combinatorics',  'probability'],
+};
+const SURVEY_ITEMS = [
+  { id:'se1', text:'I am confident I can solve these math problems on my own.' },
+  { id:'se2', text:'I believe I can figure out problems even when they are hard.' },
+  { id:'se3', text:'When I get stuck, I feel like I can work through it.' },
+  { id:'se4', text:'I feel good about my ability to do this type of problem.' },
+  { id:'se5', text:'I think I can get better at this with practice.' },
+  { id:'pc1', text:'The problems in this session felt very challenging to me.' },
+  { id:'pc2', text:'I felt frustrated or discouraged during this session.' }
+];
+const HINT_SURVEY_ITEMS = [
+  { id:'hs1', text:'The Minimal Adaptive AI Hint (Round 2) helped me understand how to approach the problem.' },
+  { id:'hs2', text:'The full step-by-step solution (Round 3) helped me understand how to solve the problem.' },
+  { id:'hs3', text:'I found the Minimal Adaptive AI Hint more useful than the full solution for figuring things out on my own.' },
+  { id:'hs4', text:'After receiving the Minimal Adaptive AI Hint, I felt confident I could solve the problem myself.' },
+  { id:'hs5', text:'After seeing the full solution, I felt confident I could solve similar problems in the future.' },
+  { id:'hs6', text:'I would prefer to receive the Minimal Adaptive AI Hint rather than the full answer.' },
+];
+const END_SURVEY_ITEMS = [
+  { id:'ase1', section:'Section 1 — Academic Self-Efficacy', text:'I feel confident solving problems like these on my own.' },
+  { id:'ase2', section:'Section 1 — Academic Self-Efficacy', text:'If I saw a new problem on this topic, I believe I could solve it independently.' },
+  { id:'ase3', section:'Section 1 — Academic Self-Efficacy', text:'When I get stuck on a math problem, I believe I can eventually figure it out.' },
+  { id:'ase4', section:'Section 1 — Academic Self-Efficacy', text:'I feel more confident in my math problem-solving ability after this activity.' },
+  { id:'ase5', section:'Section 1 — Academic Self-Efficacy', text:'I believe I can solve difficult math problems if I keep trying.' },
+  { id:'ase6', section:'Section 1 — Academic Self-Efficacy', text:'I could explain how to solve problems like these to another student.' },
+  { id:'gh1',  section:'Section 2a — Learning From Guided Hints', text:'The guided hints helped me think about how to solve the problem.' },
+  { id:'gh2',  section:'Section 2a — Learning From Guided Hints', text:'The guided hints helped me understand the math concept better.' },
+  { id:'gh3',  section:'Section 2a — Learning From Guided Hints', text:'The guided hints encouraged me to keep trying to solve the problem myself.' },
+  { id:'fh1',  section:'Section 2b — Learning From Full-Solution Hints', text:'The full-solution hints helped me understand how the problem works.' },
+  { id:'fh2',  section:'Section 2b — Learning From Full-Solution Hints', text:'When I saw the full solution, I sometimes relied on it instead of thinking through the problem myself.' },
+  { id:'fh3',  section:'Section 2b — Learning From Full-Solution Hints', text:'Seeing the full solution immediately made it easier to move on without fully understanding the problem.' },
+  { id:'hc1',  section:'Section 2c — Comparison Between Hint Types', text:'The guided hints helped me learn more than the full-solution hints.' },
+  { id:'hc2',  section:'Section 2c — Comparison Between Hint Types', text:'I prefer guided hints that help me figure out the answer rather than seeing the full solution immediately.' },
+];
+const DIFF_WEIGHTS = { Easy:0.8, Medium:1.0, Hard:1.2 };
+class StruggleDetector {
+  constructor(studentId, baselineTime = 75) {
+    this.studentId     = studentId;
+    this.baselineTime  = baselineTime; 
+    this._attempts     = [];           
+    this._hints        = [];           
+    this._probAttempts = {};           
+    this._conceptErrors= {};           
+    this.INCORRECT_TRIGGER     = 2;    
+    this.TIME_TRIGGER          = 60;   
+    this.TIME_RATIO_SAT        = 3.0;
+    this.ACCURACY_WINDOW       = 5;
+    this.ERROR_RECURRENCE_CEIL = 4.0;
+    this.FAST_ESC              = 10;   
+    this.SLOW_ESC              = 120;
+    this.WEIGHTS = {
+      incorrect_attempt_rate:    0.30,
+      time_above_baseline_ratio: 0.25,
+      error_recurrence_rate:     0.20,
+      accuracy_trend:            0.10,
+      hint_escalation_speed:     0.08,
+      skip_rate:                 0.07,
+    };
+  }
+  recordAttempt(pid, concept, diff, isCorrect, elapsedSec, isSkip = false) {
+    const a = { pid, concept, diff, correct: isCorrect, elapsed: elapsedSec, isSkip, ts: Date.now() };
+    this._attempts.push(a);
+    if (!this._probAttempts[pid]) this._probAttempts[pid] = [];
+    this._probAttempts[pid].push(a);
+    if (!isCorrect && !isSkip) {
+      this._conceptErrors[concept] = (this._conceptErrors[concept] || 0) + 1;
+    }
+  }
+  recordHint(pid, depth) {  
+    this._hints.push({ pid, depth, ts: Date.now() });
+  }
+  evaluate() {
+    if (!this._attempts.length) return this._empty();
+    const signals = {
+      incorrect_attempt_rate:    this._scoreIncorrectAttemptRate(),
+      time_above_baseline_ratio: this._scoreTimeAboveBaseline(),
+      error_recurrence_rate:     this._scoreErrorRecurrence(),
+      accuracy_trend:            this._scoreAccuracyTrend(),
+      hint_escalation_speed:     this._scoreHintEscalation(),
+      skip_rate:                 this._scoreSkipRate(),
+    };
+    const weighted = {};
+    let sum = 0;
+    for (const [k, v] of Object.entries(this.WEIGHTS)) {
+      weighted[k] = signals[k] * v;
+      sum += weighted[k];
+    }
+    const score  = Math.min(100, Math.max(0, sum * 100));
+    const level  = this._classify(score);
+    const { active, concept } = this._struggleWindowStatus();
+    const dominant = this._dominantConcepts(3);
+    const tone   = this._recommendedTone(score, signals);
+    return { score, level, signals, weighted, struggleWindowActive: active,
+             triggerConcept: concept, problemsSeen: Object.keys(this._probAttempts).length,
+             dominantConcepts: dominant, recommendedTone: tone };
+  }
+  _scoreIncorrectAttemptRate() {
+    const real = this._attempts.filter(a => !a.isSkip);
+    if (!real.length) return 0;
+    const dw = (a) => DIFF_WEIGHTS[a.diff] || 1.0;
+    const totalW = real.reduce((s,a) => s + dw(a), 0);
+    const wrongW = real.filter(a => !a.correct).reduce((s,a) => s + dw(a), 0);
+    return totalW ? wrongW / totalW : 0;
+  }
+  _scoreTimeAboveBaseline() {
+    const times = Object.values(this._probAttempts).map(atts => {
+      const last = atts.reduce((m,a) => a.elapsed > m.elapsed ? a : m, atts[0]);
+      return last.isSkip ? null : last.elapsed;
+    }).filter(t => t !== null);
+    if (!times.length) return 0;
+    const scores = times.map(t => {
+      const excess = Math.max(0, t / this.baselineTime - 1);
+      return Math.min(1, excess / (this.TIME_RATIO_SAT - 1));
+    });
+    return scores.reduce((s,v) => s+v, 0) / scores.length;
+  }
+  _scoreErrorRecurrence() {
+    const vals = Object.values(this._conceptErrors);
+    if (!vals.length) return 0;
+    const per = vals.map(c => Math.min(1, c / this.ERROR_RECURRENCE_CEIL));
+    return per.reduce((s,v) => s+v, 0) / per.length;
+  }
+  _scoreAccuracyTrend() {
+    const pids   = this._orderedProblemIds();
+    const window = pids.slice(-this.ACCURACY_WINDOW);
+    if (window.length < 3) return 0;
+    const y = window.map(pid => {
+      const atts = this._probAttempts[pid];
+      const last = atts.reduce((m,a) => a.ts > m.ts ? a : m, atts[0]);
+      return last.correct ? 1 : 0;
+    });
+    const x = y.map((_, i) => i);
+    const slope = olsSlope(x, y);
+    return Math.min(1, Math.max(0, -slope));
+  }
+  _scoreHintEscalation() {
+    if (this._hints.length < 2) return 0;
+    const byPid = {};
+    this._hints.forEach(h => { (byPid[h.pid] = byPid[h.pid]||[]).push(h); });
+    const gaps = [];
+    for (const evs of Object.values(byPid)) {
+      evs.sort((a,b) => a.ts - b.ts);
+      for (let i=1; i<evs.length; i++) {
+        if (evs[i].depth > evs[i-1].depth) {
+          gaps.push((evs[i].ts - evs[i-1].ts) / 1000);
+        }
+      }
+    }
+    if (!gaps.length) return 0;
+    const med = gaps.slice().sort((a,b) => a-b)[Math.floor(gaps.length/2)];
+    if (med <= this.FAST_ESC) return 1;
+    if (med >= this.SLOW_ESC) return 0;
+    return 1 - (med - this.FAST_ESC) / (this.SLOW_ESC - this.FAST_ESC);
+  }
+  _scoreSkipRate() {
+    const pids = Object.keys(this._probAttempts);
+    if (!pids.length) return 0;
+    const skipped = pids.filter(pid => this._probAttempts[pid].some(a => a.isSkip)).length;
+    return skipped / pids.length;
+  }
+  _struggleWindowStatus() {
+    for (const [concept, count] of Object.entries(this._conceptErrors)) {
+      if (count >= this.INCORRECT_TRIGGER) return { active:true, concept };
+    }
+    for (const [pid, atts] of Object.entries(this._probAttempts)) {
+      const anyCorrect = atts.some(a => a.correct);
+      if (!anyCorrect) {
+        const maxTime = Math.max(...atts.filter(a => !a.isSkip).map(a => a.elapsed || 0));
+        if (maxTime >= this.TIME_TRIGGER) {
+          return { active:true, concept: atts[0].concept };
+        }
+      }
+    }
+    return { active:false, concept: null };
+  }
+  _dominantConcepts(n) {
+    return Object.entries(this._conceptErrors)
+      .sort((a,b) => b[1]-a[1])
+      .slice(0,n)
+      .map(([c]) => c);
+  }
+  _recommendedTone(score, signals) {
+    if (score >= 60 || signals.skip_rate > 0.3) return 'encouraging';
+    if (score >= 30) return 'neutral';
+    return 'direct';
+  }
+  _orderedProblemIds() {
+    const seen = [];
+    this._attempts.forEach(a => { if (!seen.includes(a.pid)) seen.push(a.pid); });
+    return seen;
+  }
+  _classify(score) {
+    if (score < 30) return 'GREEN';
+    if (score < 60) return 'YELLOW';
+    if (score < 85) return 'ORANGE';
+    return 'RED';
+  }
+  _empty() {
+    return { score:0, level:'GREEN', signals:{}, weighted:{}, struggleWindowActive:false,
+             triggerConcept:null, problemsSeen:0, dominantConcepts:[], recommendedTone:'neutral' };
+  }
+  buildProfile(opts = {}) {
+    const result = this.evaluate();
+    const times  = Object.values(this._probAttempts).map(atts => {
+      const last = atts.reduce((m,a) => a.elapsed > m.elapsed ? a : m, atts[0]);
+      return last.isSkip ? null : last.elapsed;
+    }).filter(t => t !== null);
+    const medTime = times.length ? times.slice().sort((a,b)=>a-b)[Math.floor(times.length/2)] : this.baselineTime;
+    const pids    = this._orderedProblemIds();
+    const total   = pids.length;
+    const correct = pids.filter(pid => this._probAttempts[pid].some(a => a.correct)).length;
+    const indep   = pids.filter(pid => {
+      const atts = this._probAttempts[pid];
+      const hintsOnProb = this._hints.filter(h => h.pid === pid).length;
+      return atts.some(a => a.correct) && hintsOnProb === 0;
+    }).length;
+    const skipped = pids.filter(pid => this._probAttempts[pid].some(a => a.isSkip)).length;
+    return {
+      student_id:              this.studentId,
+      grade:                   opts.grade || 10,
+      topic:                   opts.topic || '',
+      session_date:            new Date().toISOString(),
+      final_struggle_score:    +result.score.toFixed(2),
+      struggle_level:          result.level,
+      struggle_window_reached: result.struggleWindowActive,
+      trigger_concept:         result.triggerConcept,
+      dominant_concepts:       result.dominantConcepts,
+      recommended_tone:        result.recommendedTone,
+      concept_error_counts:    { ...this._conceptErrors },
+      final_signals:           result.signals,
+      problems_seen:           total,
+      accuracy_pct:            +((correct / Math.max(total,1)) * 100).toFixed(1),
+      independent_success_pct: +((indep   / Math.max(total,1)) * 100).toFixed(1),
+      skip_rate_pct:           +((skipped / Math.max(total,1)) * 100).toFixed(1),
+      median_time_per_problem: +medTime.toFixed(1),
+      score_trajectory:        opts.trajectory || [],
+    };
+  }
+}
+function olsSlope(x, y) {
+  const n = x.length;
+  if (n < 2) return 0;
+  const mx = x.reduce((s,v)=>s+v,0)/n;
+  const my = y.reduce((s,v)=>s+v,0)/n;
+  const num   = x.reduce((s,xi,i) => s + (xi-mx)*(y[i]-my), 0);
+  const denom = x.reduce((s,xi)   => s + (xi-mx)**2, 0);
+  return denom ? num/denom : 0;
+}
+function buildAdaptiveSystemPrompt(profile, topicName, grade, hintType) {
+  const score    = profile.final_struggle_score || 0;
+  const level    = profile.struggle_level || 'GREEN';
+  const tone     = profile.recommended_tone || 'neutral';
+  const dominant = profile.dominant_concepts || [];
+  const trigger  = profile.trigger_concept || '';
+  const errs     = profile.concept_error_counts || {};
+  const indep    = profile.independent_success_pct || 50;
+  const skipPct  = profile.skip_rate_pct || 0;
+  const accPct   = profile.accuracy_pct || 50;
+  const traj     = profile.score_trajectory || [];
+  const trajDesc = (() => {
+    if (traj.length < 2) return 'insufficient data';
+    const delta = traj[traj.length-1] - traj[0];
+    const avg   = (traj.reduce((s,v)=>s+v,0)/traj.length).toFixed(0);
+    if (delta > 10) return `worsening over session (${traj[0].toFixed(0)} → ${traj[traj.length-1].toFixed(0)})`;
+    if (delta < -10) return `improving over session (${traj[0].toFixed(0)} → ${traj[traj.length-1].toFixed(0)})`;
+    return `stable throughout session (~${avg})`;
+  })();
+  const conceptCtx = Object.keys(errs).length
+    ? 'Concepts where this student struggled most: ' +
+      Object.entries(errs).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`${c} (${n} errors)`).join(', ') + '. '
+    : '';
+  const toneMap = {
+    encouraging: 'Use a warm, patient, encouraging tone. This student showed signs of frustration or avoidance. Start by briefly affirming that the problem is genuinely hard, then guide gently.',
+    neutral:     'Use a clear, friendly, matter-of-fact tone. The student is engaged but finding the material difficult.',
+    direct:      'Use a concise, direct tone. The student is capable and just needs a targeted nudge.',
+  };
+  let prompt =
+    `You are a personalised math tutor for a Grade ${grade} student working on ${topicName}.\n\n` +
+    `STUDENT PROFILE (from their baseline diagnostic session):\n` +
+    `  · Overall struggle severity : ${score.toFixed(0)}/100 (${level})\n` +
+    `  · Struggle trajectory       : ${trajDesc}\n` +
+    `  · Independent success rate  : ${indep.toFixed(0)}%\n` +
+    `  · Session accuracy          : ${accPct.toFixed(0)}%\n` +
+    `  · Skip rate                 : ${skipPct.toFixed(0)}%\n`;
+  if (trigger) prompt += `  · Hardest concept           : ${trigger}\n`;
+  if (dominant.length) prompt += `  · Top struggle concepts     : ${dominant.join(', ')}\n`;
+  prompt += `\n${conceptCtx}\n`;
+  prompt += `TONE: ${toneMap[tone] || toneMap.neutral}\n\n`;
+  if (hintType === 'minimal') {
+    prompt +=
+      `TASK — MINIMAL HINT (WORKED EXAMPLE):\n` +
+      `Do NOT hint at or solve the student's problem directly. Instead, invent a simple, different problem of the same type and briefly work through its first 1–2 steps to show the approach. ` +
+      `Frame it as "Here's a similar problem:" then show just enough working to demonstrate the method — stop before completing it.` +
+      `The student should be able to transfer the approach to their own problem without being given the answer. ` +
+      (trigger ? `This student found "${trigger}" especially hard — if this problem involves that concept, pick an example that makes that concept feel approachable. ` : '') +
+      `Use plain text for all math — no LaTeX (no \\[, \\], \\frac, \\times etc.). Write × as ×, write exponents using ^ (e.g. 2^3, not 2³).` +
+      `\nOutput only the example and partial working. No labels, no preamble.`;
+  } else {
+    prompt +=
+      `TASK — FULL STEP-BY-STEP SOLUTION:\n` +
+      `Walk the student through the complete solution. Number each step. ` +
+      `Use plain language for Grade ${grade}. ` +
+      `After the final step, add one sentence that connects the solution method back to the concept (e.g. "This is exactly what modular arithmetic does — it always wraps numbers around."). ` +
+      (dominant.length ? `If this problem's concept appears in the student's struggle list (${dominant.join(', ')}), add a one-sentence encouragement at the very end. ` : '') +
+      `Use plain text for all math — no LaTeX (no \\[, \\], \\frac, \\times etc.). Write × as ×, write exponents using ^ (e.g. 2^3, not 2³).` +
+      `\nOutput only the numbered steps plus any closing sentence. No preamble.`;
+  }
+  return prompt;
+}
+function buildAdaptiveUserPrompt(probText, probNote, correctAns, hintType) {
+  const reveal = hintType === 'full'
+    ? `\nCorrect answer: ${correctAns}`
+    : `\nCorrect answer (DO NOT reveal): ${correctAns}`;
+  return `Problem: "${probText}"\nHint shown to student: "${probNote}"${reveal}\n\n` +
+    (hintType === 'minimal' ? 'Write the worked-example hint: invent a similar problem, show its first 1–2 steps only, do not solve the student\'s problem.'
+                            : 'Write the complete numbered solution.');
+}
+const S = {
+  sid:'', grade:10, startRound:1, round:1,
+  order:'A',
+  condition:'baseline',
+  topicRotation:[], topic:'modular',
+  probIdx:0, probs:[],
+  logs:[],
+  preSurvey:{}, postSurvey:{}, endSurvey:{},
+  attempts:0, hintsViewed:[], struggleTriggered:false,
+  probStart:null, struggleStart:null,
+  timerIv:null,
+  exportData:null,
+  probLocked:false,       
+  submitCooldown:false,   
+  detector: null,
+  scoreTrajectory: [],
+  r1Profile: null,          
+  loadedProfile: null,      
+  isAdaptiveRound: false,   
+  apiKey: '',
+  sheetsUrl: '',                  
+};
+function prog(p){ document.getElementById('progress-fill').style.width = p + '%' }
+function show(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  const calcBtn   = document.getElementById('calc-toggle-btn');
+  const calcPanel = document.getElementById('calc-panel');
+  const showCalc  = id === 's-tutorial' || id === 's-problems';
+  if (calcBtn)   calcBtn.style.display   = showCalc ? 'flex' : 'none';
+  if (calcPanel) calcPanel.style.display = 'none';
+}
+function conditionForRound(r){
+  if (r===1) return 'baseline';
+  if (r===2) return 'minimal';
+  return 'full';
+}
+function updTopbar(){
+  document.getElementById('tb-sid').textContent  = S.sid || '—';
+  document.getElementById('tb-rnd').textContent  = 'Round ' + S.round;
+  document.getElementById('tb-topic').textContent= TOPICS[S.topic]?.name || '—';
+}
+function elapsed(){ return S.probStart ? Math.round((Date.now() - S.probStart) / 1000) : 0 }
+function normAns(s){ return s.trim().toLowerCase().replace(/\s+/g,'') }
+function ansOk(user, correct){
+  if (normAns(user) === normAns(correct)) return true;
+  if (correct.includes('/')) return false;
+  try { return Math.abs(parseFloat(user) - parseFloat(correct)) < 0.05 } catch { return false }
+}
+function updStruggleBadge(result){
+  const wrap  = document.getElementById('tb-struggle-wrap');
+  const badge = document.getElementById('tb-struggle-badge');
+  if (!result || !result.score) return;
+  wrap.style.display  = 'flex';
+  badge.textContent   = result.score.toFixed(0) + ' ' + result.level;
+  badge.className     = result.level;
+}
+function updSignalPanel(result){
+  if (S.condition !== 'baseline') return;
+  const panel = document.getElementById('signal-panel');
+  panel.style.display = 'block';
+  const LABELS = {
+    incorrect_attempt_rate:    'incorrect_attempt_rate',
+    time_above_baseline_ratio: 'time_above_baseline',
+    error_recurrence_rate:     'error_recurrence_rate',
+    accuracy_trend:            'accuracy_trend',
+    hint_escalation_speed:     'hint_escalation_speed',
+    skip_rate:                 'skip_rate',
+  };
+  const barsEl = document.getElementById('signal-bars');
+  barsEl.innerHTML = '';
+  for (const [key, val] of Object.entries(result.signals || {})) {
+    const row = document.createElement('div');
+    row.className = 'sig-row';
+    row.innerHTML = `
+      <div class="sig-name">${LABELS[key] || key}</div>
+      <div class="sig-bar-wrap"><div class="sig-bar" style="width:${(val*100).toFixed(1)}%"></div></div>
+      <div class="sig-val">${val.toFixed(3)}</div>`;
+    barsEl.appendChild(row);
+  }
+  document.getElementById('sp-score').textContent = result.score.toFixed(1);
+  const lvl = document.getElementById('sp-level');
+  lvl.textContent = result.level;
+  lvl.className   = 'composite-level lv-' + result.level;
+  document.getElementById('sp-trigger').textContent  = result.triggerConcept || '—';
+  document.getElementById('sp-dominant').textContent = result.dominantConcepts?.join(', ') || '—';
+  document.getElementById('sp-window-status').textContent =
+    result.struggleWindowActive ? '⚠ STRUGGLE WINDOW ACTIVE' : '';
+  document.getElementById('sp-window-status').style.color =
+    result.struggleWindowActive ? 'var(--accent)' : '';
+}
+function startSession(){
+  S.sid        = document.getElementById('inp-sid').value.trim() || 'S-?';
+  S.grade      = parseInt(document.getElementById('inp-grade').value);
+  S.startRound = parseInt(document.getElementById('inp-round').value);
+  S.round      = S.startRound;
+  S.sheetsUrl = document.getElementById('inp-sheetsurl').value.trim();
+  S.apiKey = document.getElementById('inp-apikey').value.trim();
+  const firstTopic   = document.getElementById('inp-topic').value;
+  S.topicRotation    = TOPIC_ORDER_MAP[firstTopic];
+  S.topic            = S.topicRotation[S.round - 1] || S.topicRotation[0];
+  S.condition        = conditionForRound(S.round);
+  S.logs=[]; S.preSurvey={}; S.postSurvey={}; S.probIdx=0;
+  S.probs            = TOPICS[S.topic].problems.slice();
+  S.scoreTrajectory  = [];
+  S.loadedProfile   = null;
+  S.isAdaptiveRound = false;
+  if (S.condition !== 'baseline') {
+    const stored = localStorage.getItem('struggle_profile_' + S.sid);
+    if (stored) {
+      try { S.loadedProfile = JSON.parse(stored); } catch {}
+    }
+    S.isAdaptiveRound = !!S.loadedProfile;
+  }
+  let baselineTime = 75;
+  if (S.loadedProfile?.median_time_per_problem) {
+    baselineTime = S.loadedProfile.median_time_per_problem;
+  }
+  S.detector = new StruggleDetector(S.sid, baselineTime);
+  updTopbar();
+  renderTutorial();
+  show('s-tutorial');
+  prog(5);
+}
+function renderTutorial(){
+  const T = TOPICS[S.topic];
+  document.getElementById('tut-tag').textContent   = 'New Concept — Round ' + S.round + ' of 3';
+  document.getElementById('tut-title').textContent = T.tutTitle;
+  document.getElementById('tut-sub').textContent   = T.tutSub;
+  document.getElementById('tut-content').innerHTML = T.tutHTML;
+  document.getElementById('quiz-question').textContent = T.quiz.q;
+  document.getElementById('quiz-fb').style.display = 'none';
+  const optBox = document.getElementById('quiz-options');
+  optBox.innerHTML = '';
+  T.quiz.opts.forEach(opt => {
+    const b = document.createElement('button');
+    b.className   = 'btn btn-sec';
+    b.textContent = opt.val;
+    b.onclick = () => handleQuizAnswer(b, opt);
+    optBox.appendChild(b);
+  });
+}
+function handleQuizAnswer(btn, opt){
+  const fb = document.getElementById('quiz-fb');
+  fb.style.display = 'block';
+  fb.style.color   = opt.correct ? 'var(--green)' : 'var(--accent)';
+  fb.textContent   = opt.msg;
+  if (opt.correct){
+    document.querySelectorAll('#quiz-options .btn').forEach(b => b.disabled=true);
+    btn.style.background = 'var(--green-lt)';
+    btn.style.borderColor= '#74c69d';
+    btn.style.color      = 'var(--green)';
+  }
+}
+function proceedFromTutorial(){
+  beginProblems();
+}
+function renderSurvey(phase){
+  const cid = phase==='pre' ? 'pre-survey-qs' : 'post-survey-qs';
+  const c   = document.getElementById(cid);
+  c.innerHTML = '';
+  const items = (phase === 'post' && S.round === 3)
+    ? [...SURVEY_ITEMS, ...HINT_SURVEY_ITEMS]
+    : SURVEY_ITEMS;
+  items.forEach(item => {
+    const d = document.createElement('div');
+    d.className = 'survey-q fade-in';
+    d.innerHTML = `
+      <div class="q-text">${item.text} <span class="q-optional-tag">Optional</span></div>
+      <div class="likert" id="lk-${phase}-${item.id}">
+        ${[1,2,3,4,5].map(n=>`
+          <div class="lk-opt" onclick="pickLikert('${phase}','${item.id}',${n},this.parentElement)">
+            <div class="circle">${n}</div>
+          </div>`).join('')}
+      </div>
+      <div class="likert-ends"><span>Not at all true</span><span>Very true</span></div>`;
+    c.appendChild(d);
+  });
+}
+function pickLikert(phase, id, val, row){
+  row.querySelectorAll('.lk-opt').forEach(o => o.classList.remove('sel'));
+  row.children[val-1].classList.add('sel');
+  if (phase==='pre') S.preSurvey[id]=val;
+  else               S.postSurvey[id]=val;
+}
+function submitSurvey(phase){
+  if (phase==='pre') beginProblems();
+  else               showResults();
+}
+function renderEndSurvey(){
+  const c = document.getElementById('end-survey-qs');
+  c.innerHTML = '';
+  let lastSection = '';
+  END_SURVEY_ITEMS.forEach(item => {
+    if (item.section !== lastSection){
+      lastSection = item.section;
+      const h = document.createElement('div');
+      h.className = 'survey-section-h';
+      h.textContent = item.section;
+      c.appendChild(h);
+    }
+    const d = document.createElement('div');
+    d.className = 'survey-q fade-in';
+    d.innerHTML = `
+      <div class="q-text">${item.text}</div>
+      <div class="likert" id="lk-end-${item.id}">
+        ${[1,2,3,4,5].map(n=>`
+          <div class="lk-opt" onclick="pickEndLikert('${item.id}',${n},this.parentElement)">
+            <div class="circle">${n}</div>
+          </div>`).join('')}
+      </div>
+      <div class="likert-ends"><span>Strongly Disagree</span><span>Strongly Agree</span></div>`;
+    c.appendChild(d);
+  });
+}
+function pickEndLikert(id, val, row){
+  row.querySelectorAll('.lk-opt').forEach(o => o.classList.remove('sel'));
+  row.children[val-1].classList.add('sel');
+  S.endSurvey[id] = val;
+}
+async function submitEndSurvey(){
+  const statusEl = document.getElementById('end-survey-status');
+  if (S.sheetsUrl){
+    statusEl.style.color = 'var(--mid)';
+    statusEl.textContent = '⏳ Saving…';
+    await exportEndSurvey();
+  }
+  show('s-final');
+  prog(100);
+}
+async function exportEndSurvey(){
+  if (!S.sheetsUrl) return;
+  const statusEl = document.getElementById('end-survey-status');
+  const row = { timestamp: new Date().toISOString(), student_id: S.sid, grade: S.grade, survey_type: 'end_of_trial' };
+  END_SURVEY_ITEMS.forEach(item => { row[item.id] = S.endSurvey[item.id] ?? ''; });
+  try {
+    await fetch(S.sheetsUrl, {
+      method:  'POST',
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ endSurveyRow: row }),
+    });
+    statusEl.style.color = 'var(--green)';
+    statusEl.textContent = '✓ Saved';
+  } catch(err){
+    statusEl.style.color = 'var(--accent)';
+    statusEl.textContent = '✗ Save failed — you may still continue';
+    console.error('End survey export error:', err);
+  }
+}
+function beginProblems(){ S.probIdx=0; show('s-problems'); loadProb(); }
+function loadProb(){
+  const p     = S.probs[S.probIdx];
+  const total = S.probs.length;
+  S.attempts=0; S.hintsViewed=[]; S.struggleTriggered=false;
+  S.probStart=Date.now(); S.struggleStart=null;
+  S.probLocked=false; S.submitCooldown=false;
+  const inp = document.getElementById('ans-input');
+  if (inp) { inp.disabled = false; inp.style.opacity = ''; }
+  const submitBtn = inp?.nextElementSibling;
+  if (submitBtn && submitBtn.tagName === 'BUTTON') submitBtn.disabled = false;
+  const skipBtn = document.querySelector('#skip-row button');
+  if (skipBtn) skipBtn.disabled = false;
+  document.getElementById('ans-input').value               = '';
+  document.getElementById('feedback').style.display        = 'none';
+  document.getElementById('hint-zone').style.display       = 'none';
+  document.getElementById('struggle-alert').style.display  = 'none';
+  document.getElementById('hint-cards').innerHTML          = '';
+  document.getElementById('prob-card').classList.remove('struggling');
+  document.getElementById('pill-round').textContent  = 'Round ' + S.round;
+  document.getElementById('pill-topic').textContent  = TOPICS[S.topic].name;
+  document.getElementById('pill-diff').textContent   = p.diff;
+  document.getElementById('pill-count').textContent  = (S.probIdx+1) + ' of ' + total;
+  document.getElementById('prob-label').textContent  = 'Problem ' + (S.probIdx+1);
+  document.getElementById('prob-text').textContent   = p.text;
+  buildHintBtns();
+  clearInterval(S.timerIv);
+  S.timerIv = setInterval(tickTimer, 1000);
+  prog(15 + (S.probIdx / total) * 65);
+  document.getElementById('ans-input').focus();
+}
+function tickTimer(){
+  const s   = elapsed();
+  const m   = Math.floor(s/60);
+  const sec = s % 60;
+  const td  = document.getElementById('timer');
+  td.textContent = m + ':' + String(sec).padStart(2,'0');
+  td.classList.toggle('warn', s > 75);
+  if (!S.struggleTriggered && s >= 60 && S.attempts === 0) triggerStruggle();
+  if (s > 0 && s % 15 === 0 && S.detector) {
+    S.detector.evaluate();
+  }
+}
+function triggerStruggle(){
+  if (S.struggleTriggered) return;
+  S.struggleTriggered = true;
+  S.struggleStart     = Date.now();
+  document.getElementById('prob-card').classList.add('struggling');
+  let alertBody = 'This problem seems difficult. Take a moment, then try again.';
+  if (S.condition !== 'baseline') {
+    alertBody += ' A hint is available below if you need it.';
+  }
+  if (S.condition === 'baseline' && S.loadedProfile?.trigger_concept) {
+    const tc = S.loadedProfile.trigger_concept;
+    const p  = S.probs[S.probIdx];
+    if (p.type === tc) alertBody += ` You also found "${tc}" tricky last time — that's okay, keep going.`;
+  }
+  document.getElementById('struggle-alert-body').textContent = alertBody;
+  document.getElementById('struggle-alert').style.display = 'block';
+  if (S.condition !== 'baseline') document.getElementById('hint-zone').style.display = 'block';
+  S.detector.evaluate();
+}
+function buildHintBtns(){
+  const row = document.getElementById('hint-btns');
+  row.innerHTML = '';
+  if (S.condition === 'baseline') return;
+  if (S.condition === 'minimal'){
+    const b = document.createElement('button');
+    b.className   = 'hbtn hbtn-minimal';
+    b.id          = 'hbtn-minimal';
+    b.innerHTML   = 'Request a Hint' + (S.isAdaptiveRound ? '<span class="adaptive-badge">Adaptive</span>' : '');
+    b.onclick     = () => requestHint('minimal');
+    row.appendChild(b);
+  }
+  if (S.condition === 'full'){
+    const b = document.createElement('button');
+    b.className   = 'hbtn hbtn-full';
+    b.id          = 'hbtn-full';
+    b.innerHTML   = 'Request Full Solution' + (S.isAdaptiveRound ? '<span class="adaptive-badge">Adaptive</span>' : '');
+    b.onclick     = () => requestHint('full');
+    row.appendChild(b);
+  }
+}
+async function requestHint(type){
+  const btn = document.getElementById('hbtn-' + type);
+  if (btn) btn.disabled = true;
+  if (S.hintsViewed.includes(type)) return;
+  S.hintsViewed.push(type);
+  const pid = String(S.probIdx + 1);
+  S.detector.recordHint(pid, type === 'minimal' ? 1 : 3);
+  document.getElementById('hint-zone').style.display = 'block';
+  const area     = document.getElementById('hint-cards');
+  const loadCard = document.createElement('div');
+  loadCard.className = 'hint-card ' + (type==='minimal'?'minimal':'full-hint') + ' slide-down';
+  loadCard.id        = 'hint-loading-card';
+  const lbl = type==='minimal' ? 'Minimal Hint' : 'Full Solution';
+  loadCard.innerHTML = `<div class="hint-lbl">${lbl}${S.isAdaptiveRound?'<span class="adaptive-badge">Adaptive</span>':''}</div><div class="hint-loading">Generating personalised hint…</div>`;
+  area.appendChild(loadCard);
+  const p         = S.probs[S.probIdx];
+  const topicName = TOPICS[S.topic].name;
+  const profile = S.loadedProfile || S.r1Profile || null;
+  let systemPrompt, userPrompt;
+  if (profile && S.isAdaptiveRound) {
+    systemPrompt = buildAdaptiveSystemPrompt(profile, topicName, S.grade, type);
+    userPrompt   = buildAdaptiveUserPrompt(p.text, p.note, p.ans, type);
+  } else {
+    if (type === 'minimal') {
+      systemPrompt =
+        `You are a math tutor helping a Grade ${S.grade} student stuck on a problem about ${topicName}. ` +
+        `Do NOT hint at or solve the student's problem directly. Instead, invent a simple, different problem of the same type and briefly work through its first 1–2 steps to demonstrate the method. ` +
+        `Frame it as "Here's a similar problem:" then show just enough working to make the approach clear — stop before completing it.` +
+        `The student should be able to transfer the method to their own problem. ` +
+        `Use plain text for all math — no LaTeX (no \\[, \\], \\frac, \\times etc.). Write × as ×, write exponents using ^ (e.g. 2^3, not 2³). ` +
+        `Respond with only the example and partial working, no preamble.`;
+      userPrompt = `Problem: "${p.text}"\nCorrect answer (DO NOT reveal): ${p.ans}\n\nWrite the worked-example hint: invent a similar problem, show its first 1–2 steps only, do not solve the student's problem.`;
+    } else {
+      systemPrompt =
+        `You are a math tutor helping a Grade ${S.grade} student stuck on a problem about ${topicName}. ` +
+        `Give a clear, complete step-by-step solution. Show each step on a new line, numbered. ` +
+        `Use plain language for a 14–18 year old. ` +
+        `Use plain text for all math — no LaTeX (no \\[, \\], \\frac, \\times etc.). Write × as ×, write exponents using ^ (e.g. 2^3, not 2³). ` +
+        `Respond with only the solution steps, no preamble.`;
+      userPrompt = `Problem: "${p.text}"\nNote: "${p.note}"\nCorrect answer: ${p.ans}\n\nWrite the complete numbered solution.`;
+    }
+  }
+  try {
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + S.apiKey,
+      },
+      body: JSON.stringify({
+        model:      'gpt-4o-mini',
+        max_tokens: 600,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user',   content: userPrompt },
+        ],
+      }),
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message || 'API error');
+    const hintText = data.choices[0].message.content.trim();
+    const realCard = document.getElementById('hint-loading-card');
+    if (realCard){
+      realCard.innerHTML =
+      `<div class="hint-lbl">${lbl}${S.isAdaptiveRound?'<span class="adaptive-badge">Adaptive</span>':''}</div>` +
+        `<div class="hint-body">${hintText.replace(/\n/g,'<br>')}</div>`;
+    }
+  } catch(err){
+    const realCard = document.getElementById('hint-loading-card');
+    if (realCard){
+      realCard.innerHTML =
+        `<div class="hint-lbl">${lbl}</div>` +
+        `<div class="hint-body" style="color:var(--accent)">Could not load hint. Check your API key and connection.<br><small>${err.message}</small></div>`;
+    }
+    if (btn) btn.disabled = false;
+    S.hintsViewed = S.hintsViewed.filter(h => h !== type);
+    S.detector._hints = S.detector._hints.filter(h => !(h.pid === pid && h.depth === (type==='minimal'?1:3)));
+  }
+}
+function lockProblem(){
+  S.probLocked = true;
+  const inp = document.getElementById('ans-input');
+  const btn = inp?.nextElementSibling;   
+  if (inp) { inp.disabled = true; inp.style.opacity = '.5'; }
+  if (btn && btn.tagName === 'BUTTON') { btn.disabled = true; }
+  const skipBtn = document.querySelector('#skip-row button');
+  if (skipBtn) skipBtn.disabled = true;
+}
+function checkAns(){
+  if (S.probLocked) return;
+  if (S.submitCooldown) return;
+  const raw = document.getElementById('ans-input').value;
+  if (!raw.trim()) return;
+  const p   = S.probs[S.probIdx];
+  const ok  = ansOk(raw, p.ans);
+  const sec = elapsed();
+  S.attempts++;
+  const pid = String(S.probIdx + 1);
+  S.detector.recordAttempt(pid, p.type, p.diff, ok, sec, false);
+  const res = S.detector.evaluate();
+  S.scoreTrajectory.push(+res.score.toFixed(2));
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'block';
+  if (ok){
+    lockProblem();   
+    const assisted = S.hintsViewed.includes('full');
+    fb.className  = 'ok';
+    fb.innerHTML  =
+      `<div class="fb-h">${assisted ? 'Correct (assisted)' : 'Correct'}</div>` +
+      `<div class="fb-body">${assisted ? 'Right answer — noted as assisted since the full solution was viewed.' : 'Well done — that is the right answer.'}<br><br>` +
+      `<button class="btn btn-pri" onclick="nextProb(true)" style="margin-top:8px">Next Problem</button></div>`;
+    clearInterval(S.timerIv);
+    recordProb(true);
+  } else {
+    fb.className  = 'err';
+    fb.innerHTML  =
+      `<div class="fb-h">Not quite</div>` +
+      `<div class="fb-body">That is not the right answer. Try again. Attempt ${S.attempts}.</div>`;
+    if (S.attempts === 1 && !S.struggleStart) S.struggleStart = Date.now();
+    if (S.attempts >= 2) triggerStruggle();
+    document.getElementById('ans-input').select();
+    S.submitCooldown = true;
+    setTimeout(() => { S.submitCooldown = false; }, 400);
+  }
+}
+function recordProb(ok){
+  const p = S.probs[S.probIdx];
+  S.logs.push({
+    n:               S.probIdx + 1,
+    type:            p.type,
+    diff:            p.diff,
+    status:          ok ? (S.hintsViewed.includes('full') ? 'assisted' : 'correct') : 'incorrect',
+    skipped:         false,
+    attempts:        S.attempts,
+    hintsViewed:     [...S.hintsViewed],
+    hintCount:       S.hintsViewed.length,
+    independent:     ok && S.hintsViewed.length === 0,
+    totalSec:        elapsed(),
+    struggleTriggered: S.struggleTriggered,
+    struggleSec:     S.struggleStart ? Math.round((Date.now() - S.struggleStart) / 1000) : null,
+  });
+}
+function nextProb(wasOk){
+  if (!wasOk) recordProb(false);
+  S.probIdx++;
+  S.probIdx >= S.probs.length ? endProbs() : loadProb();
+}
+function skipProb(){
+  if (S.probLocked) return;   
+  S.probLocked = true;        
+  clearInterval(S.timerIv);
+  const p   = S.probs[S.probIdx];
+  const sec = elapsed();
+  const pid = String(S.probIdx + 1);
+  S.detector.recordAttempt(pid, p.type, p.diff, false, sec, true);
+  const res = S.detector.evaluate();
+  S.scoreTrajectory.push(+res.score.toFixed(2));
+  S.logs.push({
+    n:               S.probIdx + 1,
+    type:            p.type,
+    diff:            p.diff,
+    status:          'skipped',
+    skipped:         true,
+    attempts:        S.attempts,
+    hintsViewed:     [...S.hintsViewed],
+    hintCount:       S.hintsViewed.length,
+    independent:     false,
+    totalSec:        sec,
+    struggleTriggered: S.struggleTriggered,
+    struggleSec:     null,
+  });
+  S.probIdx++;
+  S.probIdx >= S.probs.length ? endProbs() : loadProb();
+}
+function endProbs(){
+  clearInterval(S.timerIv);
+  if (S.condition === 'baseline') {
+    S.r1Profile = S.detector.buildProfile({
+      grade: S.grade, topic: S.topic, trajectory: S.scoreTrajectory
+    });
+    try { localStorage.setItem('struggle_profile_' + S.sid, JSON.stringify(S.r1Profile)); } catch {}
+  }
+  prog(83);
+  if (S.round === 1 || S.round === 3) {
+    renderSurvey('post');
+    document.getElementById('post-survey-tag').textContent = 'After Round ' + S.round + ' — Survey';
+    show('s-post-survey');
+  } else {
+    showResults();
+  }
+}
+function showResults(){
+  const L   = S.logs;
+  const tot = L.length;
+  const correct  = L.filter(l => l.status==='correct').length;
+  const assisted = L.filter(l => l.status==='assisted').length;
+  const indep   = L.filter(l => l.independent).length;
+  const skipped = L.filter(l => l.skipped).length;
+  const hints   = L.reduce((s,l) => s + l.hintCount, 0);
+  const sLogs   = L.filter(l => l.struggleTriggered && l.struggleSec != null);
+  const avgS    = sLogs.length ? Math.round(sLogs.reduce((s,l) => s+l.struggleSec, 0) / sLogs.length) : 0;
+  const erec    = (L.reduce((s,l) => s + Math.max(0, l.attempts-1), 0) / Math.max(tot,1)).toFixed(1);
+  const pct     = v => Math.round(v / Math.max(tot,1) * 100) + '%';
+  document.getElementById('res-indep').textContent    = pct(indep);
+  document.getElementById('res-acc').textContent      = pct(correct);
+  document.getElementById('res-hints').textContent    = hints;
+  document.getElementById('res-struggle').textContent = avgS + 's';
+  document.getElementById('res-erec').textContent     = erec;
+  document.getElementById('res-skip').textContent     = pct(skipped);
+  const tbody = document.getElementById('log-tbody');
+  tbody.innerHTML = '';
+  L.forEach(l => {
+    const dc = l.status==='correct' ? 'dot-ok' : l.status==='assisted' ? 'dot-assist' : l.status==='skipped' ? 'dot-skip' : 'dot-err';
+    tbody.innerHTML +=
+      `<tr>
+        <td>${l.n}</td>
+        <td style="max-width:130px;font-size:.78rem">${l.type}</td>
+        <td><span class="dot ${dc}"></span>${l.status}${l.independent?' *':''}</td>
+        <td>${l.attempts}</td>
+        <td>${l.hintCount ? l.hintsViewed.join(', ') : '—'}</td>
+        <td>${l.totalSec}</td>
+        <td>${l.struggleTriggered?'Yes':'No'}</td>
+      </tr>`;
+  });
+  const etbody = document.getElementById('eff-tbody');
+  etbody.innerHTML = '';
+  SURVEY_ITEMS.forEach(item => {
+    const score = S.postSurvey[item.id] ?? '—';
+    etbody.innerHTML +=
+      `<tr>
+        <td style="font-size:.79rem;max-width:240px">${item.text}</td>
+        <td style="text-align:center;font-weight:700">${score}</td>
+      </tr>`;
+  });
+  const finalResult = S.detector.evaluate();
+  const exp = {
+    meta: {
+      studentId:          S.sid,
+      grade:              S.grade,
+      round:              S.round,
+      topic:              S.topic,
+      condition:          S.condition,
+      counterbalanceOrder:S.order,
+      timestamp:          new Date().toISOString(),
+    },
+    preSurvey:   S.preSurvey,
+    postSurvey:  S.postSurvey,
+    problemLogs: S.logs,
+    summary: {
+      total:             tot,
+      correct,
+      indep,
+      skipped,
+      assisted,
+      hintTotal:         hints,
+      avgStruggleSec:    avgS,
+      errorRecurrence:   +erec,
+    },
+    struggleDetection: {
+      finalScore:        +finalResult.score.toFixed(2),
+      finalLevel:        finalResult.level,
+      signals:           finalResult.signals,
+      scoreTrajectory:   S.scoreTrajectory,
+      triggerConcept:    finalResult.triggerConcept,
+      dominantConcepts:  finalResult.dominantConcepts,
+      conceptErrorCounts:{ ...S.detector._conceptErrors },
+    },
+    ...(S.condition==='baseline' && S.r1Profile ? { r1StruggleProfile: S.r1Profile } : {}),
+  };
+  S.exportData = exp;
+  document.getElementById('res-title').textContent = 'Round ' + S.round + ' — Results';
+  const nextBtn = document.getElementById('btn-next-round');
+  const status  = document.getElementById('sheets-status');
+  status.textContent = '';
+  if (S.sheetsUrl) {
+    nextBtn.disabled = true;
+    status.style.color = 'var(--mid)';
+    status.textContent = '⏳ Saving…';
+  } else {
+    nextBtn.disabled = false;
+  }
+  show('s-results');
+  prog(100);
+  if (S.sheetsUrl) exportToSheets();
+}
+async function exportToSheets(){
+  if (!S.sheetsUrl || !S.exportData) return;
+  const nextBtn = document.getElementById('btn-next-round');
+  const status  = document.getElementById('sheets-status');
+  const exp  = S.exportData;
+  const meta = exp.meta;
+  const sd   = exp.struggleDetection || {};
+  const sig  = sd.signals || {};
+  const surveyFlat = {};
+  const allSurveyItems = S.round === 3
+    ? [...SURVEY_ITEMS, ...HINT_SURVEY_ITEMS]
+    : SURVEY_ITEMS;
+  allSurveyItems.forEach(item => {
+    surveyFlat['pre_'  + item.id] = exp.preSurvey[item.id]  ?? '';
+    surveyFlat['post_' + item.id] = exp.postSurvey[item.id] ?? '';
+    const pre = exp.preSurvey[item.id], post = exp.postSurvey[item.id];
+    surveyFlat['delta_' + item.id] =
+      (typeof pre==='number' && typeof post==='number') ? post - pre : '';
+  });
+  const summaryRow = {
+    timestamp:              meta.timestamp,
+    student_id:             meta.studentId,
+    grade:                  meta.grade,
+    round:                  meta.round,
+    topic:                  meta.topic,
+    condition:              meta.condition,
+    counterbalance_order:   meta.counterbalanceOrder,
+    is_adaptive_round:      S.isAdaptiveRound ? 'yes' : 'no',
+    total_problems:         exp.summary.total,
+    correct:                exp.summary.correct,
+    assisted:               exp.summary.assisted,
+    accuracy_pct:           exp.summary.total ? +(exp.summary.correct / exp.summary.total * 100).toFixed(1) : 0,
+    assisted_pct:           exp.summary.total ? +(exp.summary.assisted / exp.summary.total * 100).toFixed(1) : 0,
+    independent_success:    exp.summary.indep,
+    independent_pct:        exp.summary.total ? +(exp.summary.indep / exp.summary.total * 100).toFixed(1) : 0,
+    skipped:                exp.summary.skipped,
+    skip_pct:               exp.summary.total ? +(exp.summary.skipped / exp.summary.total * 100).toFixed(1) : 0,
+    hints_total:            exp.summary.hintTotal,
+    avg_struggle_sec:       exp.summary.avgStruggleSec,
+    error_recurrence:       exp.summary.errorRecurrence,
+    struggle_score:         sd.finalScore ?? '',
+    struggle_level:         sd.finalLevel ?? '',
+    trigger_concept:        sd.triggerConcept ?? '',
+    dominant_concepts:      (sd.dominantConcepts || []).join('; '),
+    sig_incorrect_rate:     +(sig.incorrect_attempt_rate   || 0).toFixed(4),
+    sig_time_ratio:         +(sig.time_above_baseline_ratio|| 0).toFixed(4),
+    sig_error_recurrence:   +(sig.error_recurrence_rate    || 0).toFixed(4),
+    sig_accuracy_trend:     +(sig.accuracy_trend           || 0).toFixed(4),
+    sig_hint_escalation:    +(sig.hint_escalation_speed    || 0).toFixed(4),
+    sig_skip_rate:          +(sig.skip_rate                || 0).toFixed(4),
+    score_trajectory:       (sd.scoreTrajectory || []).join(', '),
+    ...surveyFlat,
+  };
+  const problemRows = (exp.problemLogs || []).map(l => ({
+    timestamp:         meta.timestamp,
+    student_id:        meta.studentId,
+    grade:             meta.grade,
+    round:             meta.round,
+    topic:             meta.topic,
+    condition:         meta.condition,
+    problem_n:         l.n,
+    problem_type:      l.type,
+    difficulty:        l.diff,
+    status:            l.status,
+    attempts:          l.attempts,
+    independent:       l.independent ? 'yes' : 'no',
+    hints_viewed:      (l.hintsViewed || []).join('; '),
+    hint_count:        l.hintCount,
+    total_sec:         l.totalSec,
+    struggle_triggered:l.struggleTriggered ? 'yes' : 'no',
+    struggle_sec:      l.struggleSec ?? '',
+  }));
+  const payload = { summaryRow, problemRows };
+  try {
+    await fetch(S.sheetsUrl, {
+      method:  'POST',
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+    });
+    status.style.color = 'var(--green)';
+    status.textContent = '✓ Saved to Google Sheets';
+    nextBtn.disabled = false;
+  } catch(err) {
+    status.style.color = 'var(--accent)';
+    status.textContent = '✗ Save failed — retrying not required, you may continue';
+    nextBtn.disabled = false;
+    console.error('Sheets export error:', err);
+  }
+}
+function goNextRound(){
+  const next = S.round + 1;
+  if (next > 3){ S.endSurvey={}; renderEndSurvey(); show('s-end-survey'); prog(100); return; }
+  S.round     = next;
+  S.topic     = S.topicRotation[S.round-1] || S.topicRotation[0];
+  S.condition = conditionForRound(S.round);
+  const nextProfile = S.r1Profile
+    || (() => { try { const s = localStorage.getItem('struggle_profile_' + S.sid); return s ? JSON.parse(s) : null; } catch { return null; } })();
+  const nextAdaptive = S.condition !== 'baseline' && !!nextProfile;
+  const justBuiltProfile = (S.round - 1) === 1 && !!nextProfile;
+  const baseMsg  = 'Round ' + (S.round-1) + ' is complete. Take a short break, then press the button when you\'re ready.';
+  const adaptMsg = 'Round 1 is complete. A struggle profile has been created from your responses — the AI hints in Round 2 will be personalised to how you worked.';
+  document.getElementById('tr-title').textContent = 'Round ' + (S.round-1) + ' complete.';
+  document.getElementById('tr-body').textContent  = justBuiltProfile ? adaptMsg : baseMsg;
+  updTopbar();
+  show('s-transition');
+  prog(0);
+}
+function beginNextRound(){
+  S.logs=[]; S.preSurvey={}; S.postSurvey={}; S.probIdx=0;
+  S.probs          = (() => { const all = TOPICS[S.topic].problems; return all.length >= 8 ? [0,1,3,5,6].map(i => all[i]) : all.slice(0,5); })();
+  S.scoreTrajectory= [];
+  if (S.condition !== 'baseline' && !S.loadedProfile) {
+    S.loadedProfile = S.r1Profile || null;
+    if (!S.loadedProfile) {
+      const stored = localStorage.getItem('struggle_profile_' + S.sid);
+      if (stored) { try { S.loadedProfile = JSON.parse(stored); } catch {} }
+    }
+  }
+  S.isAdaptiveRound = S.condition !== 'baseline' && !!S.loadedProfile;
+  let baselineTime = 75;
+  if (S.r1Profile?.median_time_per_problem)     baselineTime = S.r1Profile.median_time_per_problem;
+  if (S.loadedProfile?.median_time_per_problem)  baselineTime = S.loadedProfile.median_time_per_problem;
+  S.detector = new StruggleDetector(S.sid, baselineTime);
+  renderTutorial();
+  show('s-tutorial');
+  prog(5);
+}
+function resetAll(){
+  clearInterval(S.timerIv);
+  show('s-welcome');
+  prog(0);
+  ['tb-sid','tb-rnd','tb-topic'].forEach(id =>
+    document.getElementById(id).textContent = '—');
+}
+const CS = {display:'0', prev:null, op:null, waiting:false};
+function calcRefresh(){ document.getElementById('calc-display').textContent = CS.display; }
+function toggleCalc(){
+  const p = document.getElementById('calc-panel');
+  p.style.display = p.style.display === 'block' ? 'none' : 'block';
+}
+function calcDigit(ch){
+  if (CS.waiting){ CS.display = ch === '.' ? '0.' : ch; CS.waiting = false; }
+  else {
+    if (ch === '.' && CS.display.includes('.')) return;
+    CS.display = (CS.display === '0' && ch !== '.') ? ch : CS.display + ch;
+  }
+  calcRefresh();
+}
+function calcOp(op){
+  const val = parseFloat(CS.display);
+  if (CS.prev !== null && !CS.waiting){
+    const r = calcCompute(CS.prev, val, CS.op);
+    CS.display = String(+r.toFixed(10));
+    calcRefresh();
+    CS.prev = parseFloat(CS.display);
+  } else { CS.prev = val; }
+  CS.op = op; CS.waiting = true;
+}
+function calcEquals(){
+  if (CS.op === null || CS.prev === null) return;
+  const r = calcCompute(CS.prev, parseFloat(CS.display), CS.op);
+  CS.display = String(+r.toFixed(10));
+  CS.prev = null; CS.op = null; CS.waiting = false;
+  calcRefresh();
+}
+function calcCompute(a, b, op){
+  if (op === '+') return a + b;
+  if (op === '−') return a - b;
+  if (op === '×') return a * b;
+  if (op === '÷') return b !== 0 ? a / b : 0;
+  return b;
+}
+function calcClear(){ CS.display='0'; CS.prev=null; CS.op=null; CS.waiting=false; calcRefresh(); }
+function calcBackspace(){
+  if (CS.waiting) return;
+  CS.display = CS.display.length > 1 ? CS.display.slice(0,-1) : '0';
+  calcRefresh();
+}
+function calcPercent(){ CS.display = String(parseFloat(CS.display)/100); calcRefresh(); }
+</script>
+</body>
+</html>
