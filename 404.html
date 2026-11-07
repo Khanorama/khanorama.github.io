@@ -1,138 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LeapCode</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="images/favicon2.png" type="image/png" />
+    <meta name="theme-color" content="#12181f" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Page Not Found | LeapCode</title>
-  <link rel="icon" href="images/favicon2.png" type="image/png">
-  <link rel="stylesheet" href="style.css" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
-    rel="stylesheet"
-  />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
-    rel="stylesheet"
-  />
-</head>
+    <!-- Apply saved theme before paint to avoid a flash (dark is the LeapCode default) -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t === "light") document.documentElement.classList.add("light");
+        } catch (e) {}
+      })();
+    </script>
 
-<body>
-  <header class="header">
-    <div class="header-logo">
-      <h1>
-        <a href="index.html" class="home-link"
-          ><span class="star">LEAP</span><span class="code">CODE</span></a
-        >
-      </h1>
+    <style>
+      :root {
+        /* Dark (default) */
+        --bg: #12181f;
+        --bg-2: #1a2029;
+        --muted: #9aa7b4;
+        --blue: #2b8cff;
+        --blue-rgb: 43, 140, 255;
+        --green: #00ff7f;
+        --green-rgb: 0, 255, 127;
+        --border: rgba(255, 255, 255, 0.09);
+        --card: rgba(255, 255, 255, 0.03);
+        --glow: 0.5;
+      }
+
+      html.light {
+        --bg: #f4f7f9;
+        --bg-2: #ffffff;
+        --muted: #5a6672;
+        --blue: #007bff;
+        --blue-rgb: 0, 123, 255;
+        --green: #00b368;
+        --green-rgb: 0, 179, 104;
+        --border: rgba(0, 0, 0, 0.08);
+        --card: rgba(0, 0, 0, 0.02);
+        --glow: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: var(--bg);
+        color: var(--muted);
+        font-family: "Roboto", sans-serif;
+        line-height: 1.6;
+        overflow-x: hidden;
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+
+      /* Ambient background */
+      .bg {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        overflow: hidden;
+      }
+      .blob {
+        position: absolute;
+        width: 48vmax;
+        height: 48vmax;
+        border-radius: 50%;
+        filter: blur(90px);
+        opacity: calc(0.2 + var(--glow) * 0.16);
+        will-change: transform;
+      }
+      .blob--blue {
+        background: rgba(var(--blue-rgb), 0.9);
+        top: -16vmax;
+        left: -12vmax;
+        animation: drift1 22s ease-in-out infinite;
+      }
+      .blob--green {
+        background: rgba(var(--green-rgb), 0.7);
+        bottom: -18vmax;
+        right: -12vmax;
+        animation: drift2 26s ease-in-out infinite;
+      }
+      .grid {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background-image: linear-gradient(var(--border) 1px, transparent 1px),
+          linear-gradient(90deg, var(--border) 1px, transparent 1px);
+        background-size: 46px 46px;
+        mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 70%);
+        -webkit-mask-image: radial-gradient(
+          circle at 50% 45%,
+          #000 0%,
+          transparent 70%
+        );
+        opacity: 0.5;
+      }
+
+      @keyframes drift1 {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+        50% {
+          transform: translate(8vmax, 6vmax);
+        }
+      }
+      @keyframes drift2 {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+        50% {
+          transform: translate(-7vmax, -5vmax);
+        }
+      }
+
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--bg-2);
+        color: var(--muted);
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+      .theme-toggle:hover {
+        transform: scale(1.08);
+        border-color: var(--blue);
+      }
+      .theme-toggle:focus-visible {
+        outline: 2px solid var(--blue);
+        outline-offset: 2px;
+      }
+
+      main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+      }
+
+      .wordmark {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        font-size: clamp(2.4rem, 11vw, 6rem);
+        line-height: 1;
+        text-align: center;
+        max-width: 100%;
+        white-space: nowrap;
+        animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .wordmark .leap {
+        color: var(--blue);
+        text-shadow: 0 0 calc(26px * var(--glow)) rgba(var(--blue-rgb), 0.55);
+      }
+      .wordmark .code {
+        color: var(--green);
+        text-shadow: 0 0 calc(26px * var(--glow)) rgba(var(--green-rgb), 0.5);
+      }
+
+      footer {
+        text-align: center;
+        padding: 22px 20px;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      footer a {
+        color: var(--blue);
+        text-decoration: none;
+      }
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .blob,
+        .wordmark {
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg" aria-hidden="true">
+      <div class="blob blob--blue"></div>
+      <div class="blob blob--green"></div>
     </div>
-    <nav class="main-nav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="courses.html">Courses</a>
-      <a href="certifications.html">Certifications</a>
-      <a href="projects.html">Projects</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-    <div class="header-controls">
-      <label class="switch">
-        <input type="checkbox" id="theme-checkbox" />
-        <span class="slider"></span>
-      </label>
-      <button
-        class="mobile-nav-toggle"
-        aria-label="Toggle navigation"
-        aria-expanded="false"
-      >
-        <span class="hamburger"></span>
-      </button>
-    </div>
-  </header>
+    <div class="grid" aria-hidden="true"></div>
 
-  <main>
-    <section class="hero-section error-page-hero">
-      <div class="hero-content">
-        <h1 class="error-code-title"><span class="starhome">404</span></h1>
-        <h2><span class="codehome">Page Not Found</span></h2>
-        <p class="tagline">
-          Oops! It seems the page you're looking for doesn't exist or may have been moved.
-        </p>
-        <div class="error-actions">
-          <a href="index.html" class="cta-button">Go to Homepage</a>
-        </div>
+    <button
+      class="theme-toggle"
+      id="themeToggle"
+      type="button"
+      aria-label="Toggle light and dark theme"
+      title="Toggle theme"
+    >
+      <span id="themeIcon">☀️</span>
+    </button>
+
+    <main>
+      <div class="wordmark">
+        <span class="leap">LEAP</span><span class="code">CODE</span>
       </div>
-    </section>
-  </main>
-  <br><br>
+    </main>
 
-  <footer class="site-footer">
-    <p>
-      <span id="currentYear"></span> LeapCode | Contact us at
+    <footer>
+      <span id="year"></span> LeapCode &nbsp;&middot;&nbsp;
       <a href="mailto:support@leapcode.org">support@leapcode.org</a>
-    </p>
-  </footer>
+    </footer>
 
-  <script>
-    // --- Theme Toggle ---
-    const themeCheckbox = document.getElementById('theme-checkbox');
-    const bodyEl = document.body;
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
 
-    function applyTheme(theme) {
-      if (theme === 'dark') {
-        bodyEl.classList.add('dark-mode');
-        if (themeCheckbox) themeCheckbox.checked = true;
-      } else {
-        bodyEl.classList.remove('dark-mode');
-        if (themeCheckbox) themeCheckbox.checked = false;
+      var root = document.documentElement;
+      var icon = document.getElementById("themeIcon");
+      function syncIcon() {
+        icon.textContent = root.classList.contains("light") ? "🌙" : "☀️";
       }
-    }
-
-    const savedTheme = localStorage.getItem('theme');
-    let initialTheme = 'dark'; 
-    if (savedTheme) {
-      initialTheme = savedTheme;
-    } else {
-      // Optional: Check for system preference
-      // if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      //   initialTheme = 'dark';
-      // }
-    }
-    applyTheme(initialTheme);
-
-    if (themeCheckbox) {
-      themeCheckbox.addEventListener('change', () => {
-        let newTheme = themeCheckbox.checked ? 'dark' : 'light';
-        localStorage.setItem('theme', newTheme);
-        applyTheme(newTheme);
-      });
-    }
-
-    // --- Mobile Nav Toggle ---
-    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-    const mainNav = document.querySelector('.main-nav');
-
-    if (mobileNavToggle && mainNav) {
-      mobileNavToggle.addEventListener('click', () => {
-        const isExpanded = mainNav.classList.toggle('active');
-        mobileNavToggle.setAttribute('aria-expanded', isExpanded);
-      });
-    }
-
-    // --- Set current year in footer ---
-    const currentYearElement = document.getElementById('currentYear');
-    if (currentYearElement) {
-      currentYearElement.textContent = new Date().getFullYear();
-    }
-
-    // --- Active Nav Link (not applicable for 404, but script can remain for consistency) ---
-    const currentPage = window.location.pathname.split("/").pop() || "index.html";
-    const navLinks = document.querySelectorAll('.main-nav a');
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === currentPage) {
-        link.classList.add('active');
-      }
-    });
-  </script>
-</body>
+      syncIcon();
+      document
+        .getElementById("themeToggle")
+        .addEventListener("click", function () {
+          var isLight = root.classList.toggle("light");
+          try {
+            localStorage.setItem("theme", isLight ? "light" : "dark");
+          } catch (e) {}
+          syncIcon();
+        });
+    </script>
+  </body>
 </html>

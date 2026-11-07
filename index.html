@@ -3,17 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LeapCode — Under Renovation</title>
-    <meta
-      name="description"
-      content="LeapCode is being rebuilt into a faster, fully interactive, self-running learning platform. Write and run code in your browser with instant feedback. Back soon."
-    />
+    <title>LeapCode</title>
+    <meta name="robots" content="noindex" />
     <link rel="icon" href="images/favicon2.png" type="image/png" />
     <meta name="theme-color" content="#12181f" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Roboto:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Roboto:wght@400;500&display=swap"
       rel="stylesheet"
     />
 
@@ -32,9 +29,7 @@
         /* Dark (default) */
         --bg: #12181f;
         --bg-2: #1a2029;
-        --text: #e9ecef;
         --muted: #9aa7b4;
-        --heading: #ffffff;
         --blue: #2b8cff;
         --blue-rgb: 43, 140, 255;
         --green: #00ff7f;
@@ -47,9 +42,7 @@
       html.light {
         --bg: #f4f7f9;
         --bg-2: #ffffff;
-        --text: #212529;
         --muted: #5a6672;
-        --heading: #003d73;
         --blue: #007bff;
         --blue-rgb: 0, 123, 255;
         --green: #00b368;
@@ -62,7 +55,6 @@
       * {
         box-sizing: border-box;
       }
-
       html,
       body {
         margin: 0;
@@ -74,7 +66,7 @@
         display: flex;
         flex-direction: column;
         background: var(--bg);
-        color: var(--text);
+        color: var(--muted);
         font-family: "Roboto", sans-serif;
         line-height: 1.6;
         overflow-x: hidden;
@@ -94,7 +86,7 @@
         height: 48vmax;
         border-radius: 50%;
         filter: blur(90px);
-        opacity: calc(0.22 + var(--glow) * 0.18);
+        opacity: calc(0.2 + var(--glow) * 0.16);
         will-change: transform;
       }
       .blob--blue {
@@ -113,21 +105,14 @@
         position: fixed;
         inset: 0;
         z-index: -1;
-        background-image: linear-gradient(
-            var(--border) 1px,
-            transparent 1px
-          ),
+        background-image: linear-gradient(var(--border) 1px, transparent 1px),
           linear-gradient(90deg, var(--border) 1px, transparent 1px);
         background-size: 46px 46px;
-        mask-image: radial-gradient(
-          circle at 50% 42%,
-          #000 0%,
-          transparent 72%
-        );
+        mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 70%);
         -webkit-mask-image: radial-gradient(
-          circle at 50% 42%,
+          circle at 50% 45%,
           #000 0%,
-          transparent 72%
+          transparent 70%
         );
         opacity: 0.5;
       }
@@ -151,7 +136,6 @@
         }
       }
 
-      /* Theme toggle */
       .theme-toggle {
         position: fixed;
         top: 20px;
@@ -162,7 +146,7 @@
         border-radius: 50%;
         border: 1px solid var(--border);
         background: var(--bg-2);
-        color: var(--text);
+        color: var(--muted);
         font-size: 1.1rem;
         cursor: pointer;
         display: grid;
@@ -183,59 +167,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 72px 20px 40px;
-      }
-
-      .card {
-        width: 100%;
-        max-width: 680px;
-        text-align: center;
-        animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-      }
-      @keyframes rise {
-        from {
-          opacity: 0;
-          transform: translateY(16px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-family: "Montserrat", sans-serif;
-        font-weight: 700;
-        font-size: 0.72rem;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: var(--blue);
-        background: var(--card);
-        border: 1px solid var(--border);
-        padding: 7px 15px;
-        border-radius: 999px;
-      }
-      .eyebrow .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--green);
-        box-shadow: 0 0 10px rgba(var(--green-rgb), calc(0.4 + var(--glow)));
-        animation: pulse 1.8s ease-in-out infinite;
-      }
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-          transform: scale(1);
-        }
-        50% {
-          opacity: 0.45;
-          transform: scale(0.8);
-        }
+        padding: 40px 20px;
       }
 
       .wordmark {
@@ -243,125 +175,37 @@
         font-weight: 900;
         text-transform: uppercase;
         letter-spacing: 0.02em;
-        font-size: clamp(2.8rem, 11vw, 5.5rem);
+        font-size: clamp(2.4rem, 11vw, 6rem);
         line-height: 1;
-        margin: 26px 0 6px;
+        text-align: center;
+        max-width: 100%;
+        white-space: nowrap;
+        animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       .wordmark .leap {
         color: var(--blue);
-        text-shadow: 0 0 calc(22px * var(--glow)) rgba(var(--blue-rgb), 0.55);
+        text-shadow: 0 0 calc(26px * var(--glow)) rgba(var(--blue-rgb), 0.55);
       }
       .wordmark .code {
         color: var(--green);
-        text-shadow: 0 0 calc(22px * var(--glow)) rgba(var(--green-rgb), 0.5);
-      }
-
-      h1 {
-        font-family: "Montserrat", sans-serif;
-        font-weight: 700;
-        color: var(--heading);
-        font-size: clamp(1.5rem, 4.5vw, 2.3rem);
-        margin: 18px 0 14px;
-        line-height: 1.2;
-      }
-
-      .lede {
-        color: var(--muted);
-        font-size: clamp(1rem, 2.4vw, 1.12rem);
-        max-width: 56ch;
-        margin: 0 auto 28px;
-      }
-
-      /* Terminal status line */
-      .terminal {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.9rem;
-        color: var(--text);
-        background: var(--bg-2);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 14px 18px;
-        max-width: 420px;
-        margin: 0 auto 30px;
-        text-align: left;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-      }
-      .terminal .prompt {
-        color: var(--green);
-        user-select: none;
-      }
-      .cursor {
-        display: inline-block;
-        width: 9px;
-        height: 1.05em;
-        background: var(--blue);
-        margin-left: 2px;
-        vertical-align: text-bottom;
-        animation: blink 1.1s steps(1) infinite;
-      }
-      @keyframes blink {
-        50% {
-          opacity: 0;
-        }
-      }
-
-      .features {
-        list-style: none;
-        padding: 0;
-        margin: 0 auto 32px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: center;
-        max-width: 560px;
-      }
-      .features li {
-        font-family: "Montserrat", sans-serif;
-        font-weight: 500;
-        font-size: 0.82rem;
-        color: var(--text);
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 999px;
-        padding: 8px 16px;
-      }
-      .features li::before {
-        content: "›";
-        color: var(--green);
-        font-weight: 700;
-        margin-right: 7px;
-      }
-
-      .courses-link {
-        display: inline-block;
-        font-family: "Montserrat", sans-serif;
-        font-weight: 700;
-        font-size: 0.95rem;
-        color: var(--bg);
-        background: linear-gradient(135deg, var(--blue) 0%, #0056b3 100%);
-        text-decoration: none;
-        padding: 13px 26px;
-        border-radius: 8px;
-        transition: transform 0.18s ease, box-shadow 0.18s ease;
-      }
-      html:not(.light) .courses-link {
-        color: #ffffff;
-      }
-      .courses-link:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 22px rgba(var(--blue-rgb), 0.4);
-      }
-      .courses-link:focus-visible {
-        outline: 2px solid var(--green);
-        outline-offset: 3px;
+        text-shadow: 0 0 calc(26px * var(--glow)) rgba(var(--green-rgb), 0.5);
       }
 
       footer {
         text-align: center;
-        padding: 24px 20px;
+        padding: 22px 20px;
         color: var(--muted);
         font-size: 0.85rem;
-        border-top: 1px solid var(--border);
       }
       footer a {
         color: var(--blue);
@@ -373,9 +217,7 @@
 
       @media (prefers-reduced-motion: reduce) {
         .blob,
-        .eyebrow .dot,
-        .cursor,
-        .card {
+        .wordmark {
           animation: none !important;
         }
       }
@@ -399,65 +241,34 @@
     </button>
 
     <main>
-      <div class="card">
-        <span class="eyebrow"><span class="dot"></span>Under Renovation</span>
-
-        <div class="wordmark">
-          <span class="leap">LEAP</span><span class="code">CODE</span>
-        </div>
-
-        <h1>We&rsquo;re rebuilding LeapCode.</h1>
-
-        <p class="lede">
-          A faster, fully interactive learning platform is on the way &mdash;
-          write and run code right in your browser, with instant feedback and
-          zero setup. Thanks for your patience while we build something better.
-        </p>
-
-        <div class="terminal" aria-label="Deployment status">
-          <span class="prompt">&gt;</span> deploying the new leapcode<span
-            class="cursor"
-          ></span>
-        </div>
-
-        <ul class="features">
-          <li>Code in your browser</li>
-          <li>Instant auto-graded feedback</li>
-          <li>Self-paced &amp; always free</li>
-        </ul>
-
-        <a class="courses-link" href="courses.html"
-          >Browse our current free courses &rarr;</a
-        >
+      <div class="wordmark">
+        <span class="leap">LEAP</span><span class="code">CODE</span>
       </div>
     </main>
 
     <footer>
-      <span id="year"></span> LeapCode &nbsp;&middot;&nbsp; Questions? Reach us at
+      <span id="year"></span> LeapCode &nbsp;&middot;&nbsp;
       <a href="mailto:support@leapcode.org">support@leapcode.org</a>
     </footer>
 
     <script>
-      // Current year
       document.getElementById("year").textContent = new Date().getFullYear();
 
-      // Theme toggle — shares the "theme" key with the main site; dark is default
       var root = document.documentElement;
       var icon = document.getElementById("themeIcon");
-
       function syncIcon() {
-        var isLight = root.classList.contains("light");
-        icon.textContent = isLight ? "🌙" : "☀️";
+        icon.textContent = root.classList.contains("light") ? "🌙" : "☀️";
       }
       syncIcon();
-
-      document.getElementById("themeToggle").addEventListener("click", function () {
-        var isLight = root.classList.toggle("light");
-        try {
-          localStorage.setItem("theme", isLight ? "light" : "dark");
-        } catch (e) {}
-        syncIcon();
-      });
+      document
+        .getElementById("themeToggle")
+        .addEventListener("click", function () {
+          var isLight = root.classList.toggle("light");
+          try {
+            localStorage.setItem("theme", isLight ? "light" : "dark");
+          } catch (e) {}
+          syncIcon();
+        });
     </script>
   </body>
 </html>

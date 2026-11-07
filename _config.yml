@@ -1,1 +1,18 @@
 permalink: pretty
+
+# --- Renovation lockdown ---------------------------------------------------
+# Only index.html (the holding page) and 404.html are published. Every other
+# page and content folder below is kept in the repo but NOT built into the live
+# site, so those URLs return the neutral 404 (which mirrors the holding page).
+# To relaunch the full site, delete this exclude list.
+exclude:
+  - about.html
+  - courses.html
+  - library.html
+  - support.html
+  - style.css
+  - course_materials
+  - courses
+  - files
+  - register
+  - README.md
