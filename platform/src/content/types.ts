@@ -171,7 +171,25 @@ export function isGraded(block: Block): block is GradedBlock {
 
 /* ----------------------------------------------------------------- lessons */
 
-export type LessonKind = "lesson" | "progressCheck";
+/**
+ * What a student is being asked to do, which drives the label in the outline.
+ *
+ *   lesson         taught material        -> "Lesson"
+ *   progressCheck  practice between units -> "Activity"
+ *   assessment     graded quiz or exam    -> "Assessment"
+ *
+ * Nothing is an assessment yet. Graded exams cannot be made cheat-proof on a
+ * static client, where every expected answer ships in the bundle, so they stay
+ * instructor-run until there is a server-side grader. The kind exists so the
+ * outline can represent them when that changes.
+ */
+export type LessonKind = "lesson" | "progressCheck" | "assessment";
+
+export const LESSON_KIND_LABEL: Record<LessonKind, string> = {
+  lesson: "Lesson",
+  progressCheck: "Activity",
+  assessment: "Assessment",
+};
 
 export interface Lesson {
   /** Globally unique and stable; progress is keyed on this. Never renumber. */

@@ -37,7 +37,13 @@ function groupProse(blocks: Block[]): Rendered[] {
   return out;
 }
 
-export function LessonBody({ blocks }: { blocks: Block[] }) {
+export function LessonBody({
+  blocks,
+  lessonId,
+}: {
+  blocks: Block[];
+  lessonId: string;
+}) {
   return (
     <div>
       {groupProse(blocks).map((entry) => {
@@ -61,6 +67,8 @@ export function LessonBody({ blocks }: { blocks: Block[] }) {
             return (
               <ExerciseBlock
                 key={block.id}
+                lessonId={lessonId}
+                blockId={block.id}
                 prompt={<Markdown>{block.prompt}</Markdown>}
                 starter={block.starter}
                 checks={block.checks}

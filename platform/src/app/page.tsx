@@ -1,12 +1,36 @@
-import Link from "next/link";
 import { SiteHeader } from "@/components/shell/SiteHeader";
+import {
+  CourseOutline,
+  type OutlineUnit,
+} from "@/components/course/CourseOutline";
 import { pythonI } from "@/content/courses/python-i";
-import { courseLessons } from "@/content/types";
+import { courseLessons, gradedBlocks } from "@/content/types";
 
 /**
  * Interim course outline. Replaced by the real catalog and dashboard once
  * accounts exist; for now it is the way into the lessons.
+ *
+ * The outline is reduced to ids here, on the server, so the client receives
+ * what it needs to draw progress and nothing else. Lesson prose, solutions
+ * and expected answers stay out of this payload.
  */
+function buildOutline(): OutlineUnit[] {
+  return pythonI.units.map((unit) => ({
+    id: unit.id,
+    slug: unit.slug,
+    title: unit.title,
+    summary: unit.summary,
+    lessons: unit.lessons.map((lesson) => ({
+      id: lesson.id,
+      slug: lesson.slug,
+      title: lesson.title,
+      kind: lesson.kind,
+      gradedBlockIds: gradedBlocks(lesson).map((block) => block.id),
+      written: lesson.blocks.length > 0,
+    })),
+  }));
+}
+
 export default function Home() {
   const lessons = courseLessons(pythonI);
   const written = lessons.filter((lesson) => lesson.blocks.length > 0).length;
@@ -43,57 +67,7 @@ export default function Home() {
           </span>
         </div>
 
-        <ol className="mt-8 space-y-8">
-          {pythonI.units.map((unit, unitIndex) => (
-            <li key={unit.id}>
-              <div className="flex items-baseline gap-2.5">
-                <span className="font-mono text-xs text-ink-faint">
-                  {String(unitIndex + 1).padStart(2, "0")}
-                </span>
-                <h2 className="font-sans text-base font-semibold text-ink">
-                  {unit.title}
-                </h2>
-              </div>
-              <p className="mt-1 pl-8 font-sans text-sm text-ink-muted">
-                {unit.summary}
-              </p>
-
-              <ul className="mt-3 space-y-px pl-8">
-                {unit.lessons.map((lesson) => {
-                  const ready = lesson.blocks.length > 0;
-                  return (
-                    <li key={lesson.id}>
-                      <Link
-                        href={`/courses/${pythonI.slug}/${unit.slug}/${lesson.slug}/`}
-                        className="group flex items-center gap-3 rounded-control border border-transparent px-3 py-2 transition-colors hover:border-accent-line hover:bg-accent-soft"
-                      >
-                        <span
-                          className={[
-                            "h-1.5 w-1.5 shrink-0 rounded-full",
-                            ready ? "bg-success" : "bg-line-strong",
-                          ].join(" ")}
-                        />
-                        <span className="font-sans text-sm text-ink group-hover:text-accent">
-                          {lesson.title}
-                        </span>
-                        {lesson.kind === "progressCheck" && (
-                          <span className="rounded-control bg-surface-raised px-2 py-0.5 font-sans text-xs text-ink-faint">
-                            check
-                          </span>
-                        )}
-                        {!ready && (
-                          <span className="ml-auto font-sans text-xs text-ink-faint">
-                            not written yet
-                          </span>
-                        )}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </li>
-          ))}
-        </ol>
+        <CourseOutline courseSlug={pythonI.slug} units={buildOutline()} />
       </main>
     </>
   );

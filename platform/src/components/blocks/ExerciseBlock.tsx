@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { usePython } from "@/lib/python/usePython";
 import type { RunResult } from "@/lib/python/runner";
 import { grade, type GradeResult } from "@/lib/grading";
+import { getSnapshot, recordBlockResult } from "@/lib/progress/localProgress";
 import type { Check } from "@/content/types";
 
 function TickIcon() {
@@ -39,7 +40,9 @@ interface ExerciseBlockProps {
   checks: Check[];
   hints?: string[];
   solution?: string;
-  /** Reported so the lesson can record progress. */
+  /** Progress keys. The block records its own outcome. */
+  lessonId: string;
+  blockId: string;
   onResult?: (passed: boolean, code: string) => void;
 }
 
@@ -60,6 +63,8 @@ export function ExerciseBlock({
   checks,
   hints = [],
   solution,
+  lessonId,
+  blockId,
   onResult,
 }: ExerciseBlockProps) {
   const { run, analyze, warmUp, isLoading, isRunning } = usePython();
@@ -69,12 +74,23 @@ export function ExerciseBlock({
   const [hintsShown, setHintsShown] = useState(0);
   const [solutionRequested, setSolutionRequested] = useState(0);
   const [checking, setChecking] = useState(false);
+  /** Passed on an earlier visit, before anything was checked this session. */
+  const [restoredPass, setRestoredPass] = useState(false);
 
   useEffect(() => {
     warmUp();
   }, [warmUp]);
 
-  const passed = report?.passed ?? false;
+  // Restore the student's own work. Read after mount, never during render, so
+  // the static export's markup and the first client render agree.
+  useEffect(() => {
+    const stored = getSnapshot().lessons[lessonId]?.blocks[blockId];
+    if (!stored) return;
+    if (stored.code) setSource(stored.code);
+    if (stored.status === "passed") setRestoredPass(true);
+  }, [lessonId, blockId]);
+
+  const passed = report?.passed ?? restoredPass;
   const solutionVisible = solution !== undefined && (passed || solutionRequested >= 2);
 
   async function handleRun() {
@@ -89,6 +105,7 @@ export function ExerciseBlock({
       setResult(runResult);
       const graded = grade(checks, source, runResult, analysis);
       setReport(graded);
+      recordBlockResult(lessonId, blockId, graded.passed, source);
       onResult?.(graded.passed, source);
     } finally {
       setChecking(false);

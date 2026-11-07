@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LessonBody } from "@/components/content/LessonBody";
 import { SiteHeader } from "@/components/shell/SiteHeader";
+import { TypeTag } from "@/components/ui/TypeTag";
 import { getCourse, getLessonLocation, allLessonParams } from "@/content/registry";
 
 /**
@@ -25,7 +26,6 @@ export default async function LessonPage({
   if (!location) notFound();
 
   const { unit, lesson, previous, next } = location;
-  const isCheck = lesson.kind === "progressCheck";
 
   return (
     <>
@@ -33,14 +33,12 @@ export default async function LessonPage({
 
       <div className="mx-auto max-w-2xl px-6 pt-8 pb-16">
         <header className="border-b border-line pb-7">
-          <p className="font-sans text-xs font-semibold tracking-wide uppercase text-accent">
-            {unit.title}
-            {isCheck && (
-              <span className="ml-2 rounded-control bg-accent-soft px-2 py-0.5 text-accent">
-                Progress check
-              </span>
-            )}
-          </p>
+          <div className="flex items-center gap-2.5">
+            <p className="font-sans text-xs font-semibold tracking-wide uppercase text-accent">
+              {unit.title}
+            </p>
+            <TypeTag kind={lesson.kind} />
+          </div>
 
           <h1 className="mt-2.5 text-3xl font-semibold text-ink">
             {lesson.title}
@@ -66,7 +64,7 @@ export default async function LessonPage({
         </header>
 
         <article className="pt-2">
-          <LessonBody blocks={lesson.blocks} />
+          <LessonBody blocks={lesson.blocks} lessonId={lesson.id} />
           {lesson.blocks.length === 0 && (
             <p className="mt-6 rounded-card border border-line border-dashed bg-surface px-5 py-4 font-sans text-sm text-ink-faint">
               This lesson has not been written yet.
