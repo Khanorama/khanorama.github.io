@@ -57,6 +57,14 @@ export type Check =
       atMost?: number;
       message: string;
     }
+  /**
+   * Require specific operators, written as symbols the author actually thinks
+   * in: "<", ">", "==", "+", "and". Resolved against the parsed AST, so an
+   * operator inside a string or comment does not count.
+   */
+  | { kind: "usesOperators"; operators: string[]; message: string }
+  /** Require that a module was imported, e.g. "math". */
+  | { kind: "importsModule"; module: string; message: string }
   /** The snippet is expected to raise; used by errorDemo and by lessons on exceptions. */
   | { kind: "raises"; errorType: string; message?: string };
 

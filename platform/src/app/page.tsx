@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { pythonI } from "@/content/courses/python-i";
 import { courseLessons } from "@/content/types";
 
@@ -34,8 +35,18 @@ export default function Home() {
               <p className="text-sm font-semibold text-ink">{unit.title}</p>
               <ul className="mt-1 space-y-1">
                 {unit.lessons.map((lesson) => (
-                  <li key={lesson.id} className="text-sm text-ink-muted">
-                    {lesson.title}
+                  <li key={lesson.id} className="text-sm">
+                    <Link
+                      href={`/courses/${pythonI.slug}/${unit.slug}/${lesson.slug}/`}
+                      className="text-accent hover:text-accent-hover"
+                    >
+                      {lesson.title}
+                    </Link>
+                    {lesson.blocks.length === 0 && (
+                      <span className="ml-2 text-xs text-ink-faint">
+                        not written yet
+                      </span>
+                    )}
                     {lesson.kind === "progressCheck" && (
                       <span className="ml-2 rounded-control bg-surface-raised px-2 py-0.5 text-xs text-ink-faint">
                         check
