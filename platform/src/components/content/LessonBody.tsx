@@ -1,6 +1,8 @@
 import { Markdown } from "@/components/content/Markdown";
 import { RunnableExample } from "@/components/blocks/RunnableExample";
 import { ExerciseBlock } from "@/components/blocks/ExerciseBlock";
+import { PredictBlock } from "@/components/blocks/PredictBlock";
+import { WrittenBlock } from "@/components/blocks/WrittenBlock";
 import type { Block } from "@/content/types";
 
 type Rendered =
@@ -108,8 +110,31 @@ export function LessonBody({
               </div>
             );
 
-          // predict and written get their own interactions during the lesson
-          // port; no ported lesson uses them yet.
+          case "predict":
+            return (
+              <PredictBlock
+                key={block.id}
+                lessonId={lessonId}
+                blockId={block.id}
+                prompt={<Markdown>{block.prompt}</Markdown>}
+                code={block.code}
+                choices={block.choices}
+                answer={block.answer}
+                explanation={<Markdown>{block.explanation}</Markdown>}
+              />
+            );
+
+          case "written":
+            return (
+              <WrittenBlock
+                key={block.id}
+                lessonId={lessonId}
+                blockId={block.id}
+                prompt={<Markdown>{block.prompt}</Markdown>}
+                modelAnswer={<Markdown>{block.modelAnswer}</Markdown>}
+              />
+            );
+
           default:
             return null;
         }
