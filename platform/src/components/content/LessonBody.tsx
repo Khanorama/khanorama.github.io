@@ -3,21 +3,50 @@ import { RunnableExample } from "@/components/blocks/RunnableExample";
 import { ExerciseBlock } from "@/components/blocks/ExerciseBlock";
 import type { Block } from "@/content/types";
 
+type Rendered =
+  | { kind: "proseRun"; id: string; markdown: string }
+  | { kind: "block"; block: Block };
+
 /**
- * Maps content blocks to components.
+ * Consecutive prose blocks are merged into one markdown document before
+ * rendering.
  *
- * This is a server component, so prose is parsed at build time and only the
- * genuinely interactive blocks ship JavaScript. Exercise prompts are rendered
- * here and passed down as nodes for the same reason.
+ * Authors split explanation into several prose blocks for editing reasons,
+ * but to a reader it is continuous writing. Rendering each one in its own
+ * container breaks the typographic flow: a heading that opens a block becomes
+ * a first child, loses its top margin, and collides with the paragraph above
+ * it. Merging restores normal vertical rhythm and lets margins collapse the
+ * way they do inside any single document.
  */
+function groupProse(blocks: Block[]): Rendered[] {
+  const out: Rendered[] = [];
+
+  for (const block of blocks) {
+    if (block.kind !== "prose") {
+      out.push({ kind: "block", block });
+      continue;
+    }
+    const last = out[out.length - 1];
+    if (last && last.kind === "proseRun") {
+      last.markdown += `\n\n${block.markdown}`;
+    } else {
+      out.push({ kind: "proseRun", id: block.id, markdown: block.markdown });
+    }
+  }
+
+  return out;
+}
+
 export function LessonBody({ blocks }: { blocks: Block[] }) {
   return (
     <div>
-      {blocks.map((block) => {
-        switch (block.kind) {
-          case "prose":
-            return <Markdown key={block.id}>{block.markdown}</Markdown>;
+      {groupProse(blocks).map((entry) => {
+        if (entry.kind === "proseRun") {
+          return <Markdown key={entry.id}>{entry.markdown}</Markdown>;
+        }
 
+        const block = entry.block;
+        switch (block.kind) {
           case "example":
             return (
               <RunnableExample
@@ -42,17 +71,18 @@ export function LessonBody({ blocks }: { blocks: Block[] }) {
 
           case "errorDemo":
             return (
-              <div key={block.id} className="my-6">
+              <div key={block.id} className="my-7">
                 <RunnableExample
                   code={block.code}
                   caption={block.caption ?? "This one is meant to fail"}
                   editable={false}
+                  tone="warning"
                 />
-                <div className="mt-2 rounded-control border border-warning/30 bg-warning-soft px-3.5 py-3">
+                <div className="mt-2 rounded-control border border-warning-line bg-warning-soft px-4 py-3">
                   <p className="font-sans text-xs font-semibold tracking-wide uppercase text-warning">
                     Why it fails
                   </p>
-                  <div className="mt-1.5">
+                  <div className="mt-1">
                     <Markdown>{block.explanation}</Markdown>
                   </div>
                 </div>
@@ -61,7 +91,7 @@ export function LessonBody({ blocks }: { blocks: Block[] }) {
 
           case "sandbox":
             return (
-              <div key={block.id} className="my-6">
+              <div key={block.id} className="my-7">
                 {block.prompt && <Markdown>{block.prompt}</Markdown>}
                 <RunnableExample
                   code={block.starter ?? ""}
@@ -70,8 +100,8 @@ export function LessonBody({ blocks }: { blocks: Block[] }) {
               </div>
             );
 
-          // predict and written blocks get their own interactions during the
-          // lesson port; no ported lesson uses them yet.
+          // predict and written get their own interactions during the lesson
+          // port; no ported lesson uses them yet.
           default:
             return null;
         }

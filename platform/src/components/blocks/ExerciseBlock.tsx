@@ -100,19 +100,24 @@ export function ExerciseBlock({
   return (
     <section
       className={[
-        "my-8 overflow-hidden rounded-card border",
-        passed ? "border-success/40" : "border-line",
+        "my-8 overflow-hidden rounded-card border bg-paper",
+        passed ? "border-success-line" : "border-accent-line",
       ].join(" ")}
     >
       <header
         className={[
           "flex items-center justify-between gap-3 border-b px-4 py-2.5",
           passed
-            ? "border-success/30 bg-success-soft"
-            : "border-line bg-surface-raised",
+            ? "border-success-line bg-success-soft"
+            : "border-accent-line bg-accent-soft",
         ].join(" ")}
       >
-        <span className="font-sans text-xs font-semibold tracking-wide uppercase text-ink-muted">
+        <span
+          className={[
+            "font-sans text-xs font-semibold tracking-wide uppercase",
+            passed ? "text-success" : "text-accent",
+          ].join(" ")}
+        >
           Exercise
         </span>
         {passed && (

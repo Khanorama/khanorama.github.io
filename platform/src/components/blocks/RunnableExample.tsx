@@ -7,12 +7,29 @@ import { Button } from "@/components/ui/Button";
 import { usePython } from "@/lib/python/usePython";
 import type { RunResult } from "@/lib/python/runner";
 
+type Tone = "default" | "warning";
+
 interface RunnableExampleProps {
   code: string;
   caption?: string;
   /** Worked examples are editable by default; pin the canonical form with false. */
   editable?: boolean;
+  /** "warning" marks code that is supposed to fail. */
+  tone?: Tone;
 }
+
+const TONES: Record<Tone, { frame: string; caption: string; bar: string }> = {
+  default: {
+    frame: "border-line",
+    caption: "text-accent",
+    bar: "border-line bg-surface",
+  },
+  warning: {
+    frame: "border-warning-line",
+    caption: "text-warning",
+    bar: "border-warning-line bg-warning-soft",
+  },
+};
 
 /**
  * A worked example the student can run, and usually change.
@@ -24,6 +41,7 @@ export function RunnableExample({
   code,
   caption,
   editable = true,
+  tone = "default",
 }: RunnableExampleProps) {
   const { run, warmUp, isLoading, isRunning } = usePython();
   const [source, setSource] = useState(code);
@@ -35,6 +53,7 @@ export function RunnableExample({
     warmUp();
   }, [warmUp]);
 
+  const styles = TONES[tone];
   const dirty = source !== code;
 
   async function handleRun() {
@@ -42,21 +61,27 @@ export function RunnableExample({
   }
 
   return (
-    <figure className="my-6">
+    <figure className="my-7">
       {caption && (
-        <figcaption className="mb-2 font-sans text-xs font-medium tracking-wide text-ink-faint uppercase">
+        <figcaption
+          className={`mb-2 font-sans text-xs font-semibold tracking-wide uppercase ${styles.caption}`}
+        >
           {caption}
         </figcaption>
       )}
 
-      <div className="overflow-hidden rounded-card border border-line">
+      <div
+        className={`overflow-hidden rounded-card border bg-paper ${styles.frame}`}
+      >
         <CodeEditor
           value={source}
           onChange={editable ? setSource : undefined}
           readOnly={!editable}
           ariaLabel={caption ? `Example: ${caption}` : "Example code"}
         />
-        <div className="flex items-center gap-2 border-t border-line bg-surface px-3 py-2">
+        <div
+          className={`flex items-center gap-2 border-t px-3 py-2 ${styles.bar}`}
+        >
           <Button
             variant="primary"
             onClick={handleRun}

@@ -52,7 +52,21 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${readingSerif.variable} ${monoCode.variable} ${brandSans.variable}`}
+      suppressHydrationWarning
     >
+      <head>
+        {/*
+          Applies the theme before first paint. A static export has no server
+          to read the preference, so without this the page would render light
+          and then snap to dark on hydration. Falls back to the reader's
+          system setting when they have made no explicit choice.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var c=localStorage.getItem('leapcode-theme');var d=c?c==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );
