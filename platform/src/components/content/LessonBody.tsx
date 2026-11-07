@@ -62,6 +62,8 @@ export function LessonBody({
                 code={block.code}
                 caption={block.caption}
                 editable={block.editable ?? true}
+                stdin={block.stdin}
+                tone={block.tone}
               />
             );
 
@@ -74,6 +76,7 @@ export function LessonBody({
                 prompt={<Markdown>{block.prompt}</Markdown>}
                 starter={block.starter}
                 checks={block.checks}
+                stdin={block.stdin}
                 hints={block.hints}
                 solution={block.solution}
               />

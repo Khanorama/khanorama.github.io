@@ -43,6 +43,8 @@ interface ExerciseBlockProps {
   /** Progress keys. The block records its own outcome. */
   lessonId: string;
   blockId: string;
+  /** Lines fed to input(), for lessons that read from the user. */
+  stdin?: string[];
   onResult?: (passed: boolean, code: string) => void;
 }
 
@@ -65,6 +67,7 @@ export function ExerciseBlock({
   solution,
   lessonId,
   blockId,
+  stdin,
   onResult,
 }: ExerciseBlockProps) {
   const { run, analyze, warmUp, isLoading, isRunning } = usePython();
@@ -95,13 +98,16 @@ export function ExerciseBlock({
 
   async function handleRun() {
     setReport(null);
-    setResult(await run(source));
+    setResult(await run(source, { stdin }));
   }
 
   async function handleCheck() {
     setChecking(true);
     try {
-      const [runResult, analysis] = await Promise.all([run(source), analyze(source)]);
+      const [runResult, analysis] = await Promise.all([
+        run(source, { stdin }),
+        analyze(source),
+      ]);
       setResult(runResult);
       const graded = grade(checks, source, runResult, analysis);
       setReport(graded);

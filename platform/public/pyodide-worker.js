@@ -55,12 +55,44 @@ def _lc_make_input(lines):
         return value
     return _input
 
+class _LcCappedWriter(io.StringIO):
+    """
+    stdout with a ceiling.
+
+    A runaway loop that prints would otherwise accumulate output until the tab
+    runs out of memory, and it would do so long before the ten second timeout
+    could fire. Unit 3 tells students to run exactly such a loop on purpose,
+    so this is an expected path rather than an edge case.
+    """
+
+    CAP = 200_000
+
+    def __init__(self):
+        super().__init__()
+        self._written = 0
+        self.truncated = False
+
+    def write(self, s):
+        remaining = self.CAP - self._written
+        if remaining <= 0:
+            self.truncated = True
+            return len(s)
+        if len(s) > remaining:
+            super().write(s[:remaining])
+            self._written = self.CAP
+            self.truncated = True
+        else:
+            super().write(s)
+            self._written += len(s)
+        return len(s)
+
+
 def _lc_run(src, stdin_lines):
-    out, err = io.StringIO(), io.StringIO()
+    out, err = _LcCappedWriter(), _LcCappedWriter()
     old_out, old_err = sys.stdout, sys.stderr
     sys.stdout, sys.stderr = out, err
     result = {"ok": True, "stdout": "", "stderr": "", "error": None,
-              "errorType": None}
+              "errorType": None, "truncated": False}
     scope = {"__name__": "__main__", "input": _lc_make_input(stdin_lines)}
     try:
         exec(compile(src, "<lesson>", "exec"), scope)
@@ -72,6 +104,7 @@ def _lc_run(src, stdin_lines):
         sys.stdout, sys.stderr = old_out, old_err
         result["stdout"] = out.getvalue()
         result["stderr"] = err.getvalue()
+        result["truncated"] = out.truncated or err.truncated
     return json.dumps(result)
 
 def _lc_analyze(src):

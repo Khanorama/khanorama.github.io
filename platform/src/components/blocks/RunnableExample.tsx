@@ -16,6 +16,8 @@ interface RunnableExampleProps {
   editable?: boolean;
   /** "warning" marks code that is supposed to fail. */
   tone?: Tone;
+  /** Lines fed to input(), for lessons that read from the user. */
+  stdin?: string[];
 }
 
 const TONES: Record<Tone, { frame: string; caption: string; bar: string }> = {
@@ -42,6 +44,7 @@ export function RunnableExample({
   caption,
   editable = true,
   tone = "default",
+  stdin,
 }: RunnableExampleProps) {
   const { run, warmUp, isLoading, isRunning } = usePython();
   const [source, setSource] = useState(code);
@@ -57,7 +60,7 @@ export function RunnableExample({
   const dirty = source !== code;
 
   async function handleRun() {
-    setResult(await run(source));
+    setResult(await run(source, { stdin }));
   }
 
   return (

@@ -81,6 +81,16 @@ export interface ProseBlock extends BlockBase {
   markdown: string;
 }
 
+/**
+ * Lines fed to input() when the snippet runs.
+ *
+ * There is no terminal to type into, so any lesson teaching input() has to
+ * supply the answers up front. The runner echoes each line as it is consumed,
+ * the way a real terminal shows what you typed, so expected output must
+ * account for the echo.
+ */
+export type Stdin = string[];
+
 /** A worked example the student can run, and optionally edit and re-run. */
 export interface ExampleBlock extends BlockBase {
   kind: "example";
@@ -90,6 +100,13 @@ export interface ExampleBlock extends BlockBase {
   expectedOutput?: string;
   /** Worked examples are editable by default; set false to pin the canonical form. */
   editable?: boolean;
+  stdin?: Stdin;
+  /**
+   * "warning" marks code that is expected to misbehave without raising, such
+   * as a loop that never ends. Code that raises an exception should be an
+   * errorDemo instead.
+   */
+  tone?: "default" | "warning";
 }
 
 /** "What do you think this will output?" Answer stays hidden until committed. */
@@ -130,6 +147,7 @@ export interface ExerciseBlock extends BlockBase {
   hints?: string[];
   /** Reference answer, revealed after success or after enough attempts. */
   solution?: string;
+  stdin?: Stdin;
 }
 
 /** Ungraded experimentation. Nothing is recorded beyond "opened". */

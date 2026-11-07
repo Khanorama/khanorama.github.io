@@ -15,6 +15,8 @@ export interface RunResult {
   errorType: string | null;
   /** True when the run was killed for exceeding the time limit. */
   timedOut: boolean;
+  /** True when output hit the capture ceiling and was cut short. */
+  truncated?: boolean;
 }
 
 export interface Analysis {
@@ -130,8 +132,13 @@ export class PythonRunner {
 
       return new Promise<T>((resolve, reject) => {
         const timer = setTimeout(() => {
+          // Claim this request before tearing down. teardown() rejects
+          // everything still pending, which would otherwise reject the very
+          // promise we are about to resolve with the timeout result, leaving
+          // the caller with an unhandled rejection and no result.
+          this.pending.delete(id);
           // Cannot interrupt a spinning interpreter; replace it instead.
-          this.teardown(new Error("timeout"));
+          this.teardown(new Error("Python was restarted after a timeout."));
           resolve(onTimeout());
         }, timeoutMs);
 

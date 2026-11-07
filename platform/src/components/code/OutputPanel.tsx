@@ -85,6 +85,15 @@ export function OutputPanel({
   }
 
   return (
-    <div className={`${base} border-line bg-surface text-ink`}>{output}</div>
+    <div className={`${base} border-line bg-surface text-ink`}>
+      {output}
+      {result.truncated && (
+        <span className="mt-2 block font-sans text-xs text-warning">
+          Output was cut off here. The program printed more than this panel
+          will hold, which usually means a loop is running far more times than
+          intended.
+        </span>
+      )}
+    </div>
   );
 }
