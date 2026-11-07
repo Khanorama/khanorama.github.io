@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+/*
+  LeapCode design system.
+
+  Deliberately closed. The default Tailwind palette is cleared below, so the
+  generic slate/indigo/violet/gradient utilities do not exist in this codebase.
+  Only the tokens defined here are available, which keeps the product visually
+  coherent and makes an off-palette choice a compile-time nonevent rather than
+  a judgement call.
+
+  Rules this system encodes:
+    1. One action color. Blue means "you can act here" and nothing else.
+    2. Green is reserved for earned progress. Never decoration, never branding
+       inside the app shell.
+    3. Structure comes from borders and spacing, not drop shadows. Shadow is
+       used only for things that genuinely float above the page.
+    4. Serif for lesson prose, sans for interface, mono for code. A reader can
+       always tell instruction from chrome.
+*/
+
+@theme {
+  /* Clear Tailwind's defaults so only the tokens below can be used. */
+  --color-*: initial;
+
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Surfaces, lightest to most recessed */
+  --color-paper: #ffffff;
+  --color-surface: #f7f9fb;
+  --color-surface-raised: #eef2f7;
+
+  /* Hairlines */
+  --color-line: #dce3ec;
+  --color-line-strong: #c2ccd9;
+
+  /* Ink. Faint is for metadata only, never body copy. */
+  --color-ink: #0f1f33;
+  --color-ink-muted: #475668;
+  --color-ink-faint: #637387;
+  --color-ink-inverse: #ffffff;
+
+  /* Brand navy, carried over from the existing LeapCode identity */
+  --color-navy: #07192b;
+  --color-navy-soft: #11304f;
+
+  /*
+    Wordmark only. Kept separate from --color-success so that green inside the
+    product continues to mean "earned progress" and nothing else, even though
+    the two currently resolve to the same value on white.
+  */
+  --color-brand-blue: #0b5fd0;
+  --color-brand-green: #0d7a44;
+
+  /* Single action accent: brand blue deepened to clear AA on white (5.9:1) */
+  --color-accent: #0b5fd0;
+  --color-accent-hover: #0a4ea8;
+  --color-accent-soft: #e8f0fd;
+
+  /* Progress: brand green deepened to clear AA on white (5.4:1) */
+  --color-success: #0d7a44;
+  --color-success-soft: #e6f4ec;
+
+  --color-danger: #b3261e;
+  --color-danger-soft: #fdecea;
+
+  --color-warning: #8a5a00;
+  --color-warning-soft: #fdf3e2;
+
+  /* Typefaces. Wired to next/font variables in layout.tsx. */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-reading: var(--font-reading-serif), Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-mono-code), ui-monospace, "SFMono-Regular", monospace;
+  --font-brand: var(--font-brand-sans), ui-sans-serif, sans-serif;
+
+  /* Reading size for lesson prose, distinct from UI text */
+  --text-reading: 1.0625rem;
+  --text-reading--line-height: 1.75;
+
+  /* Small, consistent radii. No pills except deliberate status chips. */
+  --radius-control: 6px;
+  --radius-card: 10px;
+
+  /* The only shadow in the system, for genuinely floating surfaces */
+  --shadow-overlay: 0 8px 28px rgba(15, 31, 51, 0.14);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* One visible focus treatment everywhere, keyboard only. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+
+  /* Headings inherit the UI face by default; lesson prose opts into serif. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+    letter-spacing: -0.011em;
+    text-wrap: balance;
+  }
+
+  code,
+  pre,
+  kbd {
+    font-family: var(--font-mono);
+    font-variant-ligatures: none;
+  }
+}

@@ -6,6 +6,9 @@ permalink: pretty
 # site, so those URLs return the neutral 404 (which mirrors the holding page).
 # To relaunch the full site, delete this exclude list.
 exclude:
+  # The new platform is built here but must not reach the live site until
+  # launch. This also keeps Jekyll out of platform/node_modules.
+  - platform
   - about.html
   - courses.html
   - library.html
