@@ -5,51 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LeapCode</title>
     <meta name="robots" content="noindex" />
+    <meta
+      name="description"
+      content="LeapCode is under renovation. The site will be back soon."
+    />
     <link rel="icon" href="images/favicon2.png" type="image/png" />
-    <meta name="theme-color" content="#12181f" />
+    <meta name="theme-color" content="#07192b" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Roboto:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&family=Roboto:wght@400;500&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Apply saved theme before paint to avoid a flash (dark is the LeapCode default) -->
-    <script>
-      (function () {
-        try {
-          var t = localStorage.getItem("theme");
-          if (t === "light") document.documentElement.classList.add("light");
-        } catch (e) {}
-      })();
-    </script>
-
     <style>
       :root {
-        /* Dark (default) */
-        --bg: #12181f;
-        --bg-2: #1a2029;
-        --muted: #9aa7b4;
-        --blue: #2b8cff;
-        --blue-rgb: 43, 140, 255;
+        --navy: #07192b;
+        --text: #eaf0f6;
+        --muted: #93a6b9;
+        --blue: #2f8fff;
         --green: #00ff7f;
-        --green-rgb: 0, 255, 127;
-        --border: rgba(255, 255, 255, 0.09);
-        --card: rgba(255, 255, 255, 0.03);
-        --glow: 0.5;
-      }
-
-      html.light {
-        --bg: #f4f7f9;
-        --bg-2: #ffffff;
-        --muted: #5a6672;
-        --blue: #007bff;
-        --blue-rgb: 0, 123, 255;
-        --green: #00b368;
-        --green-rgb: 0, 179, 104;
-        --border: rgba(0, 0, 0, 0.08);
-        --card: rgba(0, 0, 0, 0.02);
-        --glow: 0;
       }
 
       * {
@@ -65,101 +40,26 @@
         min-height: 100vh;
         display: flex;
         flex-direction: column;
-        background: var(--bg);
-        color: var(--muted);
+        background: var(--navy);
+        color: var(--text);
         font-family: "Roboto", sans-serif;
-        line-height: 1.6;
-        overflow-x: hidden;
-        transition: background 0.3s ease, color 0.3s ease;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
       }
 
-      /* Ambient background */
-      .bg {
+      /* Brand ribbon: a hard split of the two wordmark colors */
+      .ribbon {
         position: fixed;
-        inset: 0;
-        z-index: -2;
-        overflow: hidden;
-      }
-      .blob {
-        position: absolute;
-        width: 48vmax;
-        height: 48vmax;
-        border-radius: 50%;
-        filter: blur(90px);
-        opacity: calc(0.2 + var(--glow) * 0.16);
-        will-change: transform;
-      }
-      .blob--blue {
-        background: rgba(var(--blue-rgb), 0.9);
-        top: -16vmax;
-        left: -12vmax;
-        animation: drift1 22s ease-in-out infinite;
-      }
-      .blob--green {
-        background: rgba(var(--green-rgb), 0.7);
-        bottom: -18vmax;
-        right: -12vmax;
-        animation: drift2 26s ease-in-out infinite;
-      }
-      .grid {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        background-image: linear-gradient(var(--border) 1px, transparent 1px),
-          linear-gradient(90deg, var(--border) 1px, transparent 1px);
-        background-size: 46px 46px;
-        mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 70%);
-        -webkit-mask-image: radial-gradient(
-          circle at 50% 45%,
-          #000 0%,
-          transparent 70%
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          var(--blue) 0 50%,
+          var(--green) 50% 100%
         );
-        opacity: 0.5;
-      }
-
-      @keyframes drift1 {
-        0%,
-        100% {
-          transform: translate(0, 0);
-        }
-        50% {
-          transform: translate(8vmax, 6vmax);
-        }
-      }
-      @keyframes drift2 {
-        0%,
-        100% {
-          transform: translate(0, 0);
-        }
-        50% {
-          transform: translate(-7vmax, -5vmax);
-        }
-      }
-
-      .theme-toggle {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 10;
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        border: 1px solid var(--border);
-        background: var(--bg-2);
-        color: var(--muted);
-        font-size: 1.1rem;
-        cursor: pointer;
-        display: grid;
-        place-items: center;
-        transition: transform 0.2s ease, border-color 0.2s ease;
-      }
-      .theme-toggle:hover {
-        transform: scale(1.08);
-        border-color: var(--blue);
-      }
-      .theme-toggle:focus-visible {
-        outline: 2px solid var(--blue);
-        outline-offset: 2px;
+        z-index: 5;
       }
 
       main {
@@ -167,108 +67,151 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 40px 20px;
+        padding: 56px 24px 32px;
       }
 
-      .wordmark {
-        font-family: "Montserrat", sans-serif;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: 0.02em;
-        font-size: clamp(2.4rem, 11vw, 6rem);
-        line-height: 1;
-        text-align: center;
-        max-width: 100%;
-        white-space: nowrap;
-        animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+      .content {
+        width: 100%;
+        max-width: 540px;
+        animation: fade 0.6s ease both;
       }
-      @keyframes rise {
+      @keyframes fade {
         from {
           opacity: 0;
-          transform: translateY(14px);
+          transform: translateY(10px);
         }
         to {
           opacity: 1;
           transform: translateY(0);
         }
       }
+
+      .wordmark {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.015em;
+        font-size: clamp(2rem, 8vw, 3.25rem);
+        line-height: 1;
+        white-space: nowrap;
+      }
       .wordmark .leap {
         color: var(--blue);
-        text-shadow: 0 0 calc(26px * var(--glow)) rgba(var(--blue-rgb), 0.55);
       }
       .wordmark .code {
         color: var(--green);
-        text-shadow: 0 0 calc(26px * var(--glow)) rgba(var(--green-rgb), 0.5);
+      }
+
+      .notice {
+        border-left: 2px solid var(--green);
+        padding-left: 22px;
+        margin-top: 34px;
+      }
+      .eyebrow {
+        margin: 0;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 700;
+        font-size: 0.78rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--green);
+      }
+      .notice h1 {
+        margin: 12px 0 14px;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 700;
+        color: var(--text);
+        font-size: clamp(1.5rem, 4.6vw, 2.15rem);
+        line-height: 1.18;
+      }
+      .notice p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.02rem;
+        max-width: 42ch;
+      }
+
+      .contact {
+        margin-top: 30px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .contact a {
+        color: var(--blue);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(47, 143, 255, 0.4);
+        padding-bottom: 1px;
+      }
+      .contact a:hover {
+        border-bottom-color: var(--blue);
       }
 
       footer {
-        text-align: center;
-        padding: 22px 20px;
-        color: var(--muted);
-        font-size: 0.85rem;
+        padding: 22px 24px 28px;
+        color: #647a8e;
       }
-      footer a {
-        color: var(--blue);
-        text-decoration: none;
+      .footer-inner {
+        max-width: 540px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        font-size: 0.82rem;
+        color: #647a8e;
       }
-      footer a:hover {
-        text-decoration: underline;
+      .footer-inner .tag {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 500;
+        letter-spacing: 0.04em;
       }
 
+      @media (max-width: 420px) {
+        .footer-inner {
+          justify-content: flex-start;
+        }
+      }
       @media (prefers-reduced-motion: reduce) {
-        .blob,
-        .wordmark {
-          animation: none !important;
+        .content {
+          animation: none;
         }
       }
     </style>
   </head>
   <body>
-    <div class="bg" aria-hidden="true">
-      <div class="blob blob--blue"></div>
-      <div class="blob blob--green"></div>
-    </div>
-    <div class="grid" aria-hidden="true"></div>
-
-    <button
-      class="theme-toggle"
-      id="themeToggle"
-      type="button"
-      aria-label="Toggle light and dark theme"
-      title="Toggle theme"
-    >
-      <span id="themeIcon">☀️</span>
-    </button>
+    <div class="ribbon" aria-hidden="true"></div>
 
     <main>
-      <div class="wordmark">
-        <span class="leap">LEAP</span><span class="code">CODE</span>
+      <div class="content">
+        <div class="wordmark">
+          <span class="leap">LEAP</span><span class="code">CODE</span>
+        </div>
+
+        <div class="notice">
+          <p class="eyebrow">Under renovation</p>
+          <h1>We&rsquo;re rebuilding LeapCode.</h1>
+          <p>
+            The site is offline for a short while as we make improvements.
+            Thanks for your patience. We will be back soon.
+          </p>
+        </div>
+
+        <p class="contact">
+          Questions? Reach us at
+          <a href="mailto:support@leapcode.org">support@leapcode.org</a>.
+        </p>
       </div>
     </main>
 
     <footer>
-      <span id="year"></span> LeapCode &nbsp;&middot;&nbsp;
-      <a href="mailto:support@leapcode.org">support@leapcode.org</a>
+      <div class="footer-inner">
+        <span class="tag">Code. Compete. Connect.</span>
+        <span><span id="year"></span> LeapCode</span>
+      </div>
     </footer>
 
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
-
-      var root = document.documentElement;
-      var icon = document.getElementById("themeIcon");
-      function syncIcon() {
-        icon.textContent = root.classList.contains("light") ? "🌙" : "☀️";
-      }
-      syncIcon();
-      document
-        .getElementById("themeToggle")
-        .addEventListener("click", function () {
-          var isLight = root.classList.toggle("light");
-          try {
-            localStorage.setItem("theme", isLight ? "light" : "dark");
-          } catch (e) {}
-          syncIcon();
-        });
     </script>
   </body>
 </html>
