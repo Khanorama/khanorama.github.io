@@ -146,6 +146,43 @@
         border-bottom-color: var(--blue);
       }
 
+      .countdown {
+        margin-top: 30px;
+      }
+      .return {
+        margin: 0 0 16px;
+        color: var(--muted);
+        font-size: 1rem;
+      }
+      .return strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+      .timer {
+        display: flex;
+        gap: clamp(18px, 5vw, 34px);
+      }
+      .unit {
+        display: flex;
+        flex-direction: column;
+      }
+      .num {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 700;
+        font-size: clamp(1.9rem, 6.5vw, 2.6rem);
+        line-height: 1;
+        color: var(--text);
+        font-variant-numeric: tabular-nums;
+        min-width: 2ch;
+      }
+      .lbl {
+        margin-top: 7px;
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
       footer {
         padding: 22px 24px 28px;
         color: #647a8e;
@@ -192,8 +229,33 @@
           <h1>We&rsquo;re rebuilding LeapCode.</h1>
           <p>
             The site is offline for a short while as we make improvements.
-            Thanks for your patience. We will be back soon.
+            Thanks for your patience.
           </p>
+        </div>
+
+        <div class="countdown">
+          <p class="return" id="return">
+            We will be back on
+            <strong>Saturday, November&nbsp;14 at 5:00&nbsp;PM CST</strong>.
+          </p>
+          <div
+            class="timer"
+            role="timer"
+            aria-label="Time remaining until LeapCode returns"
+          >
+            <div class="unit">
+              <span class="num" id="d">00</span><span class="lbl">Days</span>
+            </div>
+            <div class="unit">
+              <span class="num" id="h">00</span><span class="lbl">Hours</span>
+            </div>
+            <div class="unit">
+              <span class="num" id="m">00</span><span class="lbl">Minutes</span>
+            </div>
+            <div class="unit">
+              <span class="num" id="s">00</span><span class="lbl">Seconds</span>
+            </div>
+          </div>
         </div>
 
         <p class="contact">
@@ -212,6 +274,35 @@
 
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
+
+      // Live countdown to the return time: Nov 14, 2026, 5:00 PM CST (UTC-6).
+      (function () {
+        var target = new Date("2026-11-14T17:00:00-06:00").getTime();
+        var d = document.getElementById("d"),
+          h = document.getElementById("h"),
+          m = document.getElementById("m"),
+          s = document.getElementById("s"),
+          ret = document.getElementById("return");
+        function pad(n) {
+          return String(n).padStart(2, "0");
+        }
+        var timer;
+        function tick() {
+          var diff = target - Date.now();
+          if (diff <= 0) {
+            d.textContent = h.textContent = m.textContent = s.textContent = "00";
+            if (ret) ret.textContent = "We are back online.";
+            clearInterval(timer);
+            return;
+          }
+          d.textContent = pad(Math.floor(diff / 86400000));
+          h.textContent = pad(Math.floor((diff % 86400000) / 3600000));
+          m.textContent = pad(Math.floor((diff % 3600000) / 60000));
+          s.textContent = pad(Math.floor((diff % 60000) / 1000));
+        }
+        tick();
+        timer = setInterval(tick, 1000);
+      })();
     </script>
   </body>
 </html>
