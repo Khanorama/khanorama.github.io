@@ -183,9 +183,17 @@ html.dark {
     border-radius: 2px;
   }
 
+  /*
+    Background only, deliberately.
+
+    Forcing a colour here repainted every selected character the same ink,
+    which flattened syntax highlighting the moment a student selected code:
+    strings, keywords and numbers all turned one colour. The selection
+    background is chosen to keep text legible on top, so overriding the
+    foreground buys nothing and destroys real information.
+  */
   ::selection {
     background-color: var(--color-selection);
-    color: var(--color-ink);
   }
 
   h1,
