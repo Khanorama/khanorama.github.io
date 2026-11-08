@@ -15,6 +15,13 @@ export interface TeamMember {
   name: string;
   roles: string[];
   email: string;
+  /**
+   * Served from public/team. The originals on the old site were up to
+   * 4284x4284 and 2MB each for a thumbnail; these are resampled to 256px,
+   * which is 2x the display size. Static export disables Next's image
+   * optimisation, so whatever is committed is what every visitor downloads.
+   */
+  photo: string;
 }
 
 export const TEAM: TeamMember[] = [
@@ -22,21 +29,25 @@ export const TEAM: TeamMember[] = [
     name: "Ayaan Khan",
     roles: ["Founder and President", "Python Course Director"],
     email: "khan@leapcode.org",
+    photo: "/team/ayaan.jpg",
   },
   {
     name: "Aayan Syed",
     roles: ["Java Course Director"],
     email: "syed@leapcode.org",
+    photo: "/team/aayan.jpg",
   },
   {
     name: "Ishaan Neelamana",
     roles: ["AI and ML Course Director"],
     email: "neelamana@leapcode.org",
+    photo: "/team/ishaan.jpg",
   },
   {
     name: "Bryden Li",
     roles: ["Head of Communications"],
     email: "li@leapcode.org",
+    photo: "/team/bryden.jpg",
   },
 ];
 
