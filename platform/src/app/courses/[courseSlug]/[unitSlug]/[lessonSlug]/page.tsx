@@ -29,7 +29,7 @@ export default async function LessonPage({
 
   return (
     <>
-      <SiteHeader courseTitle={course.title} courseHref="/" />
+      <SiteHeader courseTitle={course.title} courseHref={`/courses/${course.slug}/`} />
 
       <div className="mx-auto max-w-2xl px-6 pt-8 pb-16">
         <header className="border-b border-line pb-7">
