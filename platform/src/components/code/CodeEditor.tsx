@@ -116,8 +116,11 @@ const editorTheme = EditorView.theme({
   // Only takes effect if drawSelection() is ever added; the native caret
   // above is what is actually rendered today. Kept so the two agree.
   ".cm-cursor": { borderLeftColor: "var(--color-accent)", borderLeftWidth: "2px" },
+  // Native selection, since drawSelection() is not enabled. Uses the
+  // dedicated selection token rather than the surface tint, which was too
+  // close to the editor background to see.
   "&.cm-focused .cm-selectionBackground, ::selection": {
-    backgroundColor: "var(--color-accent-soft)",
+    backgroundColor: "var(--color-selection)",
   },
   ".cm-matchingBracket": {
     backgroundColor: "var(--color-accent-soft)",

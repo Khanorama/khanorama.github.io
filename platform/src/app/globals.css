@@ -69,6 +69,14 @@
   --color-accent-soft: #e4eefd;
   --color-accent-line: #b9d3f7;
 
+  /*
+    Text selection. Deliberately its own token rather than reusing
+    accent-soft: a surface tint must stay quiet behind content, while a
+    selection must be unmistakable. Sharing one value made selection almost
+    invisible on the dark editor background.
+  */
+  --color-selection: #cde3fb;
+
   /* Earned progress */
   --color-success: #0d7a44;
   --color-success-soft: #e2f3e9;
@@ -133,6 +141,10 @@ html.dark {
   --color-accent-soft: #14304f;
   --color-accent-line: #255891;
 
+  /* Light enough to read as a selection against #0c1a2b, dark enough to
+     keep syntax-highlighted text legible on top of it. */
+  --color-selection: #27496f;
+
   --color-success: #35d98a;
   --color-success-soft: #0f3326;
   --color-success-line: #1d6344;
@@ -172,7 +184,7 @@ html.dark {
   }
 
   ::selection {
-    background-color: var(--color-accent-soft);
+    background-color: var(--color-selection);
     color: var(--color-ink);
   }
 
