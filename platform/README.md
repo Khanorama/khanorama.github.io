@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LeapCode platform
 
-## Getting Started
+The interactive learning platform, built as a Next.js static export so it can
+be served from GitHub Pages with no server and no hosting cost.
 
-First, run the development server:
+## Running locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`predev` and `prebuild` stage the Pyodide runtime from `node_modules` into
+`public/pyodide` (about 13MB, gitignored). Anything deploying this must run
+the build rather than serve the repository directly, or Python will 404.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How it works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Lesson content** lives in `src/content/courses/`, as typed data rather
+  than database rows, so the curriculum is versioned and reviewable in a diff.
+  Each unit file documents the corrections made to the source notebooks.
+- **Python runs in the browser** via Pyodide in a module worker
+  (`public/pyodide-worker.js`). Nothing is sent to a server. Runaway loops are
+  stopped by terminating the worker, because Pyodide's interrupt buffer needs
+  cross-origin isolation headers that GitHub Pages cannot send.
+- **Exercises are graded** on both output and structure. Structure comes from
+  parsing the submission with Python's own `ast` module, so a `print()` inside
+  a string is not miscounted.
+- **Progress** is held in `localStorage` and mirrored to Firestore when a
+  student is signed in.
 
-## Learn More
+## Accounts (optional)
 
-To learn more about Next.js, take a look at the following resources:
+The platform runs without Firebase. Lessons work, code runs, and progress
+saves to the browser. Accounts add cross-device progress.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To switch them on:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. In the [Firebase console](https://console.firebase.google.com), open the
+   project and go to **Authentication > Sign-in method**, then enable
+   **Email/Password**. Skipping this is the most common first-run failure and
+   produces `auth/configuration-not-found`.
+2. Create a **Web app** under **Project settings > General** if there is not
+   one already, and copy its config values.
+3. Copy `.env.example` to `.env.local` and fill in the six values. Set the
+   same names as secrets in the deployment workflow: a static export inlines
+   them at build time, so they must exist in the build environment.
+4. Deploy the security rules:
 
-## Deploy on Vercel
+   ```bash
+   firebase deploy --only firestore:rules
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### A note on the keys
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The `NEXT_PUBLIC_FIREBASE_*` values are public. They ship inside the client
+bundle by design and identify the project; they do not authorise anything.
+The security boundary is `firestore.rules`, which restricts every student to
+their own document and rejects any field the client does not send. Do not put
+a service account key or any admin credential in these variables.
+
+## Data model
+
+One document per student at `users/{uid}`, holding the whole progress state.
+A course page therefore costs one read regardless of how many lessons it
+contains, which is what keeps a few hundred students inside Firestore's free
+tier, since cost is driven by document reads rather than by activity.
+
+## What is deliberately not here
+
+Graded exams. Every expected answer ships inside the JavaScript bundle, so a
+static client cannot secure an assessment that counts for a grade. The
+`assessment` lesson kind exists in the content model for when there is a
+server-side grader; until then, exams stay instructor-run.

@@ -1,0 +1,40 @@
+rules_version = '2';
+
+// Firestore security rules for LeapCode.
+//
+// These rules, not the API key, are what protect student data. The Firebase
+// web config in NEXT_PUBLIC_ variables ships inside the client bundle and is
+// meant to; it identifies the project and authorises nothing. Anyone can read
+// it out of the JavaScript, so everything below must hold against a caller
+// who has the config and is writing their own requests by hand.
+//
+// Deploy with:  firebase deploy --only firestore:rules
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // One document per student, holding their course progress.
+    match /users/{uid} {
+
+      // A student can only ever see their own record. There is no listing of
+      // the users collection, so one account cannot enumerate others.
+      allow read: if request.auth != null && request.auth.uid == uid;
+
+      // Writes are restricted to the two fields the client actually sends.
+      // Without hasOnly, a signed-in student could add arbitrary fields to
+      // their own document, including anything a future feature might come
+      // to trust, such as a role or an entitlement flag.
+      allow create, update: if request.auth != null
+                            && request.auth.uid == uid
+                            && request.resource.data.keys().hasOnly(['progress', 'updatedAt'])
+                            && request.resource.data.progress is map;
+
+      // Nothing in the product deletes progress. Allowing it would only widen
+      // the surface; enable it deliberately if account deletion is added.
+      allow delete: if false;
+    }
+
+    // Anything not matched above is denied. New collections must opt in here
+    // rather than inherit access by accident.
+  }
+}

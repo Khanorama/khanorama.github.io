@@ -1,21 +1,28 @@
-import type { LessonProgress } from "@/content/types";
+import type { BlockProgress, LessonProgress } from "@/content/types";
 
 /**
- * Progress storage, currently backed by localStorage.
+ * The progress store.
  *
- * This is deliberately shaped like the eventual Firestore document so that
- * swapping the backend is a change of implementation, not of call sites: the
- * stored value matches LessonProgress from the content model, keyed by lesson
- * id, exactly as an Enrollment will be.
+ * Holds progress in memory, mirrors it to localStorage, and optionally
+ * forwards every change to a remote sink. The store itself knows nothing
+ * about Firebase: sync.ts installs the sink once a user signs in, which keeps
+ * the signed-out path free of any account machinery.
  *
- * Until accounts exist, progress is per browser. That is honest for a single
- * device and is replaced, not extended, once auth lands.
+ * localStorage is always written, even when signed in, so a dropped
+ * connection never costs a student the exercise they just solved.
  *
  * Exposed through useSyncExternalStore, so the server snapshot is empty and a
  * static export cannot hydrate into a mismatch.
  */
 
 const STORAGE_KEY = "leapcode-progress-v1";
+
+/**
+ * Submitted code is stored so a student can leave and come back. It is capped
+ * because the whole state goes into one Firestore document, and documents are
+ * limited to 1MB.
+ */
+const MAX_STORED_CODE = 5000;
 
 export interface ProgressState {
   lessons: Record<string, LessonProgress>;
@@ -26,6 +33,14 @@ const EMPTY: ProgressState = Object.freeze({ lessons: {} }) as ProgressState;
 
 let cache: ProgressState | null = null;
 const listeners = new Set<() => void>();
+
+type RemoteSink = (state: ProgressState) => void;
+let remoteSink: RemoteSink | null = null;
+
+/** Installed by sync.ts on sign-in, cleared on sign-out. */
+export function setRemoteSink(sink: RemoteSink | null): void {
+  remoteSink = sink;
+}
 
 function parse(raw: string | null): ProgressState {
   if (!raw) return EMPTY;
@@ -45,30 +60,38 @@ function load(): ProgressState {
   try {
     cache = parse(window.localStorage.getItem(STORAGE_KEY));
   } catch {
-    // Private browsing, or storage blocked.
     cache = EMPTY;
   }
   return cache;
 }
 
-function commit(next: ProgressState) {
+function notify() {
+  for (const listener of listeners) listener();
+}
+
+function commit(next: ProgressState, { pushRemote = true } = {}) {
   cache = next;
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   } catch {
-    // Keep the in-memory value so the session still behaves correctly.
+    // Private browsing. Keep the in-memory value so the session still works.
   }
-  for (const listener of listeners) listener();
+  if (pushRemote) remoteSink?.(next);
+  notify();
+}
+
+/** Used by sync.ts after merging remote state in; does not echo back. */
+export function replaceState(next: ProgressState): void {
+  commit(next, { pushRemote: false });
 }
 
 export function subscribe(listener: () => void): () => void {
   listeners.add(listener);
 
-  // Another tab may be further along in the same course.
   const onStorage = (event: StorageEvent) => {
     if (event.key !== STORAGE_KEY) return;
     cache = parse(event.newValue);
-    for (const l of listeners) l();
+    notify();
   };
   window.addEventListener("storage", onStorage);
 
@@ -86,7 +109,6 @@ export function getServerSnapshot(): ProgressState {
   return EMPTY;
 }
 
-/** Records the outcome of a single graded block. */
 export function recordBlockResult(
   lessonId: string,
   blockId: string,
@@ -100,15 +122,13 @@ export function recordBlockResult(
   };
   const existing = lesson.blocks[blockId];
 
-  // Once passed, a later experiment should not revoke the tick.
+  // Once passed, a later experiment must not revoke the tick.
   const alreadyPassed = existing?.status === "passed";
 
-  const nextBlock = {
-    status: (passed || alreadyPassed ? "passed" : "attempted") as
-      | "passed"
-      | "attempted",
+  const nextBlock: BlockProgress = {
+    status: passed || alreadyPassed ? "passed" : "attempted",
     attempts: (existing?.attempts ?? 0) + 1,
-    code,
+    code: code?.slice(0, MAX_STORED_CODE),
     passedAt:
       existing?.passedAt ?? (passed ? new Date().toISOString() : undefined),
   };
@@ -144,7 +164,78 @@ export function markLessonCompleted(lessonId: string): void {
   });
 }
 
-/** Clears everything. Used by a reset control and by tests. */
 export function resetProgress(): void {
   commit({ lessons: {} });
+}
+
+/**
+ * Combines two progress states, keeping the better outcome for each block.
+ *
+ * Used when a student who has been working signed out creates an account: the
+ * work they just did has to survive, and so does anything already on the
+ * account from another device. Nothing is ever downgraded, because losing a
+ * passed exercise to a merge would be worse than any duplication.
+ */
+export function mergeProgress(
+  a: ProgressState,
+  b: ProgressState,
+): ProgressState {
+  const lessonIds = new Set([
+    ...Object.keys(a.lessons),
+    ...Object.keys(b.lessons),
+  ]);
+  const lessons: Record<string, LessonProgress> = {};
+
+  for (const lessonId of lessonIds) {
+    const left = a.lessons[lessonId];
+    const right = b.lessons[lessonId];
+    if (!left || !right) {
+      lessons[lessonId] = (left ?? right)!;
+      continue;
+    }
+
+    const blockIds = new Set([
+      ...Object.keys(left.blocks),
+      ...Object.keys(right.blocks),
+    ]);
+    const blocks: Record<string, BlockProgress> = {};
+
+    for (const blockId of blockIds) {
+      const lb = left.blocks[blockId];
+      const rb = right.blocks[blockId];
+      if (!lb || !rb) {
+        blocks[blockId] = (lb ?? rb)!;
+        continue;
+      }
+      const passed = lb.status === "passed" || rb.status === "passed";
+      blocks[blockId] = {
+        status: passed ? "passed" : "attempted",
+        attempts: Math.max(lb.attempts, rb.attempts),
+        // Prefer whichever side actually passed; otherwise the longer attempt.
+        code:
+          lb.status === "passed"
+            ? lb.code
+            : rb.status === "passed"
+              ? rb.code
+              : (lb.code?.length ?? 0) >= (rb.code?.length ?? 0)
+                ? lb.code
+                : rb.code,
+        passedAt: lb.passedAt ?? rb.passedAt,
+      };
+    }
+
+    lessons[lessonId] = {
+      startedAt: earliest(left.startedAt, right.startedAt),
+      completedAt: earliest(left.completedAt, right.completedAt),
+      blocks,
+    };
+  }
+
+  return { lessons };
+}
+
+function earliest(a?: string, b?: string): string | undefined {
+  if (!a) return b;
+  if (!b) return a;
+  return a < b ? a : b;
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Source_Serif_4, JetBrains_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/lib/auth/AuthProvider";
+import { ProgressSync } from "@/lib/progress/ProgressSync";
 
 // Interface face: neutral, excellent at small sizes.
 const inter = Inter({
@@ -67,7 +69,13 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          {/* Renders nothing; mirrors progress to the account when signed in. */}
+          <ProgressSync />
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }

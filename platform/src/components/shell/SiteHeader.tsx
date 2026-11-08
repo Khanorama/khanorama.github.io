@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { AccountLink } from "@/components/shell/AccountLink";
 
 interface SiteHeaderProps {
   /** Course context shown beside the wordmark, e.g. while inside a lesson. */
@@ -46,7 +47,8 @@ export function SiteHeader({ courseTitle, courseHref }: SiteHeaderProps) {
           </>
         )}
 
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-1">
+          <AccountLink />
           <ThemeToggle />
         </div>
       </div>

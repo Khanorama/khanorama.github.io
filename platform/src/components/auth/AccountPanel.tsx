@@ -1,0 +1,126 @@
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { AuthForm } from "@/components/auth/AuthForm";
+import { useAuth } from "@/lib/auth/AuthProvider";
+import { useProgress, lessonCompletion } from "@/lib/progress/useProgress";
+import { pythonI } from "@/content/courses/python-i";
+import { courseLessons, gradedBlocks } from "@/content/types";
+
+function CompletedCount() {
+  const progress = useProgress();
+  const lessons = courseLessons(pythonI);
+  const done = lessons.filter(
+    (lesson) =>
+      lessonCompletion(
+        {
+          id: lesson.id,
+          gradedBlockIds: gradedBlocks(lesson).map((block) => block.id),
+          written: lesson.blocks.length > 0,
+        },
+        progress,
+      ).status === "complete",
+  ).length;
+
+  return (
+    <p className="font-sans text-sm text-ink-muted">
+      <span className="font-semibold text-ink">{done}</span> of {lessons.length}{" "}
+      lessons complete
+    </p>
+  );
+}
+
+export function AccountPanel() {
+  const { status, user, needsVerification, signOutNow, resendVerification } =
+    useAuth();
+  const [sent, setSent] = useState(false);
+
+  if (status === "loading") {
+    return (
+      <p className="font-sans text-sm text-ink-faint">Checking your account.</p>
+    );
+  }
+
+  /*
+    Accounts are not configured on this deployment. Saying so plainly beats
+    showing a sign-in form that cannot work, and the product is still fully
+    usable without one.
+  */
+  if (status === "unavailable") {
+    return (
+      <div className="mx-auto w-full max-w-sm">
+        <h1 className="text-2xl font-semibold text-ink">Accounts</h1>
+        <p className="mt-2 font-reading text-reading text-ink">
+          Accounts are not switched on for this site yet. Everything in the
+          course still works, and your progress is saved in this browser.
+        </p>
+        <div className="mt-5 rounded-card border border-line bg-surface px-4 py-3">
+          <CompletedCount />
+          <p className="mt-1 font-sans text-xs text-ink-faint">
+            Saved on this device only. Clearing your browser data will clear it.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (status === "signedOut" || !user) {
+    return <AuthForm />;
+  }
+
+  return (
+    <div className="mx-auto w-full max-w-sm">
+      <h1 className="text-2xl font-semibold text-ink">Your account</h1>
+
+      <dl className="mt-5 space-y-3 border-y border-line py-4">
+        {user.displayName && (
+          <div className="flex justify-between gap-4">
+            <dt className="font-sans text-sm text-ink-muted">Name</dt>
+            <dd className="font-sans text-sm text-ink">{user.displayName}</dd>
+          </div>
+        )}
+        <div className="flex justify-between gap-4">
+          <dt className="font-sans text-sm text-ink-muted">Email</dt>
+          <dd className="truncate font-sans text-sm text-ink">{user.email}</dd>
+        </div>
+      </dl>
+
+      <div className="mt-4 rounded-card border border-line bg-surface px-4 py-3">
+        <CompletedCount />
+        <p className="mt-1 font-sans text-xs text-ink-faint">
+          Saved to your account and available on any device you sign in on.
+        </p>
+      </div>
+
+      {needsVerification && (
+        <div className="mt-4 rounded-card border border-warning-line bg-warning-soft px-4 py-3">
+          <p className="font-sans text-sm text-ink">
+            Your email address is not confirmed yet. You can keep using the
+            course, but confirming it means you can recover your password.
+          </p>
+          {sent ? (
+            <p className="mt-2 font-sans text-xs text-ink-muted">
+              Sent. Check your inbox, and your spam folder.
+            </p>
+          ) : (
+            <Button
+              variant="secondary"
+              className="mt-2"
+              onClick={async () => {
+                await resendVerification();
+                setSent(true);
+              }}
+            >
+              Resend confirmation email
+            </Button>
+          )}
+        </div>
+      )}
+
+      <Button variant="secondary" className="mt-6" onClick={signOutNow}>
+        Sign out
+      </Button>
+    </div>
+  );
+}

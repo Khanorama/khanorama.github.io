@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Pyodide runtime, staged from node_modules by scripts/copy-pyodide.mjs
 /public/pyodide/
+
+# ...but the documented template should be committed
+!.env.example
