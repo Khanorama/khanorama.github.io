@@ -1,0 +1,135 @@
+name: Deploy to GitHub Pages
+
+# Publishes leapcode.org.
+#
+# This replaces the old Jekyll build. Jekyll could only ever serve files that
+# were already in the repository, but the platform needs a build step: the
+# Pyodide runtime is staged out of node_modules at build time and is not
+# committed. Serving the repo directly would 404 on every Python file.
+#
+# WHAT GETS PUBLISHED is controlled by the SITE_MODE repository variable:
+#
+#   renovation  (default)  the holding page with the countdown
+#   platform               the full learning platform
+#
+# The default is deliberately "renovation" so that enabling Actions, or any
+# ordinary push to main, cannot put the platform live before you mean to.
+# Launching is a one-line change to that variable, not a code change.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Override what gets published for this run"
+        type: choice
+        options: [auto, renovation, platform]
+        default: auto
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race. Queue instead of cancelling, so a launch run
+# is not killed by an unrelated push landing a second later.
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      mode: ${{ steps.resolve.outputs.mode }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Decide what to publish
+        id: resolve
+        env:
+          INPUT_MODE: ${{ inputs.mode }}
+          SITE_MODE: ${{ vars.SITE_MODE }}
+        run: |
+          mode="$INPUT_MODE"
+          if [ -z "$mode" ] || [ "$mode" = "auto" ]; then
+            mode="${SITE_MODE:-renovation}"
+          fi
+          if [ "$mode" != "renovation" ] && [ "$mode" != "platform" ]; then
+            echo "::error::SITE_MODE must be 'renovation' or 'platform', got '$mode'"
+            exit 1
+          fi
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "::notice::Publishing mode: $mode"
+
+      - uses: actions/setup-node@v4
+        if: steps.resolve.outputs.mode == 'platform'
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: platform/package-lock.json
+
+      - name: Build the platform
+        if: steps.resolve.outputs.mode == 'platform'
+        working-directory: platform
+        env:
+          # Public by design: these ship in the client bundle and identify the
+          # Firebase project. The security boundary is firestore.rules. They
+          # are secrets here only to keep them out of the repository.
+          # A static export inlines them at build time, so they must be set
+          # HERE rather than at runtime.
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+        run: |
+          npm ci
+          # prebuild stages the Pyodide runtime into public/pyodide
+          npm run build
+
+      - name: Assemble the site
+        env:
+          MODE: ${{ steps.resolve.outputs.mode }}
+        run: |
+          set -euo pipefail
+          rm -rf _site && mkdir -p _site
+
+          if [ "$MODE" = "platform" ]; then
+            cp -R platform/out/. _site/
+          else
+            # Only the holding page and what it needs. Everything else in the
+            # repository stays unpublished, which is the same lockdown the
+            # Jekyll exclude list used to provide.
+            cp index.html _site/
+            cp 404.html _site/
+            mkdir -p _site/images
+            cp images/favicon2.png _site/images/
+          fi
+
+          # Keeps the custom domain attached to the deployment.
+          [ -f CNAME ] && cp CNAME _site/
+
+          # Pages does not run Jekyll on an uploaded artifact, but this makes
+          # sure nothing ever strips Next's _next directory.
+          touch _site/.nojekyll
+
+          echo "Publishing $(find _site -type f | wc -l | tr -d ' ') files"
+          ls -la _site | head -20
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
