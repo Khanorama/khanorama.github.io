@@ -185,10 +185,19 @@ html.dark {
     text-wrap: balance;
   }
 
+  /*
+    Ligatures are disabled everywhere code appears. See the longer note in
+    CodeEditor.tsx: == must look like two equals signs, and <= must not be
+    redrawn as ≤, which is not valid Python.
+
+    calt needs font-feature-settings; font-variant-ligatures alone does not
+    disable it in JetBrains Mono.
+  */
   code,
   pre,
   kbd {
     font-family: var(--font-mono);
     font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "calt" 0;
   }
 }

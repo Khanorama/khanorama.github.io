@@ -57,6 +57,22 @@ const editorTheme = EditorView.theme({
   ".cm-scroller": {
     fontFamily: "var(--font-mono)",
     lineHeight: "1.65",
+    /*
+      Ligatures off, deliberately.
+
+      JetBrains Mono fuses == into a single long bar and renders <= and >= as
+      the mathematical glyphs ≤ and ≥. On a platform teaching Python syntax
+      that is actively misleading: a beginner types two characters and sees
+      one, and ≤ is not a character Python accepts. Experienced developers
+      like these; people learning what the operators are should not have them
+      disguised.
+
+      Both properties are needed. font-variant-ligatures covers the standard
+      liga feature, while JetBrains Mono drives most of its operator
+      substitutions through calt, which only font-feature-settings disables.
+    */
+    fontVariantLigatures: "none",
+    fontFeatureSettings: '"liga" 0, "calt" 0',
   },
   ".cm-content": { padding: "12px 0" },
   ".cm-gutters": {
@@ -65,6 +81,15 @@ const editorTheme = EditorView.theme({
     border: "none",
     borderRight: "1px solid var(--color-line)",
     paddingRight: "2px",
+  },
+  /*
+    The gutter does not inherit the scroller's line-height, so without this
+    the numbers sit ~15.5px apart against 22.3px content rows. The error
+    accumulates down the file: by line 6 the number is already 44px adrift,
+    and on a long listing the numbering is simply wrong.
+  */
+  ".cm-gutterElement": {
+    lineHeight: "1.65",
   },
   ".cm-activeLineGutter": {
     backgroundColor: "var(--color-surface-raised)",
