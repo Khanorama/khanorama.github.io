@@ -2,6 +2,17 @@ import Link from "next/link";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { AccountLink } from "@/components/shell/AccountLink";
 
+/**
+ * Carried over from the original site. These pages are the organisation,
+ * not the course software, and a visitor who has never heard of LeapCode
+ * needs them before a list of courses means anything.
+ */
+const NAV = [
+  { href: "/about/", label: "About" },
+  { href: "/library/", label: "Library" },
+  { href: "/support/", label: "Support" },
+];
+
 interface SiteHeaderProps {
   /** Course context shown beside the wordmark, e.g. while inside a lesson. */
   courseTitle?: string;
@@ -47,7 +58,19 @@ export function SiteHeader({ courseTitle, courseHref }: SiteHeaderProps) {
           </>
         )}
 
-        <div className="ml-auto flex items-center gap-1">
+        <nav className="ml-auto hidden items-center gap-1 sm:flex">
+          {NAV.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-control px-2.5 py-1.5 font-sans text-sm text-on-navy-muted transition-colors hover:bg-navy-raised hover:text-on-navy"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="ml-auto flex items-center gap-1 sm:ml-2">
           <AccountLink />
           <ThemeToggle />
         </div>
