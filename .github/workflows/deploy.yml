@@ -26,6 +26,10 @@ on:
         type: choice
         options: [auto, renovation, platform]
         default: auto
+      dryRun:
+        description: "Build but do not publish. Use with mode=platform to rehearse a launch."
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -43,6 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       mode: ${{ steps.resolve.outputs.mode }}
+      dryRun: ${{ steps.resolve.outputs.dryRun }}
     steps:
       - uses: actions/checkout@v4
 
@@ -50,6 +55,7 @@ jobs:
         id: resolve
         env:
           INPUT_MODE: ${{ inputs.mode }}
+          INPUT_DRY_RUN: ${{ inputs.dryRun }}
           SITE_MODE: ${{ vars.SITE_MODE }}
         run: |
           mode="$INPUT_MODE"
@@ -61,7 +67,15 @@ jobs:
             exit 1
           fi
           echo "mode=$mode" >> "$GITHUB_OUTPUT"
-          echo "::notice::Publishing mode: $mode"
+
+          dry="${INPUT_DRY_RUN:-false}"
+          echo "dryRun=$dry" >> "$GITHUB_OUTPUT"
+
+          if [ "$dry" = "true" ]; then
+            echo "::notice::Dry run. Building '$mode' and NOT publishing."
+          else
+            echo "::notice::Publishing mode: $mode"
+          fi
 
       - uses: actions/setup-node@v4
         if: steps.resolve.outputs.mode == 'platform'
@@ -159,6 +173,9 @@ jobs:
 
   deploy:
     needs: build
+    # A dry run proves the build works without touching the live site, which
+    # is the only way to rehearse a platform build before launch day.
+    if: needs.build.outputs.dryRun != 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

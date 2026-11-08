@@ -29,6 +29,17 @@ the build rather than serve the repository directly, or Python will 404.
 - **Progress** is held in `localStorage` and mirrored to Firestore when a
   student is signed in.
 
+## Deployment
+
+Published by `.github/workflows/deploy.yml`. The `SITE_MODE` repository
+variable chooses what goes live: `renovation` (the default) or `platform`.
+
+Before launching, rehearse it. Run the workflow manually with
+**mode = platform** and **dryRun = true**. That runs the full platform build,
+including the Firebase secrets, `npm ci` and the Pyodide staging, and then
+skips the deploy, so nothing reaches the live site. A green dry run is the
+only way to know a launch will work before attempting it.
+
 ## Accounts (optional)
 
 The platform runs without Firebase. Lessons work, code runs, and progress
