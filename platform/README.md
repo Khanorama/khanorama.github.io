@@ -49,9 +49,15 @@ To switch them on:
    **Firestore Database > Rules**, select all of the existing contents,
    replace them with that file, and press Publish.
 
-   Paste the whole file in one go. Firestore reports an incomplete paste as
-   `Line 1: Parse error`, because the unclosed braces make the entire
-   document fail to parse rather than any single line.
+   Check you are in **Firestore Database** and not **Realtime Database**.
+   Firebase ships two unrelated databases and the console surfaces both.
+   Realtime Database rules are JSON, so pasting these into it fails with
+   `Line 1: Parse error`, because `rules_version = '2';` is not JSON. The
+   URL should contain `/firestore/`, not `/database/`.
+
+   Paste the whole file in one go. A truncated paste produces the same
+   `Line 1: Parse error`, since unclosed braces make the whole document
+   fail to parse rather than any single line.
 
    There is deliberately no `firebase.json` in this repository, so the
    Firebase CLI cannot deploy the rules without `firebase init` being run
