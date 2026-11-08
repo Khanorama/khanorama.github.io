@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { readUserHint, useAuth } from "@/lib/auth/AuthProvider";
-import { useProgress } from "@/lib/progress/useProgress";
 
 function firstName(name: string | null | undefined): string | null {
   const trimmed = name?.trim();
@@ -31,7 +30,6 @@ function firstName(name: string | null | undefined): string | null {
  */
 export function HomeHero() {
   const { status, user } = useAuth();
-  const progress = useProgress();
   const [hintedName, setHintedName] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -40,10 +38,10 @@ export function HomeHero() {
     setMounted(true);
   }, []);
 
-  const hasProgress = Object.keys(progress.lessons).length > 0;
   const name = firstName(user?.displayName) ?? hintedName;
-  const returning =
-    status === "signedIn" || (mounted && (Boolean(hintedName) || hasProgress));
+  // Courses need an account now, so having been here means having one.
+  // Leftover local progress from before that rule is not a signal.
+  const returning = status === "signedIn" || (mounted && Boolean(hintedName));
 
   if (returning) {
     return (

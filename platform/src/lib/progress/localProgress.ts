@@ -24,12 +24,27 @@ const STORAGE_KEY = "leapcode-progress-v1";
  */
 const MAX_STORED_CODE = 5000;
 
+export interface CourseEnrollment {
+  enrolledAt: string;
+}
+
 export interface ProgressState {
   lessons: Record<string, LessonProgress>;
+  /**
+   * Courses this student has joined, keyed by course id.
+   *
+   * Kept in the same document as progress so a course page costs one read,
+   * and so enrolling on one device shows up on another without a second
+   * round trip.
+   */
+  enrollments: Record<string, CourseEnrollment>;
 }
 
 /** Stable reference. Returned on the server and whenever storage is unusable. */
-const EMPTY: ProgressState = Object.freeze({ lessons: {} }) as ProgressState;
+const EMPTY: ProgressState = Object.freeze({
+  lessons: {},
+  enrollments: {},
+}) as ProgressState;
 
 let cache: ProgressState | null = null;
 const listeners = new Set<() => void>();
@@ -47,7 +62,8 @@ function parse(raw: string | null): ProgressState {
   try {
     const parsed = JSON.parse(raw) as ProgressState;
     if (!parsed || typeof parsed !== "object" || !parsed.lessons) return EMPTY;
-    return parsed;
+    // Documents written before enrollment existed have no such field.
+    return { ...parsed, enrollments: parsed.enrollments ?? {} };
   } catch {
     // Corrupted or from an older shape. Start clean rather than crash a lesson.
     return EMPTY;
@@ -165,7 +181,24 @@ export function markLessonCompleted(lessonId: string): void {
 }
 
 export function resetProgress(): void {
-  commit({ lessons: {} });
+  commit({ lessons: {}, enrollments: {} });
+}
+
+/** Joins a course. Idempotent; re-enrolling keeps the original date. */
+export function enrollInCourse(courseId: string): void {
+  const state = load();
+  if (state.enrollments[courseId]) return;
+  commit({
+    ...state,
+    enrollments: {
+      ...state.enrollments,
+      [courseId]: { enrolledAt: new Date().toISOString() },
+    },
+  });
+}
+
+export function isEnrolled(state: ProgressState, courseId: string): boolean {
+  return Boolean(state.enrollments[courseId]);
 }
 
 /**
@@ -231,7 +264,17 @@ export function mergeProgress(
     };
   }
 
-  return { lessons };
+  // Enrolment is a union: joining on either device counts, and the earlier
+  // date wins so the record reflects when they actually started.
+  const enrollments: Record<string, CourseEnrollment> = { ...b.enrollments };
+  for (const [courseId, entry] of Object.entries(a.enrollments ?? {})) {
+    const other = enrollments[courseId];
+    enrollments[courseId] = other
+      ? { enrolledAt: earliest(entry.enrolledAt, other.enrolledAt)! }
+      : entry;
+  }
+
+  return { lessons, enrollments };
 }
 
 function earliest(a?: string, b?: string): string | undefined {

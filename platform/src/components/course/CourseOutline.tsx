@@ -5,6 +5,7 @@ import { CompletionRing } from "@/components/ui/CompletionRing";
 import { TypeTag } from "@/components/ui/TypeTag";
 import { lessonCompletion, useProgress } from "@/lib/progress/useProgress";
 import type { LessonKind } from "@/content/types";
+import { lessonUrl } from "@/content/registry";
 
 export interface OutlineLesson {
   id: string;
@@ -92,7 +93,7 @@ export function CourseOutline({
                     </div>
 
                     <Link
-                      href={`/courses/${courseSlug}/${unit.slug}/${lesson.slug}/`}
+                      href={lessonUrl(courseSlug, unit.slug, lesson.slug)}
                       className="group flex min-w-0 flex-1 items-center gap-2.5 rounded-control py-2.5 pr-3 pl-2 transition-colors hover:bg-accent-soft"
                     >
                       <span

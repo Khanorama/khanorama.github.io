@@ -233,6 +233,12 @@ export interface Unit {
 
 export type CourseStatus = "available" | "inDevelopment";
 
+/** One reason to take the course, shown on its overview page. */
+export interface CourseHighlight {
+  title: string;
+  body: string;
+}
+
 export interface Course {
   id: string;
   slug: string;
@@ -242,6 +248,10 @@ export interface Course {
   description: string;
   level: "Beginner" | "Intermediate" | "Advanced";
   status: CourseStatus;
+  /** Shown on the overview page, before anyone commits to enrolling. */
+  highlights: CourseHighlight[];
+  /** Rough total, shown on the overview. */
+  estimatedHours: number;
   units: Unit[];
 }
 

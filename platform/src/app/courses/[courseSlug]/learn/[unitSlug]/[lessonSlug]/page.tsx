@@ -3,7 +3,15 @@ import { notFound } from "next/navigation";
 import { LessonBody } from "@/components/content/LessonBody";
 import { SiteHeader } from "@/components/shell/SiteHeader";
 import { TypeTag } from "@/components/ui/TypeTag";
-import { getCourse, getLessonLocation, allLessonParams } from "@/content/registry";
+import {
+  getCourse,
+  getLessonLocation,
+  allLessonParams,
+  courseUrl,
+  courseLearnUrl,
+  lessonUrl,
+} from "@/content/registry";
+import { CourseGate } from "@/components/course/CourseGate";
 
 /**
  * Static params are generated for every lesson in every course, because the
@@ -29,8 +37,13 @@ export default async function LessonPage({
 
   return (
     <>
-      <SiteHeader courseTitle={course.title} courseHref={`/courses/${course.slug}/`} />
+      <SiteHeader courseTitle={course.title} courseHref={courseLearnUrl(course.slug)} />
 
+      <CourseGate
+        courseId={course.id}
+        courseSlug={course.slug}
+        courseTitle={course.title}
+      >
       <div className="mx-auto max-w-2xl px-6 pt-8 pb-16">
         <header className="border-b border-line pb-7">
           <div className="flex items-center gap-2.5">
@@ -75,7 +88,7 @@ export default async function LessonPage({
         <nav className="mt-12 flex items-stretch justify-between gap-3 border-t border-line pt-6">
           {previous ? (
             <Link
-              href={`/courses/${course.slug}/${previous.unitSlug}/${previous.lesson.slug}/`}
+              href={lessonUrl(course.slug, previous.unitSlug, previous.lesson.slug)}
               className="group flex-1 rounded-card border border-line px-4 py-3 transition-colors hover:border-accent-line hover:bg-accent-soft"
             >
               <span className="block font-sans text-xs text-ink-faint">
@@ -91,7 +104,7 @@ export default async function LessonPage({
 
           {next ? (
             <Link
-              href={`/courses/${course.slug}/${next.unitSlug}/${next.lesson.slug}/`}
+              href={lessonUrl(course.slug, next.unitSlug, next.lesson.slug)}
               className="group flex-1 rounded-card border border-line px-4 py-3 text-right transition-colors hover:border-accent-line hover:bg-accent-soft"
             >
               <span className="block font-sans text-xs text-ink-faint">Next</span>
@@ -104,6 +117,7 @@ export default async function LessonPage({
           )}
         </nav>
       </div>
+      </CourseGate>
     </>
   );
 }

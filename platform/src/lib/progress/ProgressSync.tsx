@@ -106,7 +106,7 @@ export function ProgressSync() {
     (async () => {
       setSyncStatus({ state: "syncing" });
 
-      let remote: ProgressState = { lessons: {} };
+      let remote: ProgressState = { lessons: {}, enrollments: {} };
       try {
         const [{ doc, getDoc }, db] = await Promise.all([
           firestoreModule(),
@@ -114,7 +114,7 @@ export function ProgressSync() {
         ]);
         const snapshot = await getDoc(doc(db, "users", uid));
         const stored = snapshot.data()?.progress as ProgressState | undefined;
-        if (stored?.lessons) remote = stored;
+        if (stored?.lessons) remote = { ...stored, enrollments: stored.enrollments ?? {} };
       } catch (error) {
         // Could not read. Treat the account as empty rather than block the
         // lesson; the merge below still preserves local work.
