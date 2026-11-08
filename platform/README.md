@@ -43,8 +43,15 @@ To switch them on:
 2. Create a **Web app** under **Project settings > General** if there is not
    one already, and copy its config values.
 3. Copy `.env.example` to `.env.local` and fill in the six values. Set the
-   same names as secrets in the deployment workflow: a static export inlines
-   them at build time, so they must exist in the build environment.
+   same names in the deployment workflow: a static export inlines them at
+   build time, so they must exist in the build environment.
+
+   Add them as **repository secrets** (Settings > Secrets and variables >
+   Actions, Secrets tab), not environment secrets. The build job declares no
+   `environment:`, so secrets scoped to the `github-pages` environment are
+   invisible to it and arrive as empty strings. That would produce a
+   successful build of a site where sign-in silently does not exist, so the
+   workflow fails the build instead if they are missing.
 4. Publish the security rules from `firestore.rules`. In the console, go to
    **Firestore Database > Rules**, select all of the existing contents,
    replace them with that file, and press Publish.

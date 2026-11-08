@@ -85,7 +85,40 @@ jobs:
           NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
           NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
           NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+          ALLOW_NO_ACCOUNTS: ${{ vars.ALLOW_NO_ACCOUNTS }}
         run: |
+          # Fail rather than publish a site where accounts silently do not
+          # exist. The app is designed to run without Firebase, so a missing
+          # config produces a working build with sign-in quietly absent,
+          # which is almost never what you want in production.
+          #
+          # These must be REPOSITORY secrets. This job declares no
+          # `environment:`, so environment secrets scoped to github-pages are
+          # not visible here and would arrive as empty strings.
+          #
+          # storageBucket and messagingSenderId are not checked because the
+          # app does not use Storage or Messaging.
+          missing=""
+          for name in NEXT_PUBLIC_FIREBASE_API_KEY \
+                      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN \
+                      NEXT_PUBLIC_FIREBASE_PROJECT_ID \
+                      NEXT_PUBLIC_FIREBASE_APP_ID; do
+            if [ -z "$(printenv "$name" || true)" ]; then
+              missing="$missing $name"
+            fi
+          done
+
+          if [ -n "$missing" ]; then
+            if [ "$ALLOW_NO_ACCOUNTS" = "true" ]; then
+              echo "::warning::Publishing without accounts. Missing:$missing"
+            else
+              echo "::error::Missing Firebase config:$missing"
+              echo "::error::Add these as REPOSITORY secrets under Settings > Secrets and variables > Actions, on the Secrets tab. Environment secrets scoped to 'github-pages' are not visible to this job."
+              echo "::error::To publish without accounts on purpose, set the repository variable ALLOW_NO_ACCOUNTS to true."
+              exit 1
+            fi
+          fi
+
           npm ci
           # prebuild stages the Pyodide runtime into public/pyodide
           npm run build
