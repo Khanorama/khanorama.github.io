@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { lessonCompletion, useProgress } from "@/lib/progress/useProgress";
 import type { LessonKind } from "@/content/types";
+import { UPCOMING } from "@/content/site";
 
 export interface CatalogLesson {
   id: string;
@@ -135,6 +136,42 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
               </li>
             );
           })}
+        </ul>
+
+        {/*
+          Shown as plainly unavailable rather than left out. The platform is
+          one course today and several later; a catalog that hides that reads
+          as a single-course site, and one that links to empty pages is worse.
+        */}
+        <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+          {UPCOMING.map((course) => (
+            <li
+              key={course.title}
+              className="flex gap-4 rounded-card border border-dashed border-line bg-surface/60 p-5"
+            >
+              <img
+                src={course.art}
+                alt=""
+                width={48}
+                height={48}
+                loading="lazy"
+                className="hidden h-12 w-12 shrink-0 opacity-60 sm:block"
+              />
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                  <h3 className="font-sans text-base font-semibold text-ink-muted">
+                    {course.title}
+                  </h3>
+                  <span className="rounded-full border border-line bg-surface-raised px-2 py-0.5 font-sans text-[10px] font-semibold tracking-[0.08em] uppercase text-ink-faint">
+                    Coming soon
+                  </span>
+                </div>
+                <p className="mt-1 font-sans text-sm text-ink-faint">
+                  {course.blurb}
+                </p>
+              </div>
+            </li>
+          ))}
         </ul>
       </section>
     </>

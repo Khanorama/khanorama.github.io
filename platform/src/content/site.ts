@@ -52,3 +52,35 @@ export const TEAM: TeamMember[] = [
 ];
 
 export const SUPPORT_EMAIL = "support@leapcode.org";
+
+/**
+ * Courses that are coming but do not exist on the platform yet.
+ *
+ * Listed separately from the real courses in content/registry.ts so they can
+ * be shown without generating a route to an empty page. They appear in the
+ * catalog as plainly unavailable, because the platform should look like what
+ * it is becoming without pretending the work is done.
+ */
+export interface UpcomingCourse {
+  title: string;
+  level: string;
+  blurb: string;
+  art: string;
+}
+
+export const UPCOMING: UpcomingCourse[] = [
+  {
+    title: "Java I",
+    level: "Beginner",
+    blurb:
+      "Objects, types and the structure behind large programs, taught the same way.",
+    art: "/art/java.webp",
+  },
+  {
+    title: "Machine Learning with Python",
+    level: "Intermediate",
+    blurb:
+      "Regression, exploratory analysis, and building a model of your own. Python I first.",
+    art: "/art/ai.webp",
+  },
+];

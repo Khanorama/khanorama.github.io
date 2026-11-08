@@ -52,14 +52,14 @@ export default function Home() {
                 Code. Compete. Connect.
               </p>
               <h1 className="mt-3 text-4xl leading-[1.08] font-semibold tracking-tight text-ink md:text-5xl">
-                Learn Python by
+                Learn to code by
                 <br className="hidden sm:block" /> writing it.
               </h1>
               <p className="font-reading mt-5 max-w-lg text-lg leading-relaxed text-ink-muted">
-                Every lesson runs real Python in your browser. Nothing to
-                install, no setup, and the exercises check your work as you go,
-                so you find out whether you have understood something while you
-                are still looking at it.
+                Our courses run real code in your browser. Nothing to install,
+                no setup, and the exercises check your work as you go, so you
+                find out whether you have understood something while you are
+                still looking at it.
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-3">
                 <Link
@@ -77,15 +77,25 @@ export default function Home() {
               </div>
             </div>
 
-            {/* The Python mark, not decoration: it says what the course is. */}
-            <div className="hidden justify-self-center md:block">
+            {/*
+              The course marks, scaled by what actually exists. Python is the
+              course you can take today, so it leads; Java and machine
+              learning sit behind it at half the size. The hierarchy is the
+              honest message, and it saves the hero from claiming a catalogue
+              that is not built yet.
+            */}
+            <div className="hidden flex-col items-center gap-5 justify-self-center md:flex">
               <img
                 src="/art/python.webp"
                 alt=""
-                width={240}
-                height={240}
-                className="h-60 w-60 drop-shadow-[0_12px_24px_rgba(20,32,47,0.14)]"
+                width={176}
+                height={176}
+                className="h-44 w-44 drop-shadow-[0_12px_24px_rgba(20,32,47,0.14)]"
               />
+              <div className="flex items-center gap-6 opacity-70">
+                <img src="/art/java.webp" alt="" width={64} height={64} className="h-16 w-16" />
+                <img src="/art/ai.webp" alt="" width={64} height={64} className="h-16 w-16" />
+              </div>
             </div>
           </div>
         </section>
