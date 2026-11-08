@@ -37,38 +37,39 @@ export default function AboutPage() {
           <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-accent">
             The team
           </h2>
-          <ul className="mt-5 grid gap-5 sm:grid-cols-2">
+          <ul className="mt-6 grid gap-x-6 gap-y-9 sm:grid-cols-2">
             {TEAM.map((member) => (
-              <li key={member.email} className="flex items-start gap-3.5">
+              <li key={member.email}>
                 {/*
                   Plain img rather than next/image: a static export disables
                   optimisation anyway, so the component would add weight
                   without doing its job. Dimensions are set to reserve space
                   and stop the text jumping as photos load.
+
+                  Sources are 384px for a 128px slot, so they stay sharp on a
+                  retina screen without shipping the multi-megabyte originals.
                 */}
                 <img
                   src={member.photo}
                   alt={member.name}
-                  width={56}
-                  height={56}
+                  width={128}
+                  height={128}
                   loading="lazy"
                   decoding="async"
-                  className="h-14 w-14 shrink-0 rounded-full border border-line bg-surface object-cover"
+                  className="h-32 w-32 rounded-full border border-line bg-surface object-cover"
                 />
-                <div className="min-w-0">
-                  <p className="font-sans text-sm font-semibold text-ink">
-                    {member.name}
-                  </p>
-                  <p className="font-sans text-sm text-ink-muted">
-                    {member.roles.join(", ")}
-                  </p>
-                  <a
-                    href={`mailto:${member.email}`}
-                    className="mt-0.5 block truncate font-sans text-sm text-accent hover:text-accent-hover"
-                  >
-                    {member.email}
-                  </a>
-                </div>
+                <p className="mt-3.5 font-sans text-base font-semibold text-ink">
+                  {member.name}
+                </p>
+                <p className="mt-0.5 font-sans text-sm text-ink-muted">
+                  {member.roles.join(", ")}
+                </p>
+                <a
+                  href={`mailto:${member.email}`}
+                  className="mt-1 block font-sans text-sm text-accent hover:text-accent-hover"
+                >
+                  {member.email}
+                </a>
               </li>
             ))}
           </ul>
