@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteHeader } from "@/components/shell/SiteHeader";
+import { HomeHero } from "@/components/shell/HomeHero";
 import { Catalog, type CatalogCourse } from "@/components/course/Catalog";
 import { courses } from "@/content/registry";
 import { gradedBlocks } from "@/content/types";
@@ -45,62 +46,9 @@ export default function Home() {
       <SiteHeader />
 
       <main>
-        <section className="border-b border-line bg-surface">
-          <div className="mx-auto grid max-w-5xl items-center gap-10 px-6 py-16 md:grid-cols-[1.15fr_0.85fr] md:py-20">
-            <div>
-              <p className="font-brand text-sm font-bold tracking-[0.12em] uppercase text-accent">
-                Code. Compete. Connect.
-              </p>
-              <h1 className="mt-3 text-4xl leading-[1.08] font-semibold tracking-tight text-ink md:text-5xl">
-                Learn to code by
-                <br className="hidden sm:block" /> writing it.
-              </h1>
-              <p className="font-reading mt-5 max-w-lg text-lg leading-relaxed text-ink-muted">
-                Our courses run real code in your browser. Nothing to install,
-                no setup, and the exercises check your work as you go, so you
-                find out whether you have understood something while you are
-                still looking at it.
-              </p>
-              <div className="mt-7 flex flex-wrap items-center gap-3">
-                <Link
-                  href="/courses/python-i/"
-                  className="inline-flex items-center rounded-control bg-accent px-5 py-3 font-sans text-sm font-semibold text-ink-inverse shadow-card transition-all hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-card-hover"
-                >
-                  Start Python I
-                </Link>
-                <Link
-                  href="/about/"
-                  className="inline-flex items-center rounded-control border border-line-strong bg-paper px-5 py-3 font-sans text-sm font-semibold text-ink transition-colors hover:bg-surface-raised"
-                >
-                  About LeapCode
-                </Link>
-              </div>
-            </div>
+        <HomeHero />
 
-            {/*
-              The course marks, scaled by what actually exists. Python is the
-              course you can take today, so it leads; Java and machine
-              learning sit behind it at half the size. The hierarchy is the
-              honest message, and it saves the hero from claiming a catalogue
-              that is not built yet.
-            */}
-            <div className="hidden flex-col items-center gap-5 justify-self-center md:flex">
-              <img
-                src="/art/python.webp"
-                alt=""
-                width={176}
-                height={176}
-                className="h-44 w-44 drop-shadow-[0_12px_24px_rgba(20,32,47,0.14)]"
-              />
-              <div className="flex items-center gap-6 opacity-70">
-                <img src="/art/java.webp" alt="" width={64} height={64} className="h-16 w-16" />
-                <img src="/art/ai.webp" alt="" width={64} height={64} className="h-16 w-16" />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div className="mx-auto max-w-5xl px-6 py-14">
+        <div id="courses" className="mx-auto max-w-5xl px-6 py-14 scroll-mt-20">
           <Catalog courses={buildCatalog()} />
         </div>
 

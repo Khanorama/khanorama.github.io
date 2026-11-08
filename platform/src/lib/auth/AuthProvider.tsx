@@ -21,6 +21,45 @@ import { authModule, isFirebaseConfigured, loadAuth } from "@/lib/firebase/clien
  */
 export type AuthStatus = "loading" | "signedIn" | "signedOut" | "unavailable";
 
+/**
+ * A cheap, synchronous hint about who was last signed in.
+ *
+ * Firebase keeps its session in IndexedDB and resolves it asynchronously
+ * after the SDK loads, which takes long enough that a returning student
+ * would see the signed-out page first and then watch it change under them.
+ * This is only a hint for choosing what to render immediately; it grants no
+ * access and is corrected the moment real auth state arrives.
+ */
+const HINT_KEY = "leapcode-user-hint";
+
+export interface UserHint {
+  name: string | null;
+}
+
+export function readUserHint(): UserHint | null {
+  try {
+    const raw = window.localStorage.getItem(HINT_KEY);
+    return raw ? (JSON.parse(raw) as UserHint) : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeUserHint(user: User | null) {
+  try {
+    if (user) {
+      window.localStorage.setItem(
+        HINT_KEY,
+        JSON.stringify({ name: user.displayName }),
+      );
+    } else {
+      window.localStorage.removeItem(HINT_KEY);
+    }
+  } catch {
+    // Private browsing. The page simply resolves a moment later.
+  }
+}
+
 interface AuthContextValue {
   status: AuthStatus;
   user: User | null;
@@ -57,6 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         unsubscribe = onAuthStateChanged(auth, (next) => {
           setUser(next);
           setStatus(next ? "signedIn" : "signedOut");
+          writeUserHint(next);
         });
       } catch {
         // The SDK could not load, most likely offline. Fall back to the
