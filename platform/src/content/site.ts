@@ -54,6 +54,15 @@ export const TEAM: TeamMember[] = [
 export const SUPPORT_EMAIL = "support@leapcode.org";
 
 /**
+ * The Discord invite.
+ *
+ * Kept here rather than inline so there is one place to change it if the
+ * invite is ever rotated. A dead invite on the About page is worse than no
+ * link at all, because it reads as an abandoned community.
+ */
+export const DISCORD_INVITE = "https://discord.gg/YqY4RAYcYG";
+
+/**
  * Courses that are coming but do not exist on the platform yet.
  *
  * Listed separately from the real courses in content/registry.ts so they can

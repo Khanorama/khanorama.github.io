@@ -26,6 +26,43 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+  Whether there is room to actually work through a lesson.
+
+  A lesson puts instructions, an editor and a program's output in one
+  column, and the editor alone wants a sensible number of characters per
+  line before Python starts wrapping in the middle of expressions. On a
+  phone that is not a cramped experience, it is an unusable one.
+
+  Both dimensions are tested, which is the part that matters. Width alone
+  would let a large phone through the moment it was turned sideways: an
+  iPhone Pro Max in landscape is wider than an iPad in portrait. Height is
+  what actually separates them, since no phone in landscape clears 500px
+  while an iPad in either orientation clears both bounds comfortably.
+
+  The two variants are deliberately a pair rather than one plus a negation,
+  so the gate can be drawn in CSS before any script runs and a phone never
+  sees a flash of a lesson it cannot use.
+*/
+@custom-variant lesson-room (@media (min-width: 768px) and (min-height: 500px));
+
+/*
+  The block form is required here, not a style choice. The shorthand
+  @custom-variant takes a single at-rule, so a comma-separated media list
+  silently produces no CSS at all: the variant appears to exist, every
+  lesson-cramped:* utility compiles to nothing, and the only symptom is a
+  gate that quietly stops working. Two @slot bodies give the same "or"
+  and actually emit.
+*/
+@custom-variant lesson-cramped {
+  @media (max-width: 767px) {
+    @slot;
+  }
+  @media (max-height: 499px) {
+    @slot;
+  }
+}
+
 @theme {
   /* Clear Tailwind's defaults so only the tokens below can be used. */
   --color-*: initial;

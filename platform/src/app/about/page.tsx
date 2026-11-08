@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SiteHeader } from "@/components/shell/SiteHeader";
 import { PageHero } from "@/components/shell/PageHero";
 import { reveal } from "@/lib/motion/reveal";
-import { MISSION, TEAM, SUPPORT_EMAIL } from "@/content/site";
+import { DISCORD_INVITE, MISSION, TEAM, SUPPORT_EMAIL } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "About",
@@ -94,16 +94,25 @@ export default function AboutPage() {
             write code. If you are stuck on something in a course, it is the
             fastest place to get unstuck.
           </p>
-          <p className="mt-4 font-sans text-sm text-ink-muted">
-            Ask us for an invite at{" "}
+          <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
             <a
-              href={`mailto:${SUPPORT_EMAIL}`}
-              className="text-accent hover:text-accent-hover"
+              href={DISCORD_INVITE}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="press inline-flex items-center rounded-control bg-accent px-5 py-2.5 font-sans text-sm font-semibold text-ink-inverse shadow-card hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-card-hover"
             >
-              {SUPPORT_EMAIL}
+              Join the Discord
             </a>
-            .
-          </p>
+            <span className="font-sans text-sm text-ink-muted">
+              or email{" "}
+              <a
+                href={`mailto:${SUPPORT_EMAIL}`}
+                className="text-accent transition-colors duration-[var(--dur-base)] ease-soft hover:text-accent-hover"
+              >
+                {SUPPORT_EMAIL}
+              </a>
+            </span>
+          </div>
         </section>
       </main>
     </>

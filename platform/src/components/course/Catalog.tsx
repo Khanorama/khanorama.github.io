@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { lessonCompletion, useProgress } from "@/lib/progress/useProgress";
 import { isEnrolled } from "@/lib/progress/localProgress";
+import { readUserHint, useAuth } from "@/lib/auth/AuthProvider";
 import { courseUrl, lessonUrl } from "@/content/registry";
 import { UPCOMING } from "@/content/site";
 import type { LessonKind } from "@/content/types";
@@ -55,6 +56,7 @@ function Arrow({ dir }: { dir: "left" | "right" }) {
  */
 export function Catalog({ courses }: { courses: CatalogCourse[] }) {
   const progress = useProgress();
+  const hasAccount = useHasAccount();
   const shelf = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
@@ -99,7 +101,11 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
       next,
       started,
       total: course.lessons.length,
-      enrolled: isEnrolled(progress, course.id),
+      // Enrolment is a fact about an account, so it has to be read as one.
+      // The local record outlives a sign-out, which is why a signed-out
+      // visitor was still being shown a half-finished course and invited to
+      // pick up where someone else left off.
+      enrolled: hasAccount && isEnrolled(progress, course.id),
     };
   });
 
@@ -267,4 +273,30 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
       </section>
     </>
   );
+}
+
+/**
+ * Whether this visitor has an account, answered without a flash.
+ *
+ * Auth state resolves asynchronously, so waiting for it would hide a
+ * returning student's own progress for a moment on every load. The cached
+ * name hint covers that gap: it is written on sign-in and cleared on sign
+ * out, so it is a safe stand-in until real state arrives, and real state
+ * overrules it either way.
+ *
+ * Erring towards "no account" while unknown is deliberate. Showing nothing
+ * briefly to someone signed in is a smaller failure than showing someone
+ * else's half-finished course to a visitor who has never signed in.
+ */
+function useHasAccount(): boolean {
+  const { status } = useAuth();
+  const [hinted, setHinted] = useState(false);
+
+  useEffect(() => {
+    setHinted(Boolean(readUserHint()));
+  }, []);
+
+  if (status === "signedIn") return true;
+  if (status === "signedOut" || status === "unavailable") return false;
+  return hinted;
 }
