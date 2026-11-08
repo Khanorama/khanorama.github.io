@@ -163,10 +163,22 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
           )}
         </div>
 
+        {/*
+          The vertical padding is doing real work, not spacing.
+
+          A box with overflow-x: auto cannot keep overflow-y visible; the
+          other axis computes to auto, so this scroller clips top and bottom
+          as well as the sides. The cards lift on hover and grow a larger
+          shadow, and both were being sliced off against the top edge.
+
+          Room for them has to come from padding INSIDE the scroller rather
+          than margin outside it, which is why the gap below the heading is
+          split: mt-1 plus pt-4 is the same 20px the old mt-5 gave.
+        */}
         <div
           ref={shelf}
           onScroll={sync}
-          className="mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="mt-1 flex snap-x snap-mandatory gap-4 overflow-x-auto pt-4 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {withProgress.map(({ course, done, total, started, enrolled }) => {
             const fraction = total === 0 ? 0 : done / total;
