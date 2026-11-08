@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/shell/SiteHeader";
 import { EnrollButton } from "@/components/course/EnrollButton";
+import { RoadmapUnit } from "@/components/course/RoadmapUnit";
 import { courses, getCourse } from "@/content/registry";
 import { courseLessons } from "@/content/types";
 
@@ -132,37 +133,27 @@ export default async function CourseOverviewPage({
           <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-ink-faint">
             The roadmap
           </h2>
+          <p className="mt-1.5 font-sans text-sm text-ink-muted">
+            Open a unit to see what it covers.
+          </p>
           <ol className="mt-5 space-y-4">
             {course.units.map((unit, index) => (
-              <li
+              <RoadmapUnit
                 key={unit.id}
-                className="rounded-card border border-line bg-paper p-5 shadow-card"
-              >
-                <div className="flex items-baseline gap-3">
-                  <span className="font-mono text-xs text-ink-faint">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="font-sans text-base font-semibold text-ink">
-                    {unit.title}
-                  </h3>
-                  <span className="ml-auto shrink-0 font-sans text-xs text-ink-faint">
-                    {unit.lessons.length} parts
-                  </span>
-                </div>
-                <p className="mt-1 pl-8 font-sans text-sm text-ink-muted">
-                  {unit.summary}
-                </p>
-                <ul className="mt-2.5 flex flex-wrap gap-x-2 gap-y-1 pl-8">
-                  {unit.lessons.map((lesson) => (
-                    <li
-                      key={lesson.id}
-                      className="font-sans text-xs text-ink-faint after:ml-2 after:text-line-strong after:content-['/'] last:after:content-none"
-                    >
-                      {lesson.title}
-                    </li>
-                  ))}
-                </ul>
-              </li>
+                index={index}
+                unit={{
+                  id: unit.id,
+                  title: unit.title,
+                  summary: unit.summary,
+                  lessons: unit.lessons.map((lesson) => ({
+                    id: lesson.id,
+                    title: lesson.title,
+                    kind: lesson.kind,
+                    summary: lesson.summary,
+                    estimatedMinutes: lesson.estimatedMinutes,
+                  })),
+                }}
+              />
             ))}
           </ol>
         </section>
