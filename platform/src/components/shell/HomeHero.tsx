@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { readUserHint, useAuth } from "@/lib/auth/AuthProvider";
+import { useProgress } from "@/lib/progress/useProgress";
 
 function firstName(name: string | null | undefined): string | null {
   const trimmed = name?.trim();
@@ -13,18 +14,24 @@ function firstName(name: string | null | undefined): string | null {
 /**
  * The top of the home page, which is two different things.
  *
- * Signed out it is a welcome: the wordmark at full size and the tagline,
- * the way the original site opened, saying what LeapCode is rather than
- * naming a language. Signed in that is wasted space, so it becomes a
- * greeting and gets out of the way of the work.
+ * The split is on whether this person has been here before, not on whether
+ * they are signed in. Progress is kept per browser without an account, so a
+ * signed-out visitor can genuinely have work in progress, and showing them
+ * the newcomer pitch above a "pick up where you left off" card said two
+ * contradictory things at once.
  *
- * The signed-out version is what the static HTML contains, since that is
- * right for a first visit and for anything crawling the page. A returning
- * student would otherwise watch it swap once Firebase resolves, so a cached
- * name lets the greeting render immediately and be corrected if wrong.
+ *   never been here   full welcome: the wordmark, the tagline, what this is
+ *   been here before  a short greeting that gets out of the way
+ *
+ * The welcome is what the static HTML holds, since that is right for a first
+ * visit and for anything crawling the page. A returning student would
+ * otherwise watch it swap once Firebase resolves, so a cached name lets the
+ * greeting render immediately; it is a hint for choosing what to draw and
+ * real auth state corrects it.
  */
 export function HomeHero() {
   const { status, user } = useAuth();
+  const progress = useProgress();
   const [hintedName, setHintedName] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -33,12 +40,12 @@ export function HomeHero() {
     setMounted(true);
   }, []);
 
+  const hasProgress = Object.keys(progress.lessons).length > 0;
   const name = firstName(user?.displayName) ?? hintedName;
-  // Trust the hint only until real auth state arrives.
-  const greeting =
-    status === "signedIn" || (mounted && status === "loading" && hintedName);
+  const returning =
+    status === "signedIn" || (mounted && (Boolean(hintedName) || hasProgress));
 
-  if (greeting) {
+  if (returning) {
     return (
       <section className="brand-glow border-b border-line bg-surface">
         <div className="mx-auto flex max-w-5xl flex-wrap items-end justify-between gap-4 px-6 py-10">
@@ -47,7 +54,7 @@ export function HomeHero() {
               Welcome back
             </p>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink">
-              {name ? `Good to see you, ${name}.` : "Good to see you."}
+              {name ? `Good to see you, ${name}.` : "Good to see you again."}
             </h1>
           </div>
           <Link
@@ -64,9 +71,24 @@ export function HomeHero() {
   return (
     <section className="brand-glow border-b border-line bg-surface">
       <div className="mx-auto max-w-5xl px-6 py-20 text-center md:py-24">
+        {/*
+          The wordmark glows in dark mode, as it did on the original site:
+          blue behind LEAP, green behind CODE. The tokens resolve to none in
+          light, where a halo on dark text over pale paper reads as a fault.
+        */}
         <p className="font-brand text-6xl font-black tracking-tight whitespace-nowrap sm:text-7xl md:text-8xl">
-          <span className="text-brand-blue">LEAP</span>
-          <span className="text-brand-green">CODE</span>
+          <span
+            className="text-brand-blue"
+            style={{ textShadow: "var(--glow-text-blue)" }}
+          >
+            LEAP
+          </span>
+          <span
+            className="text-brand-green"
+            style={{ textShadow: "var(--glow-text-green)" }}
+          >
+            CODE
+          </span>
         </p>
 
         <p className="font-brand mt-5 text-sm font-bold tracking-[0.18em] uppercase text-ink-muted sm:text-base">

@@ -62,8 +62,16 @@
     where it reads strongest, so the light values are pulled right back to a
     tint rather than a smudge.
   */
-  --glow-blue: rgba(11, 95, 208, 0.1);
-  --glow-green: rgba(13, 122, 68, 0.08);
+  --glow-blue: rgba(11, 95, 208, 0.17);
+  --glow-green: rgba(13, 122, 68, 0.14);
+
+  /*
+    The wordmark glow. Off in light, because a halo on dark text over pale
+    paper just looks like a printing fault; it was a dark-mode effect on the
+    original site and only works as one.
+  */
+  --glow-text-blue: none;
+  --glow-text-green: none;
 
   /* Wordmark only, kept apart from the semantic tokens below. */
   --color-brand-blue: #0b5fd0;
@@ -158,8 +166,13 @@ html.dark {
   --color-on-navy: #e9f0f8;
   --color-on-navy-muted: #9db2cd;
 
-  --glow-blue: rgba(77, 155, 255, 0.16);
-  --glow-green: rgba(53, 217, 138, 0.11);
+  --glow-blue: rgba(77, 155, 255, 0.3);
+  --glow-green: rgba(53, 217, 138, 0.22);
+
+  --glow-text-blue:
+    0 0 18px rgba(77, 155, 255, 0.5), 0 0 38px rgba(77, 155, 255, 0.28);
+  --glow-text-green:
+    0 0 18px rgba(53, 217, 138, 0.5), 0 0 38px rgba(53, 217, 138, 0.25);
 
   --color-brand-blue: #4d9bff;
   --color-brand-green: #35d98a;
