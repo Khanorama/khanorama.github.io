@@ -67,6 +67,7 @@ interface AuthContextValue {
   needsVerification: boolean;
   signUp: (name: string, email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   signOutNow: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   resendVerification: () => Promise<void>;
@@ -138,6 +139,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await mod.signInWithEmailAndPassword(auth, email, password);
   }, []);
 
+  /**
+   * Google sign-in, through a popup rather than a redirect.
+   *
+   * signInWithRedirect needs the Firebase auth domain to write storage in a
+   * third-party context on the way back, which Safari and Chrome now block
+   * by default. The app is served from leapcode.org while the auth domain is
+   * a firebaseapp.com address, so redirect would fail for a large share of
+   * students, and fail silently: they would land back on the page still
+   * signed out with nothing to read. A popup keeps the exchange first-party.
+   *
+   * Nothing here creates a profile record. onAuthStateChanged fires exactly
+   * as it does for email sign-in, so progress sync and the name hint already
+   * handle a Google account without needing to know it is one.
+   */
+  const signInWithGoogle = useCallback(async () => {
+    const [mod, auth] = await Promise.all([authModule(), loadAuth()]);
+    const provider = new mod.GoogleAuthProvider();
+    // Always ask which account to use. Students share machines, and
+    // silently reusing whichever Google session the browser happens to be
+    // holding is how one student's progress lands on another's account.
+    provider.setCustomParameters({ prompt: "select_account" });
+    await mod.signInWithPopup(auth, provider);
+  }, []);
+
   const signOutNow = useCallback(async () => {
     const [mod, auth] = await Promise.all([authModule(), loadAuth()]);
     await mod.signOut(auth);
@@ -160,11 +185,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       needsVerification: Boolean(user && !user.emailVerified),
       signUp,
       signIn,
+      signInWithGoogle,
       signOutNow,
       resetPassword,
       resendVerification,
     }),
-    [status, user, signUp, signIn, signOutNow, resetPassword, resendVerification],
+    [
+      status,
+      user,
+      signUp,
+      signIn,
+      signInWithGoogle,
+      signOutNow,
+      resetPassword,
+      resendVerification,
+    ],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
