@@ -234,12 +234,11 @@ export function AuthForm() {
       </div>
 
       <p className="mt-8 border-t border-line pt-4 font-sans text-xs text-ink-faint">
-        You do not need an account to use the lessons.{" "}
+        Accounts are free, and you need one to take a course. You can{" "}
         <Link href="/" className="text-accent hover:text-accent-hover">
-          Start learning
+          look through what is on offer
         </Link>{" "}
-        and your progress saves in this browser. Signing in carries it across
-        devices.
+        before you decide.
       </p>
     </div>
   );
