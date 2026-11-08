@@ -74,7 +74,24 @@ const editorTheme = EditorView.theme({
     fontVariantLigatures: "none",
     fontFeatureSettings: '"liga" 0, "calt" 0',
   },
-  ".cm-content": { padding: "12px 0" },
+  ".cm-content": {
+    padding: "12px 0",
+    /*
+      The caret, and the reason it needs setting explicitly.
+
+      CodeMirror only draws its own .cm-cursor element when the
+      drawSelection extension is enabled, which it is not here, so the
+      browser's native caret is used instead. That is governed by
+      caret-color, and CodeMirror's base theme hard-codes it to black for
+      any theme not registered with { dark: true }.
+
+      This theme is neither light nor dark: it is built from CSS variables
+      that swap with the page, so a static dark flag would be wrong half the
+      time. Setting caret-color from the same tokens keeps it correct in
+      both, and was previously invisible against the dark editor background.
+    */
+    caretColor: "var(--color-accent)",
+  },
   ".cm-gutters": {
     backgroundColor: "var(--color-surface)",
     color: "var(--color-ink-faint)",
@@ -96,6 +113,8 @@ const editorTheme = EditorView.theme({
     color: "var(--color-ink-muted)",
   },
   ".cm-activeLine": { backgroundColor: "color-mix(in srgb, var(--color-surface) 60%, transparent)" },
+  // Only takes effect if drawSelection() is ever added; the native caret
+  // above is what is actually rendered today. Kept so the two agree.
   ".cm-cursor": { borderLeftColor: "var(--color-accent)", borderLeftWidth: "2px" },
   "&.cm-focused .cm-selectionBackground, ::selection": {
     backgroundColor: "var(--color-accent-soft)",
