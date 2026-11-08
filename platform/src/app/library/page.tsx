@@ -32,7 +32,7 @@ export default function LibraryPage() {
             free.
           </p>
           <p className="mt-3 font-sans text-sm text-ink-muted">
-            We are working on it, and expect it to be ready in Spring 2026.
+            We are working on it, and expect it to be ready in January 2027.
           </p>
         </div>
       </main>
