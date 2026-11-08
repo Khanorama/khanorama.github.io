@@ -40,7 +40,7 @@ export function HomeHero() {
 
   if (greeting) {
     return (
-      <section className="border-b border-line bg-surface">
+      <section className="brand-glow border-b border-line bg-surface">
         <div className="mx-auto flex max-w-5xl flex-wrap items-end justify-between gap-4 px-6 py-10">
           <div>
             <p className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-accent">
@@ -62,7 +62,7 @@ export function HomeHero() {
   }
 
   return (
-    <section className="border-b border-line bg-surface">
+    <section className="brand-glow border-b border-line bg-surface">
       <div className="mx-auto max-w-5xl px-6 py-20 text-center md:py-24">
         <p className="font-brand text-6xl font-black tracking-tight whitespace-nowrap sm:text-7xl md:text-8xl">
           <span className="text-brand-blue">LEAP</span>

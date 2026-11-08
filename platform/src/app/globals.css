@@ -56,6 +56,15 @@
   --color-on-navy: #e7eefa;
   --color-on-navy-muted: #9db2cd;
 
+  /*
+    The brand glow, carried over from the original hero: a blue wash in one
+    corner and a green one in the other. Dark mode is where it came from and
+    where it reads strongest, so the light values are pulled right back to a
+    tint rather than a smudge.
+  */
+  --glow-blue: rgba(11, 95, 208, 0.1);
+  --glow-green: rgba(13, 122, 68, 0.08);
+
   /* Wordmark only, kept apart from the semantic tokens below. */
   --color-brand-blue: #0b5fd0;
   --color-brand-green: #0d7a44;
@@ -149,6 +158,9 @@ html.dark {
   --color-on-navy: #e9f0f8;
   --color-on-navy-muted: #9db2cd;
 
+  --glow-blue: rgba(77, 155, 255, 0.16);
+  --glow-green: rgba(53, 217, 138, 0.11);
+
   --color-brand-blue: #4d9bff;
   --color-brand-green: #35d98a;
 
@@ -176,6 +188,18 @@ html.dark {
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.28);
   --shadow-card-hover: 0 2px 6px rgba(0, 0, 0, 0.36), 0 14px 32px rgba(0, 0, 0, 0.42);
   --shadow-overlay: 0 8px 28px rgba(0, 0, 0, 0.5);
+}
+
+@layer components {
+  /*
+    Applied to the banded page headers. Sits over the surface colour rather
+    than replacing it, so the band still reads as the same tone underneath.
+  */
+  .brand-glow {
+    background-image:
+      radial-gradient(55rem 26rem at 10% 15%, var(--glow-blue), transparent 62%),
+      radial-gradient(50rem 24rem at 90% 88%, var(--glow-green), transparent 62%);
+  }
 }
 
 @layer base {

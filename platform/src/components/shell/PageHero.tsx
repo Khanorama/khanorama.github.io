@@ -20,7 +20,7 @@ interface PageHeroProps {
  */
 export function PageHero({ eyebrow, title, lede, art, children }: PageHeroProps) {
   return (
-    <section className="border-b border-line bg-surface">
+    <section className="brand-glow border-b border-line bg-surface">
       <div
         className={[
           "mx-auto max-w-4xl items-center gap-8 px-6 py-12",
