@@ -27,17 +27,29 @@ export function PageHero({ eyebrow, title, lede, art, children }: PageHeroProps)
           art ? "grid md:grid-cols-[1fr_auto]" : "",
         ].join(" ")}
       >
+        {/*
+          The band animates on load rather than on scroll, since it is above
+          the fold on every page and a scroll reveal would never fire. Same
+          90ms interval as the home hero, so arriving at any page feels like
+          arriving at the same site.
+        */}
         <div>
           {eyebrow && (
-            <p className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-accent">
+            <p className="animate-settle font-sans text-xs font-semibold tracking-[0.12em] uppercase text-accent">
               {eyebrow}
             </p>
           )}
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+          <h1
+            className="animate-settle mt-2 text-3xl font-semibold tracking-tight text-ink md:text-4xl"
+            style={{ animationDelay: "90ms" }}
+          >
             {title}
           </h1>
           {lede && (
-            <p className="font-reading mt-3 max-w-xl text-lg leading-relaxed text-ink-muted">
+            <p
+              className="font-reading animate-settle mt-3 max-w-xl text-lg leading-relaxed text-ink-muted"
+              style={{ animationDelay: "180ms" }}
+            >
               {lede}
             </p>
           )}
@@ -50,7 +62,8 @@ export function PageHero({ eyebrow, title, lede, art, children }: PageHeroProps)
             alt=""
             width={art.width}
             height={art.height}
-            className="hidden justify-self-end md:block"
+            className="animate-rise hidden justify-self-end md:block"
+            style={{ animationDelay: "160ms" }}
           />
         )}
       </div>

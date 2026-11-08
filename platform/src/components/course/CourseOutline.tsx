@@ -6,6 +6,7 @@ import { TypeTag } from "@/components/ui/TypeTag";
 import { lessonCompletion, useProgress } from "@/lib/progress/useProgress";
 import type { LessonKind } from "@/content/types";
 import { lessonUrl } from "@/content/registry";
+import { reveal } from "@/lib/motion/reveal";
 
 export interface OutlineLesson {
   id: string;
@@ -50,7 +51,7 @@ export function CourseOutline({
         const done = completions.filter((c) => c.status === "complete").length;
 
         return (
-          <li key={unit.id}>
+          <li key={unit.id} {...reveal(unitIndex * 70)}>
             <div className="flex items-baseline gap-3">
               <span className="font-mono text-xs text-ink-faint">
                 {String(unitIndex + 1).padStart(2, "0")}
@@ -94,7 +95,7 @@ export function CourseOutline({
 
                     <Link
                       href={lessonUrl(courseSlug, unit.slug, lesson.slug)}
-                      className="group flex min-w-0 flex-1 items-center gap-2.5 rounded-control py-2.5 pr-3 pl-2 transition-colors hover:bg-accent-soft"
+                      className="group flex min-w-0 flex-1 items-center gap-2.5 rounded-control py-2.5 pr-3 pl-2 transition-colors duration-[var(--dur-base)] ease-soft hover:bg-accent-soft"
                     >
                       <span
                         className={[

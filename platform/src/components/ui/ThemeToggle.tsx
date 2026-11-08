@@ -62,9 +62,21 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-      className="inline-flex h-8 w-8 items-center justify-center rounded-control text-on-navy-muted transition-colors hover:bg-navy-raised hover:text-on-navy"
+      className="press inline-flex h-8 w-8 items-center justify-center rounded-control text-on-navy-muted hover:bg-navy-raised hover:text-on-navy"
     >
-      {mounted ? isDark ? <SunIcon /> : <MoonIcon /> : <span className="h-4 w-4" />}
+      {/*
+        Keyed on the theme so React replaces the element rather than
+        swapping its contents, which restarts the animation. Without the
+        key the icon would change shape with no acknowledgement that
+        anything happened.
+      */}
+      {mounted ? (
+        <span key={isDark ? "sun" : "moon"} className="animate-pop inline-flex">
+          {isDark ? <SunIcon /> : <MoonIcon />}
+        </span>
+      ) : (
+        <span className="h-4 w-4" />
+      )}
     </button>
   );
 }

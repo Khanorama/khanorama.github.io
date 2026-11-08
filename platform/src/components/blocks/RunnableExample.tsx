@@ -1,5 +1,7 @@
 "use client";
 
+import { reveal } from "@/lib/motion/reveal";
+
 import { useEffect, useState } from "react";
 import { CodeEditor } from "@/components/code/CodeEditor";
 import { OutputPanel } from "@/components/code/OutputPanel";
@@ -64,7 +66,7 @@ export function RunnableExample({
   }
 
   return (
-    <figure className="my-7">
+    <figure className="my-7" {...reveal()}>
       {caption && (
         <figcaption
           className={`mb-2 font-sans text-xs font-semibold tracking-wide uppercase ${styles.caption}`}

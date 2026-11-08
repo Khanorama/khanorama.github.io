@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteHeader } from "@/components/shell/SiteHeader";
+import { reveal } from "@/lib/motion/reveal";
 import { HomeHero } from "@/components/shell/HomeHero";
 import { Catalog, type CatalogCourse } from "@/components/course/Catalog";
 import { courses } from "@/content/registry";
@@ -61,8 +62,9 @@ export default function Home() {
               height={236}
               loading="lazy"
               className="w-full max-w-sm justify-self-center"
+              {...reveal()}
             />
-            <div>
+            <div {...reveal(110)}>
               <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-accent">
                 Our mission
               </h2>
@@ -71,7 +73,7 @@ export default function Home() {
               </p>
               <Link
                 href="/about/"
-                className="mt-4 inline-block font-sans text-sm font-semibold text-accent hover:text-accent-hover"
+                className="mt-4 inline-block font-sans text-sm font-semibold text-accent transition-colors duration-[var(--dur-base)] ease-soft hover:text-accent-hover"
               >
                 More about LeapCode
               </Link>
@@ -80,7 +82,10 @@ export default function Home() {
         </section>
 
         <section className="mx-auto max-w-5xl px-6 py-14">
-          <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-ink-faint">
+          <h2
+            className="font-sans text-sm font-semibold tracking-wide uppercase text-ink-faint"
+            {...reveal()}
+          >
             More from LeapCode
           </h2>
           <ul className="mt-5 grid gap-4 sm:grid-cols-3">
@@ -100,11 +105,11 @@ export default function Home() {
                 title: "Support",
                 blurb: "Volunteer and help more students learn.",
               },
-            ].map((item) => (
-              <li key={item.href}>
+            ].map((item, index) => (
+              <li key={item.href} {...reveal(index * 80)}>
                 <Link
                   href={item.href}
-                  className="group block h-full rounded-card border border-line bg-paper px-5 py-4 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent-line hover:shadow-card-hover"
+                  className="press group block h-full rounded-card border border-line bg-paper px-5 py-4 shadow-card hover:-translate-y-0.5 hover:border-accent-line hover:shadow-card-hover"
                 >
                   <span className="block font-sans text-base font-semibold text-ink group-hover:text-accent">
                     {item.title}

@@ -1,5 +1,7 @@
 "use client";
 
+import { reveal } from "@/lib/motion/reveal";
+
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { recordBlockResult } from "@/lib/progress/localProgress";
@@ -45,6 +47,7 @@ export function WrittenBlock({
         "my-8 overflow-hidden rounded-card border bg-paper",
         marked !== null ? "border-success-line" : "border-line",
       ].join(" ")}
+      {...reveal()}
     >
       <header
         className={[

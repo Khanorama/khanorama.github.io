@@ -94,7 +94,7 @@ export default async function LessonPage({
           {previous ? (
             <Link
               href={lessonUrl(course.slug, previous.unitSlug, previous.lesson.slug)}
-              className="group min-w-0 flex-1 rounded-card border border-line px-4 py-3 transition-colors hover:border-accent-line hover:bg-accent-soft"
+              className="press group min-w-0 flex-1 rounded-card border border-line px-4 py-3 hover:-translate-y-0.5 hover:border-accent-line hover:bg-accent-soft"
             >
               <span className="block font-sans text-xs text-ink-faint">
                 Previous
@@ -109,7 +109,7 @@ export default async function LessonPage({
 
           <Link
             href={courseLearnUrl(course.slug)}
-            className="group flex shrink-0 flex-col items-center justify-center rounded-card border border-line px-4 py-3 transition-colors hover:border-accent-line hover:bg-accent-soft"
+            className="press group flex shrink-0 flex-col items-center justify-center rounded-card border border-line px-4 py-3 hover:-translate-y-0.5 hover:border-accent-line hover:bg-accent-soft"
             title={`All lessons in ${course.title}`}
           >
             <svg
@@ -133,7 +133,7 @@ export default async function LessonPage({
           {next ? (
             <Link
               href={lessonUrl(course.slug, next.unitSlug, next.lesson.slug)}
-              className="group min-w-0 flex-1 rounded-card border border-line px-4 py-3 text-right transition-colors hover:border-accent-line hover:bg-accent-soft"
+              className="press group min-w-0 flex-1 rounded-card border border-line px-4 py-3 text-right hover:-translate-y-0.5 hover:border-accent-line hover:bg-accent-soft"
             >
               <span className="block font-sans text-xs text-ink-faint">Next</span>
               <span className="mt-0.5 block truncate font-sans text-sm font-medium text-ink group-hover:text-accent">

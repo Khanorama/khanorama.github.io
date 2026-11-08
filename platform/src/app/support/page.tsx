@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/shell/SiteHeader";
 import { PageHero } from "@/components/shell/PageHero";
+import { reveal } from "@/lib/motion/reveal";
 import { SUPPORT_EMAIL } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function SupportPage() {
       />
 
       <main className="mx-auto max-w-2xl px-6 pt-12 pb-16">
-        <section>
+        <section {...reveal()}>
           <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-accent">
             Volunteer with us
           </h2>

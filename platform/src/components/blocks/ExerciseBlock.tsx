@@ -1,5 +1,7 @@
 "use client";
 
+import { reveal } from "@/lib/motion/reveal";
+
 import { useEffect, useState, type ReactNode } from "react";
 import { CodeEditor } from "@/components/code/CodeEditor";
 import { OutputPanel } from "@/components/code/OutputPanel";
@@ -126,6 +128,7 @@ export function ExerciseBlock({
         "my-8 overflow-hidden rounded-card border bg-paper",
         passed ? "border-success-line" : "border-accent-line",
       ].join(" ")}
+      {...reveal()}
     >
       <header
         className={[

@@ -146,7 +146,7 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
                 onClick={() => nudge(-1)}
                 disabled={atStart}
                 aria-label="Scroll courses left"
-                className="grid h-8 w-8 place-items-center rounded-full border border-line bg-paper text-ink-muted transition-colors hover:border-accent-line hover:text-accent disabled:opacity-35 disabled:hover:border-line disabled:hover:text-ink-muted"
+                className="press grid h-8 w-8 place-items-center rounded-full border border-line bg-paper text-ink-muted hover:border-accent-line hover:text-accent disabled:opacity-35 disabled:hover:border-line disabled:hover:text-ink-muted"
               >
                 <Arrow dir="left" />
               </button>
@@ -155,7 +155,7 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
                 onClick={() => nudge(1)}
                 disabled={atEnd}
                 aria-label="Scroll courses right"
-                className="grid h-8 w-8 place-items-center rounded-full border border-line bg-paper text-ink-muted transition-colors hover:border-accent-line hover:text-accent disabled:opacity-35 disabled:hover:border-line disabled:hover:text-ink-muted"
+                className="press grid h-8 w-8 place-items-center rounded-full border border-line bg-paper text-ink-muted hover:border-accent-line hover:text-accent disabled:opacity-35 disabled:hover:border-line disabled:hover:text-ink-muted"
               >
                 <Arrow dir="right" />
               </button>
@@ -187,7 +187,7 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
                 key={course.id}
                 data-card
                 href={courseUrl(course.slug)}
-                className="group flex w-[17rem] shrink-0 snap-start flex-col rounded-card border border-line bg-paper p-6 shadow-card transition-all hover:-translate-y-1 hover:border-accent-line hover:shadow-card-hover"
+                className="press group flex w-[17rem] shrink-0 snap-start flex-col rounded-card border border-line bg-paper p-6 shadow-card hover:-translate-y-1 hover:border-accent-line hover:shadow-card-hover"
               >
                 {course.art && (
                   <img

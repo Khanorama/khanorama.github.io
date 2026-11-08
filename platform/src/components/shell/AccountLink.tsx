@@ -22,7 +22,7 @@ export function AccountLink() {
     return (
       <Link
         href="/account"
-        className="rounded-control px-2.5 py-1.5 font-sans text-sm text-on-navy-muted transition-colors hover:bg-navy-raised hover:text-on-navy"
+        className="press rounded-control px-2.5 py-1.5 font-sans text-sm text-on-navy-muted hover:bg-navy-raised hover:text-on-navy"
       >
         Sign in
       </Link>
@@ -34,7 +34,7 @@ export function AccountLink() {
   return (
     <Link
       href="/account"
-      className="flex max-w-[11rem] items-center gap-2 rounded-control px-2 py-1.5 transition-colors hover:bg-navy-raised"
+      className="press flex max-w-[11rem] items-center gap-2 rounded-control px-2 py-1.5 hover:bg-navy-raised"
       title={label}
     >
       <span

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/shell/SiteHeader";
 import { PageHero } from "@/components/shell/PageHero";
+import { reveal } from "@/lib/motion/reveal";
 
 export const metadata: Metadata = {
   title: "Library",
@@ -21,7 +22,10 @@ export default function LibraryPage() {
       />
 
       <main className="mx-auto max-w-2xl px-6 pt-12 pb-16">
-        <div className=" rounded-card border border-warning-line bg-warning-soft px-5 py-4">
+        <div
+          className="rounded-card border border-warning-line bg-warning-soft px-5 py-4 shadow-card"
+          {...reveal()}
+        >
           <p className="font-sans text-xs font-semibold tracking-wide uppercase text-warning">
             In development
           </p>

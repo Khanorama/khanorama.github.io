@@ -1,5 +1,9 @@
 "use client";
 
+// Aliased: this file already has a reveal() of its own, for revealing
+// the answer, and the bare name would shadow it.
+import { reveal as revealOnScroll } from "@/lib/motion/reveal";
+
 import { useEffect, useState, type ReactNode } from "react";
 import { CodeEditor } from "@/components/code/CodeEditor";
 import { OutputPanel } from "@/components/code/OutputPanel";
@@ -58,7 +62,10 @@ export function PredictBlock({
   }
 
   return (
-    <section className="my-8 overflow-hidden rounded-card border border-line bg-paper">
+    <section
+      className="my-8 overflow-hidden rounded-card border border-line bg-paper"
+      {...revealOnScroll()}
+    >
       <header className="border-b border-line bg-surface-raised px-4 py-2.5">
         <span className="font-sans text-xs font-semibold tracking-wide uppercase text-ink-muted">
           Predict the output

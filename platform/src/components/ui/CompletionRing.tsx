@@ -44,7 +44,20 @@ export function CompletionRing({
       ].join(" ")}
     >
       {complete ? (
-        <>
+        /*
+          Completion is the one moment in the product worth marking, so the
+          disc arrives with a slight overshoot and the tick is drawn on
+          behind it rather than appearing whole.
+
+          transform-box: fill-box is what makes the scale happen about the
+          disc's own centre. Without it an SVG transform-origin resolves
+          against the viewport, and the ring would swing in from the corner
+          of the page.
+        */
+        <g
+          className="animate-pop"
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
+        >
           <circle cx="12" cy="12" r="11" fill="currentColor" />
           <path
             d="M7.2 12.3l3.2 3.2 6.4-6.9"
@@ -53,8 +66,13 @@ export function CompletionRing({
             strokeWidth="2.2"
             strokeLinecap="round"
             strokeLinejoin="round"
+            strokeDasharray="15"
+            style={{
+              animation:
+                "tick-draw var(--dur-slow) var(--ease-snap) 90ms backwards",
+            }}
           />
-        </>
+        </g>
       ) : (
         <>
           <circle

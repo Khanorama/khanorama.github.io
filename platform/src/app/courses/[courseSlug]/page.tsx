@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/shell/SiteHeader";
 import { EnrollButton } from "@/components/course/EnrollButton";
 import { RoadmapUnit } from "@/components/course/RoadmapUnit";
 import { courses, getCourse } from "@/content/registry";
+import { reveal } from "@/lib/motion/reveal";
 import { courseLessons } from "@/content/types";
 
 export function generateStaticParams() {
@@ -104,19 +105,26 @@ export default async function CourseOverviewPage({
       </section>
 
       <main className="mx-auto max-w-4xl px-6 py-14">
-        <p className="font-reading text-reading mx-auto max-w-2xl text-ink">
+        <p
+          className="font-reading text-reading mx-auto max-w-2xl text-ink"
+          {...reveal()}
+        >
           {course.description}
         </p>
 
         <section className="mt-12">
-          <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-ink-faint">
+          <h2
+            className="font-sans text-sm font-semibold tracking-wide uppercase text-ink-faint"
+            {...reveal()}
+          >
             What this course gives you
           </h2>
           <ul className="mt-5 grid gap-4 sm:grid-cols-2">
-            {course.highlights.map((highlight) => (
+            {course.highlights.map((highlight, index) => (
               <li
                 key={highlight.title}
-                className="rounded-card border border-line bg-paper p-5 shadow-card"
+                className="press rounded-card border border-line bg-paper p-5 shadow-card hover:-translate-y-0.5 hover:shadow-card-hover"
+                {...reveal(index * 70)}
               >
                 <h3 className="font-sans text-base font-semibold text-ink">
                   {highlight.title}
@@ -130,7 +138,10 @@ export default async function CourseOverviewPage({
         </section>
 
         <section className="mt-14">
-          <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-ink-faint">
+          <h2
+            className="font-sans text-sm font-semibold tracking-wide uppercase text-ink-faint"
+            {...reveal()}
+          >
             The roadmap
           </h2>
           <p className="mt-1.5 font-sans text-sm text-ink-muted">
@@ -141,6 +152,7 @@ export default async function CourseOverviewPage({
               <RoadmapUnit
                 key={unit.id}
                 index={index}
+                revealDelay={index * 70}
                 unit={{
                   id: unit.id,
                   title: unit.title,
@@ -158,7 +170,10 @@ export default async function CourseOverviewPage({
           </ol>
         </section>
 
-        <div className="mt-12 rounded-card border border-accent-line bg-accent-soft px-6 py-6 text-center">
+        <div
+          className="mt-12 rounded-card border border-accent-line bg-accent-soft px-6 py-6 text-center"
+          {...reveal()}
+        >
           <p className="font-sans text-base font-semibold text-ink">
             Ready to start?
           </p>

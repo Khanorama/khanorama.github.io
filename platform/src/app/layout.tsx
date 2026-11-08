@@ -58,14 +58,23 @@ export default function RootLayout({
     >
       <head>
         {/*
-          Applies the theme before first paint. A static export has no server
-          to read the preference, so without this the page would render light
-          and then snap to dark on hydration. Falls back to the reader's
-          system setting when they have made no explicit choice.
+          Two things, both of which have to happen before the first paint.
+
+          The theme, because a static export has no server to read the
+          preference and the page would otherwise render light and snap to
+          dark on hydration.
+
+          The js class, because the scroll reveals hide their targets and
+          only script can ever bring them back. Scoping that hidden state to
+          this class means a reader with JavaScript blocked or broken gets a
+          fully visible page instead of a mostly empty one. It is set here
+          rather than in React so the hidden state is already in force on
+          the first frame, which is what keeps content from flashing in and
+          then back out again.
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var c=localStorage.getItem('leapcode-theme');var d=c?c==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`,
+            __html: `(function(){var e=document.documentElement;try{var c=localStorage.getItem('leapcode-theme');var d=c?c==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)e.classList.add('dark');}catch(x){}e.classList.add('js');})();`,
           }}
         />
       </head>

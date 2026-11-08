@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/shell/SiteHeader";
 import { PageHero } from "@/components/shell/PageHero";
+import { reveal } from "@/lib/motion/reveal";
 import { MISSION, TEAM, SUPPORT_EMAIL } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -22,14 +23,15 @@ export default function AboutPage() {
       />
 
       <main className="mx-auto max-w-2xl px-6 pt-12 pb-16">
-        <section>
+        <section {...reveal()}>
           <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-accent">
             Our mission
           </h2>
-          {MISSION.map((paragraph) => (
+          {MISSION.map((paragraph, index) => (
             <p
               key={paragraph.slice(0, 24)}
               className="font-reading text-reading mt-4 text-ink"
+              {...reveal(index * 60)}
             >
               {paragraph}
             </p>
@@ -37,12 +39,15 @@ export default function AboutPage() {
         </section>
 
         <section className="mt-12">
-          <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-accent">
+          <h2
+            className="font-sans text-sm font-semibold tracking-wide uppercase text-accent"
+            {...reveal()}
+          >
             The team
           </h2>
           <ul className="mt-6 grid gap-x-6 gap-y-9 sm:grid-cols-2">
-            {TEAM.map((member) => (
-              <li key={member.email}>
+            {TEAM.map((member, index) => (
+              <li key={member.email} {...reveal(index * 70)}>
                 {/*
                   Plain img rather than next/image: a static export disables
                   optimisation anyway, so the component would add weight
@@ -59,7 +64,7 @@ export default function AboutPage() {
                   height={128}
                   loading="lazy"
                   decoding="async"
-                  className="h-32 w-32 rounded-full border border-line bg-surface object-cover"
+                  className="h-32 w-32 rounded-full border border-line bg-surface object-cover transition-transform duration-[var(--dur-slow)] ease-snap hover:scale-[1.04]"
                 />
                 <p className="mt-3.5 font-sans text-base font-semibold text-ink">
                   {member.name}
@@ -78,7 +83,7 @@ export default function AboutPage() {
           </ul>
         </section>
 
-        <section className="mt-12">
+        <section className="mt-12" {...reveal()}>
           <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-accent">
             The community
           </h2>

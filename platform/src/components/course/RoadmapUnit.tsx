@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import { TypeTag } from "@/components/ui/TypeTag";
 import type { LessonKind } from "@/content/types";
+import { reveal } from "@/lib/motion/reveal";
 
 export interface RoadmapLesson {
   id: string;
@@ -35,15 +36,20 @@ export interface RoadmapUnitData {
 export function RoadmapUnit({
   index,
   unit,
+  revealDelay = 0,
 }: {
   index: number;
   unit: RoadmapUnitData;
+  revealDelay?: number;
 }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
 
   return (
-    <li className="rounded-card border border-line bg-paper shadow-card transition-shadow hover:shadow-card-hover">
+    <li
+      className="rounded-card border border-line bg-paper shadow-card transition-shadow duration-[var(--dur-base)] ease-snap hover:shadow-card-hover"
+      {...reveal(revealDelay)}
+    >
       <h3>
         <button
           type="button"
@@ -77,7 +83,7 @@ export function RoadmapUnit({
       <div
         id={panelId}
         aria-hidden={!open}
-        className="grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none"
+        className="grid transition-[grid-template-rows] duration-[var(--dur-slow)] ease-snap"
         style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
       >
         <div className="overflow-hidden">
@@ -118,7 +124,7 @@ function Chevron({ open }: { open: boolean }) {
       strokeLinejoin="round"
       aria-hidden="true"
       className={[
-        "text-ink-faint transition-transform duration-300 ease-out motion-reduce:transition-none",
+        "text-ink-faint transition-transform duration-[var(--dur-slow)] ease-snap",
         open ? "rotate-180" : "rotate-0",
       ].join(" ")}
     >
