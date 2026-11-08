@@ -45,11 +45,17 @@ To switch them on:
 3. Copy `.env.example` to `.env.local` and fill in the six values. Set the
    same names as secrets in the deployment workflow: a static export inlines
    them at build time, so they must exist in the build environment.
-4. Deploy the security rules:
+4. Publish the security rules from `firestore.rules`. In the console, go to
+   **Firestore Database > Rules**, select all of the existing contents,
+   replace them with that file, and press Publish.
 
-   ```bash
-   firebase deploy --only firestore:rules
-   ```
+   Paste the whole file in one go. Firestore reports an incomplete paste as
+   `Line 1: Parse error`, because the unclosed braces make the entire
+   document fail to parse rather than any single line.
+
+   There is deliberately no `firebase.json` in this repository, so the
+   Firebase CLI cannot deploy the rules without `firebase init` being run
+   first. The console is the shorter path for a file that changes rarely.
 
 ### A note on the keys
 
