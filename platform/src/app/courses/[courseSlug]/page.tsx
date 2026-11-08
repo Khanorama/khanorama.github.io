@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/shell/SiteHeader";
+import { PageHero } from "@/components/shell/PageHero";
 import {
   CourseOutline,
   type OutlineUnit,
@@ -59,16 +60,15 @@ export default async function CoursePage({
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-2xl px-6 pt-10 pb-16">
-        <p className="font-sans text-xs font-semibold tracking-wide uppercase text-accent">
-          {course.level}
-        </p>
-        <h1 className="mt-2 text-3xl font-semibold text-ink">{course.title}</h1>
-        <p className="mt-1.5 font-sans text-sm text-ink-muted">
-          {course.subtitle}
-        </p>
+      <PageHero
+        eyebrow={course.level}
+        title={course.title}
+        lede={course.subtitle}
+        art={{ src: "/art/python.webp", width: 150, height: 150 }}
+      />
 
-        <p className="font-reading text-reading mt-5 text-ink">
+      <main className="mx-auto max-w-2xl px-6 pt-10 pb-16">
+        <p className="font-reading text-reading text-ink">
           {course.description}
         </p>
 

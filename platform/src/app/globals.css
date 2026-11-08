@@ -7,6 +7,11 @@
   generic slate/indigo/violet/gradient utilities do not exist in this codebase.
   Only the tokens defined here are available.
 
+  The neutrals are deliberately warm. A pure white page reads like a form to
+  fill in; a faintly warm paper under navy ink reads like a book, which is
+  nearer what this is. The brand blue and green stay cool against it, so they
+  carry further than they did on grey.
+
   Colour carries meaning rather than decoration:
     - Navy is structure. Chrome, headers, the frame around the work.
     - Blue is action. If it is blue you can click it.
@@ -31,17 +36,17 @@
   --color-black: #000000;
 
   /* Surfaces. Cool rather than neutral grey, so the page reads as branded. */
-  --color-paper: #ffffff;
-  --color-surface: #f4f7fb;
-  --color-surface-raised: #e8eff8;
+  --color-paper: #fefdfb;
+  --color-surface: #f7f4ee;
+  --color-surface-raised: #efeae1;
 
-  --color-line: #d8e2ee;
-  --color-line-strong: #b7c6d9;
+  --color-line: #e6dfd4;
+  --color-line-strong: #d0c7b8;
 
   /* Ink. Faint is for metadata only, never body copy. */
-  --color-ink: #0e1d2f;
-  --color-ink-muted: #44586f;
-  --color-ink-faint: #6b7f95;
+  --color-ink: #14202f;
+  --color-ink-muted: #4a5868;
+  --color-ink-faint: #6d7a88;
   --color-ink-inverse: #ffffff;
 
   /* Navy: the structural colour. Headers and framing. */
@@ -99,9 +104,20 @@
   --text-reading: 1.0625rem;
   --text-reading--line-height: 1.75;
 
-  --radius-control: 6px;
-  --radius-card: 10px;
+  --radius-control: 8px;
+  --radius-card: 14px;
 
+  /*
+    Depth, reinstated.
+
+    This system previously said structure comes from borders, never shadow.
+    Across a whole site that produced something flat and clinical: every
+    surface sat in the same plane, so nothing felt touchable. Cards now lift
+    a little, and further on hover, which is most of what separates a page
+    you want to click around in from a document you read.
+  */
+  --shadow-card: 0 1px 2px rgba(20, 32, 47, 0.04), 0 4px 12px rgba(20, 32, 47, 0.06);
+  --shadow-card-hover: 0 2px 6px rgba(20, 32, 47, 0.07), 0 12px 28px rgba(20, 32, 47, 0.1);
   --shadow-overlay: 0 8px 28px rgba(8, 20, 35, 0.18);
 }
 
@@ -115,12 +131,12 @@
   html.dark outranks :root on specificity, so these win regardless of order.
 */
 html.dark {
-  --color-paper: #0c1a2b;
-  --color-surface: #122537;
-  --color-surface-raised: #1a3048;
+  --color-paper: #0e1a27;
+  --color-surface: #16222f;
+  --color-surface-raised: #1e2b3a;
 
-  --color-line: #22405c;
-  --color-line-strong: #36587a;
+  --color-line: #27384a;
+  --color-line-strong: #3b5068;
 
   --color-ink: #e9f0f8;
   --color-ink-muted: #a9bccf;
@@ -157,6 +173,8 @@ html.dark {
   --color-warning-soft: #352a12;
   --color-warning-line: #624a1d;
 
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.28);
+  --shadow-card-hover: 0 2px 6px rgba(0, 0, 0, 0.36), 0 14px 32px rgba(0, 0, 0, 0.42);
   --shadow-overlay: 0 8px 28px rgba(0, 0, 0, 0.5);
 }
 

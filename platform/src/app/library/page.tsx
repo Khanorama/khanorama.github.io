@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/shell/SiteHeader";
+import { PageHero } from "@/components/shell/PageHero";
 
 export const metadata: Metadata = {
   title: "Library",
@@ -12,10 +13,15 @@ export default function LibraryPage() {
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-2xl px-6 pt-12 pb-16">
-        <h1 className="text-3xl font-semibold text-ink">The Library</h1>
+      <PageHero
+        eyebrow="Coming soon"
+        title="The Library"
+        lede="Free resources for anyone studying computer science."
+        art={{ src: "/art/library.webp", width: 190, height: 166 }}
+      />
 
-        <div className="mt-6 rounded-card border border-warning-line bg-warning-soft px-5 py-4">
+      <main className="mx-auto max-w-2xl px-6 pt-12 pb-16">
+        <div className=" rounded-card border border-warning-line bg-warning-soft px-5 py-4">
           <p className="font-sans text-xs font-semibold tracking-wide uppercase text-warning">
             In development
           </p>

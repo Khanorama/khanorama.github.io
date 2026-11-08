@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/shell/SiteHeader";
+import { PageHero } from "@/components/shell/PageHero";
 import { SUPPORT_EMAIL } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -12,13 +13,14 @@ export default function SupportPage() {
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-2xl px-6 pt-12 pb-16">
-        <h1 className="text-3xl font-semibold text-ink">Support LeapCode</h1>
-        <p className="mt-1.5 font-sans text-sm text-ink-muted">
-          Be part of a powerful cause.
-        </p>
+      <PageHero
+        eyebrow="Get involved"
+        title="Support LeapCode"
+        lede="Be part of a powerful cause."
+      />
 
-        <section className="mt-10">
+      <main className="mx-auto max-w-2xl px-6 pt-12 pb-16">
+        <section>
           <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-accent">
             Volunteer with us
           </h2>

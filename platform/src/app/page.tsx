@@ -1,16 +1,17 @@
+import Link from "next/link";
 import { SiteHeader } from "@/components/shell/SiteHeader";
 import { Catalog, type CatalogCourse } from "@/components/course/Catalog";
 import { courses } from "@/content/registry";
 import { gradedBlocks } from "@/content/types";
 import { MISSION, SUPPORT_EMAIL } from "@/content/site";
-import Link from "next/link";
 
 /**
  * The home page.
  *
- * Deliberately not a course page. The catalog is the entry point, so adding a
- * second course changes nothing structurally, and a returning student lands
- * on what they were doing rather than on an outline they have to re-read.
+ * Structured as alternating bands rather than one long column, which is what
+ * the original site did and what stops a page reading like a document. Every
+ * other section sits on the warm surface tone, so the eye has something to
+ * step down.
  *
  * Courses are flattened to ids here, on the server, so the browser receives
  * what it needs to compute progress and nothing more.
@@ -23,6 +24,7 @@ function buildCatalog(): CatalogCourse[] {
     subtitle: course.subtitle,
     level: course.level,
     unitCount: course.units.length,
+    art: course.slug === "python-i" ? "/art/python.webp" : undefined,
     lessons: course.units.flatMap((unit) =>
       unit.lessons.map((lesson) => ({
         id: lesson.id,
@@ -42,44 +44,88 @@ export default function Home() {
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-2xl px-6 pt-14 pb-16">
-        <h1 className="text-4xl font-semibold tracking-tight text-ink">
-          Learn Python by writing it.
-        </h1>
-        <p className="font-reading text-reading mt-4 text-ink">
-          Every lesson runs real Python in your browser. Nothing to install, no
-          setup, and the exercises check your work as you go, so you find out
-          whether you have understood something while you are still looking at
-          it.
-        </p>
+      <main>
+        <section className="border-b border-line bg-surface">
+          <div className="mx-auto grid max-w-5xl items-center gap-10 px-6 py-16 md:grid-cols-[1.15fr_0.85fr] md:py-20">
+            <div>
+              <p className="font-brand text-sm font-bold tracking-[0.12em] uppercase text-accent">
+                Code. Compete. Connect.
+              </p>
+              <h1 className="mt-3 text-4xl leading-[1.08] font-semibold tracking-tight text-ink md:text-5xl">
+                Learn Python by
+                <br className="hidden sm:block" /> writing it.
+              </h1>
+              <p className="font-reading mt-5 max-w-lg text-lg leading-relaxed text-ink-muted">
+                Every lesson runs real Python in your browser. Nothing to
+                install, no setup, and the exercises check your work as you go,
+                so you find out whether you have understood something while you
+                are still looking at it.
+              </p>
+              <div className="mt-7 flex flex-wrap items-center gap-3">
+                <Link
+                  href="/courses/python-i/"
+                  className="inline-flex items-center rounded-control bg-accent px-5 py-3 font-sans text-sm font-semibold text-ink-inverse shadow-card transition-all hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-card-hover"
+                >
+                  Start Python I
+                </Link>
+                <Link
+                  href="/about/"
+                  className="inline-flex items-center rounded-control border border-line-strong bg-paper px-5 py-3 font-sans text-sm font-semibold text-ink transition-colors hover:bg-surface-raised"
+                >
+                  About LeapCode
+                </Link>
+              </div>
+            </div>
 
-        <Catalog courses={buildCatalog()} />
-
-        {/*
-          Kept below the catalog rather than swapped out on sign-in. Hiding it
-          once auth resolves would move the page under a returning student,
-          and it costs a signed-in reader nothing to have it further down.
-        */}
-        <section className="mt-14 border-t border-line pt-10">
-          <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-accent">
-            Our mission
-          </h2>
-          <p className="font-reading text-reading mt-4 text-ink">
-            {MISSION[0]}
-          </p>
-          <Link
-            href="/about/"
-            className="mt-3 inline-block font-sans text-sm text-accent hover:text-accent-hover"
-          >
-            More about LeapCode
-          </Link>
+            {/* The Python mark, not decoration: it says what the course is. */}
+            <div className="hidden justify-self-center md:block">
+              <img
+                src="/art/python.webp"
+                alt=""
+                width={240}
+                height={240}
+                className="h-60 w-60 drop-shadow-[0_12px_24px_rgba(20,32,47,0.14)]"
+              />
+            </div>
+          </div>
         </section>
 
-        <section className="mt-12">
+        <div className="mx-auto max-w-5xl px-6 py-14">
+          <Catalog courses={buildCatalog()} />
+        </div>
+
+        <section className="border-y border-line bg-surface">
+          <div className="mx-auto grid max-w-5xl items-center gap-10 px-6 py-14 md:grid-cols-[0.9fr_1.1fr]">
+            <img
+              src="/art/mission.webp"
+              alt=""
+              width={420}
+              height={236}
+              loading="lazy"
+              className="w-full max-w-sm justify-self-center"
+            />
+            <div>
+              <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-accent">
+                Our mission
+              </h2>
+              <p className="font-reading text-reading mt-3 text-ink">
+                {MISSION[0]}
+              </p>
+              <Link
+                href="/about/"
+                className="mt-4 inline-block font-sans text-sm font-semibold text-accent hover:text-accent-hover"
+              >
+                More about LeapCode
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-5xl px-6 py-14">
           <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-ink-faint">
             More from LeapCode
           </h2>
-          <ul className="mt-4 grid gap-3 sm:grid-cols-3">
+          <ul className="mt-5 grid gap-4 sm:grid-cols-3">
             {[
               {
                 href: "/about/",
@@ -100,12 +146,12 @@ export default function Home() {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="group block h-full rounded-card border border-line bg-paper px-4 py-3 transition-colors hover:border-accent-line hover:bg-accent-soft"
+                  className="group block h-full rounded-card border border-line bg-paper px-5 py-4 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent-line hover:shadow-card-hover"
                 >
-                  <span className="block font-sans text-sm font-semibold text-ink group-hover:text-accent">
+                  <span className="block font-sans text-base font-semibold text-ink group-hover:text-accent">
                     {item.title}
                   </span>
-                  <span className="mt-0.5 block font-sans text-sm text-ink-muted">
+                  <span className="mt-1 block font-sans text-sm text-ink-muted">
                     {item.blurb}
                   </span>
                 </Link>
@@ -115,16 +161,16 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-line">
-        <div className="mx-auto flex max-w-2xl flex-wrap items-center justify-between gap-3 px-6 py-6">
-          <span className="font-brand text-sm font-bold tracking-wide text-ink-faint">
+      <footer className="border-t border-line bg-surface">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-6 py-8">
+          <span className="font-brand text-sm font-bold tracking-[0.1em] text-ink-faint uppercase">
             Code. Compete. Connect.
           </span>
           <a
             href={`mailto:${SUPPORT_EMAIL}`}
             className="font-sans text-sm text-accent hover:text-accent-hover"
           >
-            support@leapcode.org
+            {SUPPORT_EMAIL}
           </a>
         </div>
       </footer>

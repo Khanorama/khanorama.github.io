@@ -21,6 +21,8 @@ export interface CatalogCourse {
   subtitle: string;
   level: string;
   unitCount: number;
+  /** Course artwork, if the course has one. Decorative, so alt is empty. */
+  art?: string;
   lessons: CatalogLesson[];
 }
 
@@ -51,7 +53,7 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
   return (
     <>
       {resume && resume.next && (
-        <section className="mt-10 rounded-card border border-accent-line bg-accent-soft px-5 py-4">
+        <section className="rounded-card border border-accent-line bg-accent-soft px-5 py-5 shadow-card">
           <p className="font-sans text-xs font-semibold tracking-wide uppercase text-accent">
             Pick up where you left off
           </p>
@@ -84,8 +86,19 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
               <li key={course.id}>
                 <Link
                   href={`/courses/${course.slug}/`}
-                  className="group block rounded-card border border-line bg-paper px-5 py-4 transition-colors hover:border-accent-line hover:bg-accent-soft"
+                  className="group flex gap-5 rounded-card border border-line bg-paper p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent-line hover:shadow-card-hover"
                 >
+                  {course.art && (
+                    <img
+                      src={course.art}
+                      alt=""
+                      width={64}
+                      height={64}
+                      className="hidden h-16 w-16 shrink-0 sm:block"
+                    />
+                  )}
+
+                  <div className="min-w-0 flex-1">
                   <div className="flex items-baseline justify-between gap-4">
                     <h3 className="font-sans text-lg font-semibold text-ink group-hover:text-accent">
                       {course.title}
@@ -116,6 +129,7 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
                     <span className="shrink-0 font-sans text-xs text-ink-faint tabular-nums">
                       {started ? `${done} of ${total}` : `${course.unitCount} units, ${total} lessons`}
                     </span>
+                  </div>
                   </div>
                 </Link>
               </li>
