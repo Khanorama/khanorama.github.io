@@ -1,10 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/Button";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { useProgress, lessonCompletion } from "@/lib/progress/useProgress";
+import {
+  getServerSyncStatus,
+  getSyncStatus,
+  subscribeSyncStatus,
+} from "@/lib/progress/syncStatus";
 import { pythonI } from "@/content/courses/python-i";
 import { courseLessons, gradedBlocks } from "@/content/types";
 
@@ -27,6 +32,43 @@ function CompletedCount() {
     <p className="font-sans text-sm text-ink-muted">
       <span className="font-semibold text-ink">{done}</span> of {lessons.length}{" "}
       lessons complete
+    </p>
+  );
+}
+
+/**
+ * Says whether progress is genuinely reaching the account.
+ *
+ * Without this the panel asserted "saved to your account" unconditionally,
+ * which would be false on a project whose rules were never published, and
+ * invisible until a student lost work moving between devices.
+ */
+function SyncNote() {
+  const status = useSyncExternalStore(
+    subscribeSyncStatus,
+    getSyncStatus,
+    getServerSyncStatus,
+  );
+
+  if (status.state === "error") {
+    return (
+      <p className="mt-2 rounded-control border border-warning-line bg-warning-soft px-2.5 py-1.5 font-sans text-xs text-ink">
+        {status.message}
+      </p>
+    );
+  }
+
+  if (status.state === "syncing" || status.state === "idle") {
+    return (
+      <p className="mt-1 font-sans text-xs text-ink-faint">
+        Checking your saved progress.
+      </p>
+    );
+  }
+
+  return (
+    <p className="mt-1 font-sans text-xs text-ink-faint">
+      Saved to your account and available on any device you sign in on.
     </p>
   );
 }
@@ -88,9 +130,7 @@ export function AccountPanel() {
 
       <div className="mt-4 rounded-card border border-line bg-surface px-4 py-3">
         <CompletedCount />
-        <p className="mt-1 font-sans text-xs text-ink-faint">
-          Saved to your account and available on any device you sign in on.
-        </p>
+        <SyncNote />
       </div>
 
       {needsVerification && (
