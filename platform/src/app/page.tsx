@@ -88,12 +88,17 @@ export default function Home() {
           >
             More from LeapCode
           </h2>
-          <ul className="mt-5 grid gap-4 sm:grid-cols-3">
+          <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 href: "/about/",
                 title: "About",
                 blurb: "Our mission, the team, and the community.",
+              },
+              {
+                href: "/compete/",
+                title: "Compete",
+                blurb: "Hackathons, contests and challenges.",
               },
               {
                 href: "/library/",

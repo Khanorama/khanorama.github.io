@@ -12,6 +12,7 @@ import { AccountLink } from "@/components/shell/AccountLink";
  */
 const NAV = [
   { href: "/about/", label: "About" },
+  { href: "/compete/", label: "Compete" },
   { href: "/library/", label: "Library" },
   { href: "/support/", label: "Support" },
 ];
