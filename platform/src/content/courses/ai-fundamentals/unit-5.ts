@@ -117,8 +117,6 @@ export const unit5: Unit = {
       slug: "unit-quiz",
       title: "Unit 5 Quiz",
       kind: "unitQuiz",
-      summary:
-        "Eight questions on image representation, CNNs and vision tasks.",
       estimatedMinutes: 15,
       objectives: [
         "Confirm you can explain what a convolution does",

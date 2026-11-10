@@ -749,8 +749,6 @@ Keep what you wrote. Unit 7 returns to exactly this app and asks harder question
       slug: "unit-quiz",
       title: "Unit 1 Quiz",
       kind: "unitQuiz",
-      summary:
-        "Eight questions on the definitions, the history, the categories and the shape of an AI system.",
       estimatedMinutes: 15,
       objectives: [
         "Confirm you can define AI and classify systems correctly",
@@ -760,11 +758,9 @@ Keep what you wrote. Unit 7 returns to exactly this app and asks harder question
         {
           id: "b1",
           kind: "prose",
-          markdown: `## Unit 1 quiz
+          markdown: `Commit to an answer before you check it. Being wrong and then reading why is worth considerably more than being right by elimination.
 
-Eight questions covering the whole unit. Commit to an answer before you check it: being wrong and then reading why is worth considerably more than being right by elimination.
-
-You can retry anything you miss. There is no score being kept beyond your own progress.`,
+You can retry anything you miss, and there is no score kept beyond your own progress.`,
         },
         {
           id: "b2",

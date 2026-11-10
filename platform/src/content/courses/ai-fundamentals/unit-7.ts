@@ -192,7 +192,6 @@ export const unit7: Unit = {
       slug: "unit-quiz",
       title: "Unit 7 Quiz",
       kind: "unitQuiz",
-      summary: "Ten questions on ethics, governance and applied AI.",
       estimatedMinutes: 20,
       objectives: [
         "Confirm you can reason about bias and accountability",

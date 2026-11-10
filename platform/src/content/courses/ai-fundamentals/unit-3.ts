@@ -117,7 +117,6 @@ export const unit3: Unit = {
       slug: "unit-quiz",
       title: "Unit 3 Quiz",
       kind: "unitQuiz",
-      summary: "Eight questions on data types, preparation and statistics.",
       estimatedMinutes: 15,
       objectives: [
         "Confirm you can read basic statistics correctly",

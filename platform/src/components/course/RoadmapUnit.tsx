@@ -9,7 +9,7 @@ export interface RoadmapLesson {
   id: string;
   title: string;
   kind: LessonKind;
-  summary: string;
+  summary?: string;
   estimatedMinutes: number;
 }
 
@@ -99,9 +99,11 @@ export function RoadmapUnit({
                     {lesson.estimatedMinutes} min
                   </span>
                 </div>
-                <p className="mt-0.5 font-sans text-sm leading-relaxed text-ink-muted">
-                  {lesson.summary}
-                </p>
+                {lesson.summary && (
+                  <p className="mt-0.5 font-sans text-sm leading-relaxed text-ink-muted">
+                    {lesson.summary}
+                  </p>
+                )}
               </li>
             ))}
           </ol>

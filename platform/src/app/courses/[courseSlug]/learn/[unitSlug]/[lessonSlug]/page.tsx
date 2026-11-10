@@ -63,9 +63,11 @@ export default async function LessonPage({
               <h1 className="mt-2.5 text-3xl font-semibold text-ink">
                 {lesson.title}
               </h1>
-              <p className="mt-2 font-sans text-sm text-ink-muted">
-                {lesson.summary}
-              </p>
+              {lesson.summary && (
+                <p className="mt-2 font-sans text-sm text-ink-muted">
+                  {lesson.summary}
+                </p>
+              )}
 
               {lesson.objectives.length > 0 && (
                 <div className="mt-6 rounded-card border border-accent-line bg-accent-soft px-5 py-4">

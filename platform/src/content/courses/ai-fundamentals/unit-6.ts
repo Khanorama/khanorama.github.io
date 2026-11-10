@@ -117,7 +117,6 @@ export const unit6: Unit = {
       slug: "unit-quiz",
       title: "Unit 6 Quiz",
       kind: "unitQuiz",
-      summary: "Eight questions on tokenisation, embeddings and NLP tasks.",
       estimatedMinutes: 15,
       objectives: [
         "Confirm you can explain what an embedding represents",

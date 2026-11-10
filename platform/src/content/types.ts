@@ -300,8 +300,16 @@ export interface Lesson {
   slug: string;
   title: string;
   kind: LessonKind;
-  /** One sentence shown in the unit list. */
-  summary: string;
+  /**
+   * One sentence shown under the title and in the unit list.
+   *
+   * Optional, because a quiz does not want one. Saying "eight questions on
+   * definitions, history and categories" above a quiz tells a student which
+   * parts of the unit to think about before they have answered anything,
+   * which is a hint rather than a description. The title already says what
+   * it is.
+   */
+  summary?: string;
   estimatedMinutes: number;
   /** Concrete, checkable outcomes. Shown at the top of the lesson. */
   objectives: string[];

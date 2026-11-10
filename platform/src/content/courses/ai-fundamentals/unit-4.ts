@@ -117,7 +117,6 @@ export const unit4: Unit = {
       slug: "unit-quiz",
       title: "Unit 4 Quiz",
       kind: "unitQuiz",
-      summary: "Eight questions on network anatomy, training and architecture.",
       estimatedMinutes: 15,
       objectives: [
         "Confirm you can explain how a network learns",

@@ -117,7 +117,6 @@ export const unit2: Unit = {
       slug: "unit-quiz",
       title: "Unit 2 Quiz",
       kind: "unitQuiz",
-      summary: "Eight questions on learning types, algorithms and evaluation.",
       estimatedMinutes: 15,
       objectives: [
         "Confirm you can match a problem to a learning approach",
