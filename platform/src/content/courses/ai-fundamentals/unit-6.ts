@@ -118,10 +118,6 @@ export const unit6: Unit = {
       title: "Unit 6 Quiz",
       kind: "unitQuiz",
       estimatedMinutes: 15,
-      objectives: [
-        "Confirm you can explain what an embedding represents",
-        "Confirm you can describe why attention was needed",
-      ],
       blocks: [],
     },
   ],

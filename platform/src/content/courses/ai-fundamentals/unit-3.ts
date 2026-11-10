@@ -118,10 +118,6 @@ export const unit3: Unit = {
       title: "Unit 3 Quiz",
       kind: "unitQuiz",
       estimatedMinutes: 15,
-      objectives: [
-        "Confirm you can read basic statistics correctly",
-        "Confirm you can connect data problems to model problems",
-      ],
       blocks: [],
     },
   ],

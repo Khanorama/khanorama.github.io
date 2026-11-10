@@ -193,10 +193,6 @@ export const unit7: Unit = {
       title: "Unit 7 Quiz",
       kind: "unitQuiz",
       estimatedMinutes: 20,
-      objectives: [
-        "Confirm you can reason about bias and accountability",
-        "Confirm you can assess an applied AI system",
-      ],
       blocks: [],
     },
   ],

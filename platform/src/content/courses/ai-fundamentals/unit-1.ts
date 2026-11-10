@@ -750,10 +750,6 @@ Keep what you wrote. Unit 7 returns to exactly this app and asks harder question
       title: "Unit 1 Quiz",
       kind: "unitQuiz",
       estimatedMinutes: 15,
-      objectives: [
-        "Confirm you can define AI and classify systems correctly",
-        "Confirm you can explain what changed to make modern AI work",
-      ],
       blocks: [
         {
           id: "b1",

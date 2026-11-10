@@ -118,10 +118,6 @@ export const unit2: Unit = {
       title: "Unit 2 Quiz",
       kind: "unitQuiz",
       estimatedMinutes: 15,
-      objectives: [
-        "Confirm you can match a problem to a learning approach",
-        "Confirm you can diagnose overfitting and underfitting",
-      ],
       blocks: [],
     },
   ],

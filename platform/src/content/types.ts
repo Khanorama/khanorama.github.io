@@ -311,8 +311,16 @@ export interface Lesson {
    */
   summary?: string;
   estimatedMinutes: number;
-  /** Concrete, checkable outcomes. Shown at the top of the lesson. */
-  objectives: string[];
+  /**
+   * Concrete, checkable outcomes. Shown at the top of the lesson.
+   *
+   * Optional for the same reason as summary. A quiz that opens by listing
+   * what it is about to check has told the student which half of the unit
+   * to recall before they read the first question. For taught lessons and
+   * connections it is the opposite: saying what you should be able to do
+   * afterwards is the most useful thing on the page.
+   */
+  objectives?: string[];
   blocks: Block[];
 }
 

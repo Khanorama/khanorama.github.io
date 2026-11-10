@@ -118,10 +118,6 @@ export const unit5: Unit = {
       title: "Unit 5 Quiz",
       kind: "unitQuiz",
       estimatedMinutes: 15,
-      objectives: [
-        "Confirm you can explain what a convolution does",
-        "Confirm you can match a vision task to a problem",
-      ],
       blocks: [],
     },
   ],

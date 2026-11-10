@@ -69,7 +69,7 @@ export default async function LessonPage({
                 </p>
               )}
 
-              {lesson.objectives.length > 0 && (
+              {lesson.objectives && lesson.objectives.length > 0 && (
                 <div className="mt-6 rounded-card border border-accent-line bg-accent-soft px-5 py-4">
                   <p className="font-sans text-xs font-semibold tracking-wide uppercase text-accent">
                     By the end of this lesson

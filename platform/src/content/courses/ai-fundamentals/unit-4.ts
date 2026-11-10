@@ -118,10 +118,6 @@ export const unit4: Unit = {
       title: "Unit 4 Quiz",
       kind: "unitQuiz",
       estimatedMinutes: 15,
-      objectives: [
-        "Confirm you can explain how a network learns",
-        "Confirm you can match an architecture to a problem",
-      ],
       blocks: [],
     },
   ],
