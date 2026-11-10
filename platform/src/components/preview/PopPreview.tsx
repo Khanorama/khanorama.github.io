@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { Constellation } from "@/components/preview/Constellation";
 
 /**
@@ -103,6 +103,13 @@ export function PopPreview({
   */
   const [palette, setPalette] = useState<Palette>("leapcode");
 
+  /*
+    Memoised because the constellation rebuilds its whole particle system
+    whenever this array changes identity, and spreading it inline would
+    hand it a brand new array on every single render.
+  */
+  const spectrum = useMemo(() => [...SPECTRUM[palette]], [palette]);
+
   return (
     <div className="pop" data-palette={palette}>
       <div className="pop-shell">
@@ -181,7 +188,7 @@ export function PopPreview({
           </div>
 
           <div className="pop-hero__art">
-            <Constellation colours={[...SPECTRUM[palette]]} />
+            <Constellation colours={spectrum} />
           </div>
         </header>
 
@@ -230,7 +237,7 @@ export function PopPreview({
 
         <section className="pop-section pop-split pop-split--flip" id="compete">
           <div className="pop-split__art pop-hero__art" aria-hidden="true">
-            <Constellation colours={[...SPECTRUM[palette]]} />
+            <Constellation colours={spectrum} />
           </div>
 
           <div className="pop-stack">

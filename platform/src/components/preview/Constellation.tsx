@@ -5,51 +5,91 @@ import { useEffect, useRef } from "react";
 /**
  * The particle constellation: the signature visual of the style being tried.
  *
- * The reference calls for thousands of tiny outlined triangles in a vivid
- * spectrum, forming an organic shape against pure black, with looser
- * particles drifting through the space around it. It is the one piece of
- * imagery the style allows, so it has to carry the whole hero on its own.
+ * WHAT THE FIRST ATTEMPT GOT WRONG. It scattered particles along a curve to
+ * suggest a leap, and the result read as a streak rather than an object:
+ * spread thinly over a long path, nothing was dense enough to have a
+ * silhouette, nothing connected to anything, and with no depth the whole
+ * field sat flat on the black. A constellation is not dust. It is points
+ * that clearly belong to one structure.
  *
- * WHAT SHAPE, AND WHY NOT A BRAIN. The reference forms its cloud into a
- * brain, which reads as "a model is thinking". That is their claim, not
- * ours: nothing here is an AI product and borrowing the gesture would say
- * something untrue about what students are signing up to. The field is
- * shaped instead as a leap, a trajectory launching low and blooming where
- * it arrives, which is the name of the organisation and the actual promise.
- * The shape is a quadratic curve with particles scattered either side of
- * it, tight at the launch and spreading as it rises.
+ * WHAT THIS IS INSTEAD. A rigid cloud of nodes on a sphere, linked to their
+ * neighbours, turning slowly in three dimensions, with a brighter stream of
+ * particles sweeping around it on its own orbit. Three things do the work
+ * the streak was missing:
  *
- * HOW IT IS DRAWN. Stroking two and a half thousand triangle paths per
- * frame is several milliseconds of path building for shapes that are four
- * pixels wide, so each colour and rotation is drawn once into a small
- * offscreen canvas and every particle is then a single scaled drawImage.
- * That turns per-frame work into a blit, which is what makes this
- * affordable on a phone rather than merely possible on a laptop.
+ *   density    nodes sit on a Fibonacci lattice, which distributes points
+ *              over a sphere far more evenly than random sampling. Random
+ *              points clump and leave holes, and at this scale that looks
+ *              like a mistake rather than like nature.
  *
- * Positions are kept normalised and multiplied by the canvas size each
- * frame, so resizing the window costs nothing and never reshuffles the
- * field: the constellation a reader was looking at is still the same one
- * after they drag the window wider.
+ *   structure  neighbours within a fixed distance are joined. Lines are
+ *              what make a scatter read as a network, and they are the
+ *              single biggest difference between this and the streak.
+ *
+ *   depth      everything is projected with perspective, so nodes at the
+ *              back are smaller, dimmer and move more slowly across the
+ *              frame than nodes at the front. Rotation then reads as a
+ *              solid turning rather than as dots sliding about.
+ *
+ * Drawing is additive, so where particles overlap they brighten rather than
+ * paint over each other. That is what gives the cloud a hot core and a
+ * glow it would not otherwise have on pure black.
+ *
+ * The orbit is the one thing kept from the first attempt. An arc sweeping
+ * up and around the cloud is still the brand's idea, and read against a
+ * solid body it finally has something to be an arc around.
  */
 
 const TAU = Math.PI * 2;
-const ROTATIONS = 10;
-const SPRITE_PX = 16;
+const ROTATIONS = 8;
 
-/** Largest particle count by viewport width. See the note in build(). */
-function budget(width: number): number {
-  if (width < 520) return 700;
-  if (width < 900) return 1500;
-  return 2500;
+/**
+ * How far apart two nodes can be and still be joined, in sphere radii.
+ *
+ * Derived from the node count rather than fixed, because the spacing of a
+ * lattice depends on how many points are on it: average separation over a
+ * sphere goes as the square root of the count. A constant tuned to look
+ * right at nine hundred nodes is smaller than the gap between neighbours
+ * at three hundred, so a fixed value would quietly delete the entire
+ * network on exactly the devices that get the smaller budget.
+ */
+function linkDistance(nodes: number): number {
+  return 5.1 / Math.sqrt(Math.max(1, nodes));
+}
+/**
+ * Links started per node.
+ *
+ * A cap per node rather than only a cap overall, which is the difference
+ * between a network and a knot. Walking the lattice and stopping once a
+ * global budget runs out spends every link on the handful of nodes the
+ * loop happens to reach first, and because a Fibonacci lattice is
+ * generated pole to pole those all sit in the same place: one dense tangle
+ * at the top and nine hundred unconnected points everywhere else.
+ */
+const LINKS_PER_NODE = 3;
+/** Lines are bucketed by depth and stroked as three paths, not one each. */
+const DEPTH_BUCKETS = 3;
+
+interface Budget {
+  nodes: number;
+  orbit: number;
+  ambient: number;
+  links: number;
 }
 
 /**
- * Deterministic noise, so the field is identical on every mount.
+ * Work scales with the viewport.
  *
- * Math.random would redraw a different constellation on every navigation,
- * which turns the brand's one piece of imagery into something that never
- * looks the same twice.
+ * A phone gets roughly a third of the nodes and a quarter of the links. The
+ * cloud stays legible because the lattice thins evenly rather than leaving
+ * gaps, which is the other reason for using one.
  */
+function budget(width: number): Budget {
+  if (width < 520) return { nodes: 300, orbit: 90, ambient: 90, links: 500 };
+  if (width < 900) return { nodes: 560, orbit: 150, ambient: 150, links: 1100 };
+  return { nodes: 900, orbit: 220, ambient: 240, links: 1900 };
+}
+
 function seededRandom(seed: number): () => number {
   let state = seed;
   return () => {
@@ -61,93 +101,125 @@ function seededRandom(seed: number): () => number {
   };
 }
 
-interface Particle {
-  /** Normalised to the canvas, so resizing is free. */
+interface Node {
+  x: number;
+  y: number;
+  z: number;
+  size: number;
+  colour: number;
+  rotation: number;
+  phase: number;
+  speed: number;
+  alpha: number;
+}
+
+interface Orbiter {
+  /** Angle around its own ring, advanced every frame. */
+  angle: number;
+  radius: number;
+  /** Small offset out of the ring plane, so the stream has thickness. */
+  lift: number;
+  size: number;
+  colour: number;
+  rotation: number;
+  alpha: number;
+}
+
+interface Ambient {
   nx: number;
   ny: number;
   size: number;
   colour: number;
   rotation: number;
-  /** Twinkle: a sine per particle, not per-frame noise, which reads as static. */
   phase: number;
   speed: number;
   alpha: number;
-  /** How much of the pointer parallax this one takes. Depth, cheaply. */
-  depth: number;
 }
 
-/** The leap. Launches bottom left, apex high, arrives right of centre. */
-const P0 = { x: 0.08, y: 0.95 };
-const P1 = { x: 0.52, y: 0.02 };
-const P2 = { x: 0.96, y: 0.52 };
-
-function curveAt(t: number) {
-  const m = 1 - t;
-  return {
-    x: m * m * P0.x + 2 * m * t * P1.x + t * t * P2.x,
-    y: m * m * P0.y + 2 * m * t * P1.y + t * t * P2.y,
-    // Tangent, for the perpendicular the scatter is measured along.
-    dx: 2 * m * (P1.x - P0.x) + 2 * t * (P2.x - P1.x),
-    dy: 2 * m * (P1.y - P0.y) + 2 * t * (P2.y - P1.y),
-  };
-}
-
-function build(
-  count: number,
-  colourCount: number,
-  random: () => number,
-): Particle[] {
-  const particles: Particle[] = [];
-
-  // A fifth of the field drifts loose in the surrounding space. Without it
-  // the shape reads as a cut-out sitting on the black rather than something
-  // suspended in it.
-  const ambient = Math.round(count * 0.2);
+/**
+ * Points spread evenly over a sphere.
+ *
+ * The golden angle is what makes this even. Stepping by it means no two
+ * consecutive points land near the same meridian, so the lattice never
+ * develops the seams and clusters that uniform random sampling does.
+ */
+function fibonacciSphere(count: number, random: () => number): Node[] {
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  const nodes: Node[] = [];
 
   for (let i = 0; i < count; i += 1) {
-    const loose = i < ambient;
+    const y = 1 - (i / Math.max(1, count - 1)) * 2;
+    const ring = Math.sqrt(Math.max(0, 1 - y * y));
+    const theta = golden * i;
 
-    let nx: number;
-    let ny: number;
+    // A little jitter off the shell, so it reads as a cloud with thickness
+    // rather than as a wireframe ball.
+    const radius = 0.93 + random() * 0.14;
 
-    if (loose) {
-      nx = random();
-      ny = random();
-    } else {
-      // Biased towards the far end of the curve, so the arc thickens as it
-      // rises instead of being an evenly dusted line.
-      const t = Math.pow(random(), 0.72);
-      const point = curveAt(t);
-
-      // Three uniforms summed approximate a normal distribution well enough
-      // for a visual, and are much cheaper than Box-Muller.
-      const spread = (random() + random() + random() - 1.5) / 1.5;
-      const width = 0.015 + 0.17 * Math.pow(t, 1.35);
-
-      const length = Math.hypot(point.dx, point.dy) || 1;
-      nx = point.x + (-point.dy / length) * spread * width;
-      ny = point.y + (point.dx / length) * spread * width;
-    }
-
-    particles.push({
-      nx,
-      ny,
-      size: loose ? 2.2 + random() * 1.6 : 2.6 + random() * 2.9,
-      colour: Math.floor(random() * colourCount),
+    nodes.push({
+      x: Math.cos(theta) * ring * radius,
+      y: y * radius,
+      z: Math.sin(theta) * ring * radius,
+      size: 3.4 + random() * 2.4,
+      colour: 0,
       rotation: Math.floor(random() * ROTATIONS),
       phase: random() * TAU,
-      speed: 0.25 + random() * 0.65,
-      alpha: loose ? 0.16 + random() * 0.24 : 0.4 + random() * 0.6,
-      depth: loose ? 0.35 + random() * 0.65 : 0.1 + random() * 0.5,
+      speed: 0.3 + random() * 0.7,
+      alpha: 0.55 + random() * 0.45,
     });
   }
 
-  return particles;
+  return nodes;
 }
 
-/** One outlined triangle per colour per rotation, drawn once up front. */
+/**
+ * Which nodes are joined, worked out once.
+ *
+ * The cloud is rigid: it only ever rotates, so the pairs never change and
+ * there is no reason to measure distances again on every frame. Doing this
+ * up front turns the per-frame cost of the links from a distance check
+ * between every pair of nodes into a fixed list to walk.
+ */
+function findLinks(nodes: Node[], limit: number): Uint16Array<ArrayBuffer> {
+  const pairs: number[] = [];
+  const reach = linkDistance(nodes.length);
+  const maxSquared = reach * reach;
+
+  for (let i = 0; i < nodes.length; i += 1) {
+    if (pairs.length >= limit * 2) break;
+    const a = nodes[i];
+    let started = 0;
+
+    for (let j = i + 1; j < nodes.length && started < LINKS_PER_NODE; j += 1) {
+      const b = nodes[j];
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+      const dz = a.z - b.z;
+      if (dx * dx + dy * dy + dz * dz < maxSquared) {
+        pairs.push(i, j);
+        started += 1;
+      }
+    }
+  }
+
+  // Built explicitly rather than with Uint16Array.from, which is typed as
+  // backed by ArrayBufferLike and so will not assign to a plain Uint16Array.
+  const packed = new Uint16Array(pairs.length);
+  packed.set(pairs);
+  return packed;
+}
+
+/**
+ * One glyph per colour per rotation, drawn once.
+ *
+ * Each sprite is a soft radial glow with the reference's outlined triangle
+ * sitting in the middle of it. Pre-rendering is what makes a cloud this
+ * size affordable: per frame every particle is a single scaled blit rather
+ * than a gradient and a stroked path built from scratch.
+ */
 function makeSprites(colours: string[], dpr: number): HTMLCanvasElement[] {
-  const edge = Math.ceil(SPRITE_PX * dpr);
+  const edge = Math.ceil(30 * dpr);
+  const centre = edge / 2;
   const sprites: HTMLCanvasElement[] = [];
 
   for (const colour of colours) {
@@ -159,18 +231,30 @@ function makeSprites(colours: string[], dpr: number): HTMLCanvasElement[] {
       const ctx = sprite.getContext("2d");
       if (!ctx) continue;
 
-      const centre = edge / 2;
-      // Leaves room for the stroke so no sprite is clipped at its own edge.
-      const radius = centre * 0.72;
-      const angle = (r / ROTATIONS) * TAU;
+      const glow = ctx.createRadialGradient(
+        centre,
+        centre,
+        0,
+        centre,
+        centre,
+        centre,
+      );
+      glow.addColorStop(0, colour);
+      glow.addColorStop(0.18, colour);
+      glow.addColorStop(1, "transparent");
+      ctx.globalAlpha = 0.26;
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, edge, edge);
 
+      ctx.globalAlpha = 1;
       ctx.translate(centre, centre);
-      ctx.rotate(angle);
+      ctx.rotate((r / ROTATIONS) * TAU);
       ctx.beginPath();
+      const reach = centre * 0.34;
       for (let corner = 0; corner < 3; corner += 1) {
         const a = (corner / 3) * TAU - Math.PI / 2;
-        const x = Math.cos(a) * radius;
-        const y = Math.sin(a) * radius;
+        const x = Math.cos(a) * reach;
+        const y = Math.sin(a) * reach;
         if (corner === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
@@ -210,17 +294,75 @@ export function Constellation({
     let height = 0;
     let dpr = 1;
     let sprites: HTMLCanvasElement[] = [];
-    let particles: Particle[] = [];
+    let nodes: Node[] = [];
+    let links = new Uint16Array(0);
+    let orbiters: Orbiter[] = [];
+    let ambient: Ambient[] = [];
+    let sized: Budget | null = null;
     let frame = 0;
     let onScreen = true;
     let started = 0;
 
-    // Pointer parallax, eased towards the target rather than snapped, so a
-    // fast mouse move glides instead of jumping the whole field.
+    // Projected positions, reused every frame so the hot loop allocates
+    // nothing. Garbage collected arrays at 60fps are a stutter you can see.
+    let px = new Float32Array(0);
+    let py = new Float32Array(0);
+    let pd = new Float32Array(0);
+
     let aimX = 0;
     let aimY = 0;
     let panX = 0;
     let panY = 0;
+
+    function populate(want: Budget) {
+      const random = seededRandom(0x1eac);
+
+      nodes = fibonacciSphere(want.nodes, random);
+      for (const node of nodes) {
+        node.colour = Math.floor(random() * colours.length);
+      }
+      links = findLinks(nodes, want.links);
+
+      px = new Float32Array(nodes.length);
+      py = new Float32Array(nodes.length);
+      pd = new Float32Array(nodes.length);
+
+      orbiters = [];
+      for (let i = 0; i < want.orbit; i += 1) {
+        // A comet rather than a ring: packed and bright at the head, thinning
+        // and fading along the tail. The exponent biases the distribution
+        // towards zero, and brightness and size then fall off with the same
+        // value, so the densest part is also the brightest. Getting that
+        // relationship the wrong way round, as the first version did, puts
+        // the dim particles where the crowd is and reads as a smudge.
+        const along = Math.pow(random(), 2.2);
+        orbiters.push({
+          angle: along * Math.PI * 1.7,
+          radius: 1.18 + random() * 0.2,
+          lift: (random() - 0.5) * 0.26,
+          size: (2.6 + random() * 2.4) * (1 - along * 0.45),
+          colour: Math.floor(random() * colours.length),
+          rotation: Math.floor(random() * ROTATIONS),
+          alpha: 0.45 + (1 - along) * 0.55,
+        });
+      }
+
+      ambient = [];
+      for (let i = 0; i < want.ambient; i += 1) {
+        ambient.push({
+          nx: random(),
+          ny: random(),
+          size: 2 + random() * 1.8,
+          colour: Math.floor(random() * colours.length),
+          rotation: Math.floor(random() * ROTATIONS),
+          phase: random() * TAU,
+          speed: 0.25 + random() * 0.6,
+          alpha: 0.12 + random() * 0.2,
+        });
+      }
+
+      sized = want;
+    }
 
     function measure() {
       const rect = canvas!.getBoundingClientRect();
@@ -228,7 +370,6 @@ export function Constellation({
 
       width = rect.width;
       height = rect.height;
-
       if (width < 1 || height < 1) return false;
 
       canvas!.width = Math.round(width * nextDpr);
@@ -240,59 +381,152 @@ export function Constellation({
       }
 
       const want = budget(window.innerWidth);
-      if (particles.length !== want) {
-        particles = build(want, colours.length, seededRandom(0x1eac));
-      }
+      if (!sized || sized.nodes !== want.nodes) populate(want);
 
       return true;
     }
 
     function draw(elapsed: number) {
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx!.globalCompositeOperation = "source-over";
       ctx!.clearRect(0, 0, width, height);
 
-      // The whole field breathes, very slowly, independently of the
-      // twinkle. Two unrelated periods are what stop the motion reading as
-      // a single loop.
-      const driftX = Math.sin(elapsed * 0.045) * 10;
-      const driftY = Math.cos(elapsed * 0.031) * 8;
+      panX += (aimX - panX) * 0.05;
+      panY += (aimY - panY) * 0.05;
 
-      panX += (aimX - panX) * 0.045;
-      panY += (aimY - panY) * 0.045;
+      const cx = width / 2 + panX;
+      const cy = height / 2 + panY;
+      // Leaves room for the orbit, which reaches past the sphere itself.
+      const scale = Math.min(width, height) * 0.33;
 
-      for (const particle of particles) {
+      // Overlapping particles should brighten rather than cover each other.
+      // It is what gives the cloud a hot centre instead of a flat crowd,
+      // and it also means draw order stops mattering, so nothing has to be
+      // depth sorted.
+      ctx!.globalCompositeOperation = "lighter";
+
+      // Ambient first, so the cloud sits in front of its own atmosphere.
+      for (const dust of ambient) {
         const twinkle =
-          0.55 + 0.45 * Math.sin(elapsed * particle.speed + particle.phase);
-        const alpha = particle.alpha * twinkle;
-        if (alpha < 0.012) continue;
+          0.55 + 0.45 * Math.sin(elapsed * dust.speed + dust.phase);
+        ctx!.globalAlpha = dust.alpha * twinkle;
+        ctx!.drawImage(
+          sprites[dust.colour * ROTATIONS + dust.rotation],
+          dust.nx * width - dust.size * 1.5,
+          dust.ny * height - dust.size * 1.5,
+          dust.size * 3,
+          dust.size * 3,
+        );
+      }
 
-        const size = particle.size;
-        const x =
-          particle.nx * width +
-          (driftX + panX) * particle.depth -
-          size / 2;
-        const y =
-          particle.ny * height +
-          (driftY + panY) * particle.depth -
-          size / 2;
+      const spin = elapsed * 0.16;
+      const sinSpin = Math.sin(spin);
+      const cosSpin = Math.cos(spin);
+      // A fixed tilt, so the lattice is seen at an angle rather than
+      // edge on, which is what makes the sphere read as a sphere.
+      const tilt = 0.42;
+      const sinTilt = Math.sin(tilt);
+      const cosTilt = Math.cos(tilt);
+      const perspective = 3.1;
 
-        // Cheaper than clipping, and keeps offscreen drift from costing a
-        // draw call per particle.
-        if (x < -size || y < -size || x > width + size || y > height + size) {
-          continue;
+      for (let i = 0; i < nodes.length; i += 1) {
+        const node = nodes[i];
+
+        const rx = node.x * cosSpin - node.z * sinSpin;
+        const rz = node.x * sinSpin + node.z * cosSpin;
+        const ry = node.y * cosTilt - rz * sinTilt;
+        const rzz = node.y * sinTilt + rz * cosTilt;
+
+        // Nearer is larger and brighter. Without this the sphere turns but
+        // never looks solid.
+        const depth = perspective / (perspective + rzz);
+        px[i] = cx + rx * scale * depth;
+        py[i] = cy + ry * scale * depth;
+        pd[i] = depth;
+      }
+
+      // Links, bucketed by depth and stroked as one path each. A separate
+      // stroke per line would be two thousand state changes a frame; three
+      // paths give the same depth falloff for three.
+      for (let bucket = 0; bucket < DEPTH_BUCKETS; bucket += 1) {
+        ctx!.beginPath();
+        let drew = false;
+
+        for (let p = 0; p < links.length; p += 2) {
+          const a = links[p];
+          const b = links[p + 1];
+          const depth = (pd[a] + pd[b]) / 2;
+          const band = Math.min(
+            DEPTH_BUCKETS - 1,
+            Math.max(0, Math.floor((depth - 0.74) / 0.18)),
+          );
+          if (band !== bucket) continue;
+          ctx!.moveTo(px[a], py[a]);
+          ctx!.lineTo(px[b], py[b]);
+          drew = true;
         }
 
-        ctx!.globalAlpha = alpha;
+        if (!drew) continue;
+        // Faint, but not so faint they vanish. The first pass at these was
+        // four per cent, which against the particles' own glow may as well
+        // have been nothing: the sphere read as loose dots again.
+        ctx!.globalAlpha = 0.1 + bucket * 0.085;
+        ctx!.strokeStyle = colours[0];
+        ctx!.lineWidth = 1;
+        ctx!.stroke();
+      }
+
+      for (let i = 0; i < nodes.length; i += 1) {
+        const node = nodes[i];
+        const depth = pd[i];
+        const twinkle =
+          0.62 + 0.38 * Math.sin(elapsed * node.speed + node.phase);
+
+        // Cube the depth falloff so the back of the cloud recedes properly
+        // instead of being a second crowd of equally bright points.
+        const alpha = node.alpha * twinkle * depth * depth * depth * 0.72;
+        if (alpha < 0.012) continue;
+
+        const size = node.size * depth * 3;
+        ctx!.globalAlpha = Math.min(1, alpha);
         ctx!.drawImage(
-          sprites[particle.colour * ROTATIONS + particle.rotation],
-          x,
-          y,
+          sprites[node.colour * ROTATIONS + node.rotation],
+          px[i] - size / 2,
+          py[i] - size / 2,
+          size,
+          size,
+        );
+      }
+
+      // The orbit, on its own tilted plane so it crosses in front of the
+      // cloud and then behind it.
+      const sweep = elapsed * 0.34;
+      for (const orbiter of orbiters) {
+        const angle = orbiter.angle + sweep;
+        const ox = Math.cos(angle) * orbiter.radius;
+        const oz = Math.sin(angle) * orbiter.radius;
+        const oy = orbiter.lift + oz * 0.34;
+
+        const rx = ox * cosSpin - oz * sinSpin;
+        const rz = ox * sinSpin + oz * cosSpin;
+        const ry = oy * cosTilt - rz * sinTilt;
+        const rzz = oy * sinTilt + rz * cosTilt;
+
+        const depth = perspective / (perspective + rzz);
+        const size = orbiter.size * depth * 3;
+
+        ctx!.globalAlpha = Math.min(1, orbiter.alpha * depth * depth * 0.85);
+        ctx!.drawImage(
+          sprites[orbiter.colour * ROTATIONS + orbiter.rotation],
+          cx + rx * scale * depth - size / 2,
+          cy + ry * scale * depth - size / 2,
           size,
           size,
         );
       }
 
       ctx!.globalAlpha = 1;
+      ctx!.globalCompositeOperation = "source-over";
     }
 
     function tick(now: number) {
@@ -313,12 +547,12 @@ export function Constellation({
 
     function restart() {
       if (!measure()) return;
+      stop();
       if (still.matches) {
-        // One static frame. The shape is the point; the twinkle is not.
-        stop();
-        draw(0);
+        // One frame, at an angle that shows the lattice rather than at the
+        // start of the rotation. The structure is the point; the spin is not.
+        draw(4.2);
       } else {
-        stop();
         started = 0;
         start();
       }
@@ -326,9 +560,6 @@ export function Constellation({
 
     restart();
 
-    // Only run while actually in view. A hero constellation scrolled past
-    // has no reader, and an animation that never stops means a laptop fan
-    // that never stops either.
     const watcher = new IntersectionObserver(
       ([entry]) => {
         onScreen = entry.isIntersecting;
@@ -350,8 +581,8 @@ export function Constellation({
     function onPointer(event: PointerEvent) {
       if (!fine.matches || still.matches) return;
       const rect = canvas!.getBoundingClientRect();
-      aimX = ((event.clientX - rect.left) / rect.width - 0.5) * -26;
-      aimY = ((event.clientY - rect.top) / rect.height - 0.5) * -18;
+      aimX = ((event.clientX - rect.left) / rect.width - 0.5) * -22;
+      aimY = ((event.clientY - rect.top) / rect.height - 0.5) * -16;
     }
 
     document.addEventListener("visibilitychange", onVisibility);
@@ -373,8 +604,6 @@ export function Constellation({
       ref={canvasRef}
       aria-hidden="true"
       className={className}
-      // Decorative. A reader using a screen reader loses nothing by never
-      // hearing about it, and there is no text in it to describe.
       role="presentation"
     />
   );
