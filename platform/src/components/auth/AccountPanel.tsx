@@ -10,29 +10,58 @@ import {
   getSyncStatus,
   subscribeSyncStatus,
 } from "@/lib/progress/syncStatus";
-import { pythonI } from "@/content/courses/python-i";
+import { courses } from "@/content/registry";
+import { isEnrolled } from "@/lib/progress/localProgress";
 import { courseLessons, gradedBlocks } from "@/content/types";
 
-function CompletedCount() {
+/**
+ * Progress on every course this account is enrolled in.
+ *
+ * This read the single hard-coded course it was written against, which was
+ * correct while there was only one and silently wrong the moment there were
+ * two: a student enrolled in both saw one of them and no indication the
+ * other existed. Enrolment is already recorded per course, so the panel can
+ * simply ask.
+ */
+function CourseProgress() {
   const progress = useProgress();
-  const lessons = courseLessons(pythonI);
-  const done = lessons.filter(
-    (lesson) =>
-      lessonCompletion(
-        {
-          id: lesson.id,
-          gradedBlockIds: gradedBlocks(lesson).map((block) => block.id),
-          written: lesson.blocks.length > 0,
-        },
-        progress,
-      ).status === "complete",
-  ).length;
+
+  const enrolled = courses
+    .filter((course) => isEnrolled(progress, course.id))
+    .map((course) => {
+      const lessons = courseLessons(course);
+      const done = lessons.filter(
+        (lesson) =>
+          lessonCompletion(
+            {
+              id: lesson.id,
+              gradedBlockIds: gradedBlocks(lesson).map((block) => block.id),
+              written: lesson.blocks.length > 0,
+            },
+            progress,
+          ).status === "complete",
+      ).length;
+      return { course, done, total: lessons.length };
+    });
+
+  if (enrolled.length === 0) {
+    return (
+      <p className="font-sans text-sm text-ink-muted">
+        Not enrolled in a course yet.
+      </p>
+    );
+  }
 
   return (
-    <p className="font-sans text-sm text-ink-muted">
-      <span className="font-semibold text-ink">{done}</span> of {lessons.length}{" "}
-      lessons complete
-    </p>
+    <ul className="space-y-1">
+      {enrolled.map(({ course, done, total }) => (
+        <li key={course.id} className="font-sans text-sm text-ink-muted">
+          <span className="text-ink">{course.title}</span>:{" "}
+          <span className="font-semibold text-ink tabular-nums">{done}</span> of{" "}
+          {total} lessons complete
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -98,7 +127,7 @@ export function AccountPanel() {
           course still works, and your progress is saved in this browser.
         </p>
         <div className="mt-5 rounded-card border border-line bg-surface px-4 py-3">
-          <CompletedCount />
+          <CourseProgress />
           <p className="mt-1 font-sans text-xs text-ink-faint">
             Saved on this device only. Clearing your browser data will clear it.
           </p>
@@ -129,7 +158,7 @@ export function AccountPanel() {
       </dl>
 
       <div className="mt-4 rounded-card border border-line bg-surface px-4 py-3">
-        <CompletedCount />
+        <CourseProgress />
         <SyncNote />
       </div>
 
