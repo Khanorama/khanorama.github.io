@@ -65,7 +65,7 @@ function claim(root: ParentNode) {
  *
  * The mutation observer is not belt and braces. Several parts of the site
  * render their real content only after Firebase resolves, the course outline
- * behind its enrolment gate most obviously, so a single pass at mount would
+ * behind its enrollment gate most obviously, so a single pass at mount would
  * leave exactly those sections hidden for good. Scanning is batched into one
  * animation frame so a burst of DOM changes costs a single query.
  */
@@ -105,7 +105,7 @@ export function watchReveals(): () => void {
  *
  * Spread onto any element, in a server component or a client one. The delay
  * is what turns a row of cards from four things appearing at once into one
- * movement travelling across the page.
+ * movement traveling across the page.
  */
 export function reveal(delayMs = 0) {
   return {

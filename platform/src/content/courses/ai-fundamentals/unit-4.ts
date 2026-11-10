@@ -93,7 +93,7 @@ export const unit4: Unit = {
       objectives: [
         "Match an architecture to a kind of data",
         "Explain why image and sequence data need different shapes",
-        "Recognise the architectures named in later units",
+        "Recognize the architectures named in later units",
       ],
       blocks: [],
     },

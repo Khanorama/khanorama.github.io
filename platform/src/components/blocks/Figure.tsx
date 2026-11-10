@@ -17,7 +17,7 @@ interface FigureProps {
  * runtime value, never student input and never fetched. Under that condition
  * it is no more dangerous than the component itself, and it buys the thing
  * that matters for a course taught in diagrams: the markup is part of the
- * page, so a figure can draw itself with the site's own colour tokens and be
+ * page, so a figure can draw itself with the site's own color tokens and be
  * correct in light and dark from one definition.
  *
  * A linked <img> cannot do that. An SVG loaded through src is a separate

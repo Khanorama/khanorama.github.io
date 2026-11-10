@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Status colour follows the system's existing meanings rather than
+ * Status color follows the system's existing meanings rather than
  * inventing a scale: blue is something you can act on, green is finished,
  * amber is time-sensitive, neutral is information.
  */
@@ -200,7 +200,7 @@ function Fact({
  *
  * It does the two useful things an empty page can: say plainly that there
  * is nothing yet, and give someone a way to hear about the first one. An
- * empty state that only apologises wastes the visit.
+ * empty state that only apologizes wastes the visit.
  */
 function NothingYet() {
   return (

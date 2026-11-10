@@ -55,7 +55,7 @@ interface ExerciseBlockProps {
  *
  * Run and Check are separate on purpose. Running is exploration and costs
  * nothing; checking is a claim that you are done. Collapsing them into one
- * button turns every experiment into a judgement, which makes students
+ * button turns every experiment into a judgment, which makes students
  * reluctant to experiment.
  *
  * Hints reveal one at a time, and the solution stays shut until the student

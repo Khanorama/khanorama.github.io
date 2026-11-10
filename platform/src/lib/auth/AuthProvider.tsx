@@ -84,7 +84,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isFirebaseConfigured) return;
 
-    let cancelled = false;
+    let canceled = false;
     let unsubscribe: (() => void) | null = null;
 
     (async () => {
@@ -93,7 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           authModule(),
           loadAuth(),
         ]);
-        if (cancelled) return;
+        if (canceled) return;
         unsubscribe = onAuthStateChanged(auth, (next) => {
           setUser(next);
           setStatus(next ? "signedIn" : "signedOut");
@@ -102,12 +102,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch {
         // The SDK could not load, most likely offline. Fall back to the
         // signed-out experience rather than leaving the UI spinning.
-        if (!cancelled) setStatus("signedOut");
+        if (!canceled) setStatus("signedOut");
       }
     })();
 
     return () => {
-      cancelled = true;
+      canceled = true;
       unsubscribe?.();
     };
   }, []);

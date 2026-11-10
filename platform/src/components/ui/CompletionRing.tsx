@@ -50,7 +50,7 @@ export function CompletionRing({
           behind it rather than appearing whole.
 
           transform-box: fill-box is what makes the scale happen about the
-          disc's own centre. Without it an SVG transform-origin resolves
+          disc's own center. Without it an SVG transform-origin resolves
           against the viewport, and the ring would swing in from the corner
           of the page.
         */

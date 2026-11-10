@@ -6,7 +6,7 @@ import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { AccountLink } from "@/components/shell/AccountLink";
 
 /**
- * Carried over from the original site. These pages are the organisation,
+ * Carried over from the original site. These pages are the organization,
  * not the course software, and a visitor who has never heard of LeapCode
  * needs them before a list of courses means anything.
  */
@@ -26,7 +26,7 @@ interface SiteHeaderProps {
 /**
  * The application frame.
  *
- * Navy in both themes. The header is the one piece of structural colour that
+ * Navy in both themes. The header is the one piece of structural color that
  * never moves, which gives the product a fixed edge to sit against and stops
  * a long white reading column from feeling like an untitled document.
  */
@@ -115,7 +115,7 @@ export function SiteHeader({ courseTitle, courseHref }: SiteHeaderProps) {
       </div>
 
       {/*
-        The small-screen menu. Until now the three organisation links were
+        The small-screen menu. Until now the three organization links were
         simply absent below the sm breakpoint, which left About, Library and
         Support unreachable from every page but the home page.
 

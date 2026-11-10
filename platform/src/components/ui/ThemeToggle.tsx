@@ -67,7 +67,7 @@ export function ThemeToggle() {
       {/*
         Keyed on the theme so React replaces the element rather than
         swapping its contents, which restarts the animation. Without the
-        key the icon would change shape with no acknowledgement that
+        key the icon would change shape with no acknowledgment that
         anything happened.
       */}
       {mounted ? (

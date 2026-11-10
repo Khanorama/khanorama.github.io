@@ -7,7 +7,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const VARIANTS: Record<Variant, string> = {
-  // The single action colour. Used for the one thing we want pressed.
+  // The single action color. Used for the one thing we want pressed.
   primary:
     "bg-accent text-ink-inverse hover:bg-accent-hover disabled:bg-line-strong disabled:text-ink-faint",
   secondary:

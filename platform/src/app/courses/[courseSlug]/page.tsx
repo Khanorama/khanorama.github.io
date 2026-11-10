@@ -33,7 +33,7 @@ export async function generateMetadata({
  * pitch that returning students had to scroll past every time.
  *
  * The roadmap here is deliberately not clickable. It shows the shape of the
- * course before you commit; the working version lives behind enrolment.
+ * course before you commit; the working version lives behind enrollment.
  */
 export default async function CourseOverviewPage({
   params,

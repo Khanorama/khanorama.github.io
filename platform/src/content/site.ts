@@ -1,5 +1,5 @@
 /**
- * Organisation content, carried over from the original leapcode.org.
+ * Organization content, carried over from the original leapcode.org.
  *
  * Kept as data rather than hard-coded in pages so the team list and contact
  * details have one home. This is the part of the site that is about LeapCode
@@ -19,7 +19,7 @@ export interface TeamMember {
    * Served from public/team. The originals on the old site were up to
    * 4284x4284 and 2MB each for a thumbnail; these are resampled to 256px,
    * which is 2x the display size. Static export disables Next's image
-   * optimisation, so whatever is committed is what every visitor downloads.
+   * optimization, so whatever is committed is what every visitor downloads.
    */
   photo: string;
 }

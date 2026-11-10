@@ -362,7 +362,7 @@ greet_user("Charlie")`,
       kind: "prose",
       markdown: `## Returning values
 
-So far the functions have printed. Printing shows something to a human and then it is gone. **Returning** hands a value back to the rest of your program, where you can store it, do maths with it, or pass it to another function.
+So far the functions have printed. Printing shows something to a human and then it is gone. **Returning** hands a value back to the rest of your program, where you can store it, do math with it, or pass it to another function.
 
 \`return\` also ends the function immediately. Any code after it never runs.`,
     },
@@ -558,7 +558,7 @@ age = input()
 print(age + 1)     # TypeError: can only concatenate str to str
 \`\`\`
 
-To do maths with it, convert it first with \`int()\` or \`float()\`:
+To do math with it, convert it first with \`int()\` or \`float()\`:
 
 \`\`\`
 age = int(input())

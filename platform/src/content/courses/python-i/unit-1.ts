@@ -106,7 +106,7 @@ print("1234567890")`,
 
 A **variable** is a named place to store a value, so you can refer to it later by name instead of repeating the value itself.
 
-Think of it as a labelled box. You put something in the box and write a name on the front. Whenever you need what is inside, you ask for it by name. You can also swap the contents for something else later, which is exactly why it is called a *variable*.
+Think of it as a labeled box. You put something in the box and write a name on the front. Whenever you need what is inside, you ask for it by name. You can also swap the contents for something else later, which is exactly why it is called a *variable*.
 
 In Python you create one with a name, an equals sign, and a value:`,
     },
@@ -231,7 +231,7 @@ Let us look at each one.`,
       kind: "prose",
       markdown: `## Integers
 
-An **integer** is a whole number, positive or negative, with no decimal point. You can use the four basic maths operators on them: \`+\`, \`-\`, \`*\` and \`/\`.`,
+An **integer** is a whole number, positive or negative, with no decimal point. You can use the four basic math operators on them: \`+\`, \`-\`, \`*\` and \`/\`.`,
     },
     {
       id: "integers-example",

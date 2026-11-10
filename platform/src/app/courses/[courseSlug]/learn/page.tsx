@@ -27,7 +27,7 @@ export async function generateMetadata({
 /**
  * The working view of a course: every lesson, with progress.
  *
- * Behind enrolment. The overview at /courses/<slug>/ is the page that
+ * Behind enrollment. The overview at /courses/<slug>/ is the page that
  * explains the course; this one assumes you have already decided and want
  * to get on with it.
  */

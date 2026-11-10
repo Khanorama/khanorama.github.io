@@ -109,7 +109,7 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
       // Without this an outline that is one unit deep looks identical to a
       // complete course until a student is several clicks in.
       ready: course.lessons.filter((lesson) => lesson.written).length,
-      // Enrolment is a fact about an account, so it has to be read as one.
+      // Enrollment is a fact about an account, so it has to be read as one.
       // The local record outlives a sign-out, which is why a signed-out
       // visitor was still being shown a half-finished course and invited to
       // pick up where someone else left off.

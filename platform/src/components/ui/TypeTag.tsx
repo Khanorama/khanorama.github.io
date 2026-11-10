@@ -3,15 +3,15 @@ import { LESSON_KIND_LABEL, type LessonKind } from "@/content/types";
 /**
  * Says what kind of work an item is before a student opens it.
  *
- * Colour follows the system's existing meanings rather than inventing a third
+ * Color follows the system's existing meanings rather than inventing a third
  * scheme: taught material is neutral, something you actively do is the action
- * colour, and anything that counts for a grade takes the amber used elsewhere
+ * color, and anything that counts for a grade takes the amber used elsewhere
  * for "pay attention to this one".
  */
 const STYLES: Record<LessonKind, string> = {
   lesson: "border-line bg-surface text-ink-faint",
   progressCheck: "border-accent-line bg-accent-soft text-accent",
-  // A connection is something you do, so it shares the action colour with a
+  // A connection is something you do, so it shares the action color with a
   // progress check. A unit quiz counts towards the unit, so it takes the
   // green the system already reserves for earned progress rather than the
   // amber that means "this one is graded and you only get one go".

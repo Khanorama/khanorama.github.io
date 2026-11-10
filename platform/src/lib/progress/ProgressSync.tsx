@@ -70,7 +70,7 @@ export function ProgressSync() {
     }
 
     const uid = user.uid;
-    let cancelled = false;
+    let canceled = false;
     let timer: ReturnType<typeof setTimeout> | null = null;
     let pending: ProgressState | null = null;
 
@@ -99,7 +99,7 @@ export function ProgressSync() {
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
         timer = null;
-        if (pending && !cancelled) void write(pending);
+        if (pending && !canceled) void write(pending);
       }, WRITE_DELAY_MS);
     }
 
@@ -120,7 +120,7 @@ export function ProgressSync() {
         // lesson; the merge below still preserves local work.
         setSyncStatus({ state: "error", message: describeSyncError(error) });
       }
-      if (cancelled) return;
+      if (canceled) return;
 
       const merged = mergeProgress(getSnapshot(), remote);
       replaceState(merged);
@@ -132,7 +132,7 @@ export function ProgressSync() {
     })();
 
     return () => {
-      cancelled = true;
+      canceled = true;
       if (timer) {
         clearTimeout(timer);
         // Do not drop work queued at the moment of sign-out or navigation.

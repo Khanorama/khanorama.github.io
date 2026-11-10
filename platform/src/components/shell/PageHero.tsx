@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 interface PageHeroProps {
-  /** Small coloured line above the title. Usually a category or tagline. */
+  /** Small colored line above the title. Usually a category or tagline. */
   eyebrow?: string;
   title: string;
   lede?: string;

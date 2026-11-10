@@ -9,7 +9,7 @@ import type { Unit } from "@/content/types";
  * that ask for a commitment before the answer appears, a connection that
  * sends the student somewhere real, and a unit quiz that is worth passing.
  *
- * ON THE FIGURES. Each is authored as inline SVG using the site's own colour
+ * ON THE FIGURES. Each is authored as inline SVG using the site's own color
  * tokens, so one definition is correct in both themes. They are drawn at a
  * fixed viewBox and scaled to the column, so text sizes in them are chosen
  * to stay readable at roughly 640px wide, which is the reading column on a
@@ -276,7 +276,7 @@ Whatever the task, systems we call intelligent tend to do some combination of fo
           id: "b3",
           kind: "figure",
           svg: CYCLE_SVG,
-          alt: "A cycle: Perceive, meaning take the world in, flows to Reason, meaning work something out, which flows to Act, meaning decide then do it. A dashed Learn arrow runs back from Act to Perceive, labelled: did it work, change how you reason next time.",
+          alt: "A cycle: Perceive, meaning take the world in, flows to Reason, meaning work something out, which flows to Act, meaning decide then do it. A dashed Learn arrow runs back from Act to Perceive, labeled: did it work, change how you reason next time.",
           caption:
             "The loop matters more than the boxes. A system that perceives, reasons and acts but never closes the loop back round is automation. The return arrow is what makes it learn.",
         },
@@ -289,7 +289,7 @@ Whatever the task, systems we call intelligent tend to do some combination of fo
 
 **Action** is doing something about it. Moving the email, braking the car, suggesting the next word.
 
-**Learning** is the part that separates AI from ordinary software. The system changes its own behaviour based on how things went, without a person rewriting it.
+**Learning** is the part that separates AI from ordinary software. The system changes its own behavior based on how things went, without a person rewriting it.
 
 A thermostat perceives and acts, but it never reasons or learns, which is exactly why nobody calls a thermostat intelligent.`,
         },
@@ -341,9 +341,9 @@ So the goalposts move, permanently and in one direction. It is worth knowing thi
             "In your own words, explain the difference between a program that is automated and a program that is intelligent. Use an example of each.",
           modelAnswer: `An automated program follows instructions a person wrote, and does the same thing every time given the same input. A washing machine cycle is automated: the sequence was decided in advance and never varies.
 
-An intelligent program changes its own behaviour based on what it has seen. A spam filter is intelligent in this sense, because it is not working from a fixed list of banned words. It has been shown many emails labelled spam or not spam, worked out for itself which features tend to go with which label, and keeps adjusting as new spam arrives.
+An intelligent program changes its own behavior based on what it has seen. A spam filter is intelligent in this sense, because it is not working from a fixed list of banned words. It has been shown many emails labeled spam or not spam, worked out for itself which features tend to go with which label, and keeps adjusting as new spam arrives.
 
-The dividing line is whether a person had to rewrite the program for its behaviour to change.`,
+The dividing line is whether a person had to rewrite the program for its behavior to change.`,
         },
       ],
     },
@@ -414,7 +414,7 @@ Modern AI did not arrive because someone had a brilliant new idea. Most of the c
 
 Three things changed at roughly the same time:
 
-**Data.** The internet produced labelled datasets at a scale nobody had before. ImageNet, released in 2009, contained millions of hand-labelled photographs.
+**Data.** The internet produced labeled datasets at a scale nobody had before. ImageNet, released in 2009, contained millions of hand-labeled photographs.
 
 **Computing power.** Graphics cards, built to render video games, turned out to be very good at exactly the kind of arithmetic neural networks need, and they could do enormous amounts of it in parallel.
 
@@ -435,7 +435,7 @@ In 2012 a neural network called AlexNet won the ImageNet image recognition compe
           ],
           answer: 2,
           explanation:
-            "The ideas behind AlexNet were not new. What was new was the combination of a large labelled dataset and graphics hardware fast enough to train on it. The result was convincing enough that the whole field changed direction, which is why the date gets singled out.",
+            "The ideas behind AlexNet were not new. What was new was the combination of a large labeled dataset and graphics hardware fast enough to train on it. The result was convincing enough that the whole field changed direction, which is why the date gets singled out.",
         },
       ],
     },
@@ -535,7 +535,7 @@ Strip away the specifics and every AI system has the same coarse structure. Some
           id: "b2",
           kind: "figure",
           svg: PIPELINE_SVG,
-          alt: "Input, containing pixels, text and sound, flows into a highlighted Processing box containing rules a person wrote or patterns it worked out from examples, which flows into Output, containing a label, a number or a sentence. A dashed arrow loops from Output back to Input, labelled: only while training.",
+          alt: "Input, containing pixels, text and sound, flows into a highlighted Processing box containing rules a person wrote or patterns it worked out from examples, which flows into Output, containing a label, a number or a sentence. A dashed arrow loops from Output back to Input, labeled: only while training.",
           caption:
             "The dashed return arrow is live during training and switched off afterwards. A deployed model does not learn from you while you use it.",
         },
@@ -570,7 +570,7 @@ Strip away the specifics and every AI system has the same coarse structure. Some
 
 Once a model is trained and shipped, it is frozen. The learning loop in the figure is switched off.
 
-When you correct a chatbot and it apologises and gets it right, nothing permanent has happened. It adjusted within that single conversation, using your correction as additional input. Start a new conversation and the correction is gone. The model's actual parameters, the millions or billions of numbers that encode what it knows, have not moved.
+When you correct a chatbot and it apologizes and gets it right, nothing permanent has happened. It adjusted within that single conversation, using your correction as additional input. Start a new conversation and the correction is gone. The model's actual parameters, the millions or billions of numbers that encode what it knows, have not moved.
 
 Systems do get updated, but by being retrained and redeployed as a new version, which is a deliberate act by the people who own them rather than something happening live as you type.`,
         },
@@ -602,8 +602,8 @@ Systems do get updated, but by being retrained and redeployed as a new version, 
       estimatedMinutes: 20,
       objectives: [
         "Identify AI systems in common applications",
-        "Explain what a recommendation system is optimising for",
-        "Recognise where AI is being used without being announced",
+        "Explain what a recommendation system is optimizing for",
+        "Recognize where AI is being used without being announced",
       ],
       blocks: [
         {
@@ -613,7 +613,7 @@ Systems do get updated, but by being retrained and redeployed as a new version, 
 
 Your phone unlocked by comparing your face to a stored mathematical description of it. Your keyboard predicted the next word as you typed. Your email put three messages in spam. Your maps app chose a route using live traffic predictions. Your music app queued something it thought you would like.
 
-That is five AI systems before you have properly woken up, and not one of them is labelled as artificial intelligence anywhere in its interface.`,
+That is five AI systems before you have properly woken up, and not one of them is labeled as artificial intelligence anywhere in its interface.`,
         },
         {
           id: "b2",
@@ -624,7 +624,7 @@ The feeds are worth singling out, because a recommendation system is where most 
 
 A recommender predicts how likely you are to engage with each candidate item, then sorts by that prediction. What counts as engagement is a choice made by the company: a click, a watch, time spent, a share.
 
-This is the most useful thing to understand about your feed. It is not optimising for whether the content is true, or good for you, or representative. It is optimising for a measurable signal that stands in for your attention. Unit 7 comes back to what follows from that.`,
+This is the most useful thing to understand about your feed. It is not optimizing for whether the content is true, or good for you, or representative. It is optimizing for a measurable signal that stands in for your attention. Unit 7 comes back to what follows from that.`,
         },
         {
           id: "b3",
@@ -662,16 +662,16 @@ The distinction that matters here is whether a model is **advising** a person wh
           id: "b5",
           kind: "written",
           prompt:
-            "Pick one AI system you interacted with in the last 24 hours. Describe its input, its output, and what you think it was optimising for. Be specific about the last one.",
+            "Pick one AI system you interacted with in the last 24 hours. Describe its input, its output, and what you think it was optimizing for. Be specific about the last one.",
           modelAnswer: `Example: the autocomplete in my phone keyboard.
 
 Input: the characters I have typed so far in this message, plus some of the preceding words for context.
 
 Output: three suggested next words, ranked.
 
-Optimising for: the probability that a word is the one I will type next, learned from enormous quantities of text, and adjusted by which suggestions I have accepted before. Notably it is not optimising for the clearest or most precise word, which is why heavy reliance on it tends to flatten how you write.
+Optimizing for: the probability that a word is the one I will type next, learned from enormous quantities of text, and adjusted by which suggestions I have accepted before. Notably it is not optimizing for the clearest or most precise word, which is why heavy reliance on it tends to flatten how you write.
 
-A strong answer names a specific optimisation target and notices where that target differs from what you would actually want.`,
+A strong answer names a specific optimization target and notices where that target differs from what you would actually want.`,
         },
       ],
     },
@@ -716,12 +716,12 @@ If you found only one, you probably stopped at the feature the company markets. 
           id: "b3",
           kind: "written",
           prompt:
-            "**Pick the most important one and break it down.** What exactly goes in as input, what comes out as output, and what do you think it is optimising for?",
+            "**Pick the most important one and break it down.** What exactly goes in as input, what comes out as output, and what do you think it is optimizing for?",
           modelAnswer: `A strong answer is specific about input. Not "my data" but "which tracks I have skipped in the first ten seconds, which I have replayed, and what listeners with similar histories went on to play".
 
 It is specific about output. Not "recommendations" but "a predicted score for each candidate track, used to sort them".
 
-And it is honest about the objective. The optimisation target is almost never "make the user happy". It is a measurable stand-in: minutes listened, sessions per week, subscription retention. Naming the stand-in, and noticing where it diverges from what you actually want, is the point of the question.`,
+And it is honest about the objective. The optimization target is almost never "make the user happy". It is a measurable stand-in: minutes listened, sessions per week, subscription retention. Naming the stand-in, and noticing where it diverges from what you actually want, is the point of the question.`,
         },
         {
           id: "b4",
@@ -773,13 +773,13 @@ You can retry anything you miss. There is no score being kept beyond your own pr
             "Which of these is the clearest sign that a system is doing machine learning rather than following fixed rules?",
           choices: [
             "It uses sensors to measure the world",
-            "Its behaviour changes based on data it has seen, without anyone rewriting it",
+            "Its behavior changes based on data it has seen, without anyone rewriting it",
             "It runs on powerful hardware",
             "It responds in natural language",
           ],
           answer: 1,
           explanation:
-            "Changing behaviour without a programmer editing the program is the dividing line. Sensors, hardware and a chat interface are all things that fixed-rule software can have.",
+            "Changing behavior without a programmer editing the program is the dividing line. Sensors, hardware and a chat interface are all things that fixed-rule software can have.",
         },
         {
           id: "b3",
@@ -832,7 +832,7 @@ You can retry anything you miss. There is no score being kept beyond your own pr
             "Which combination best explains why AI progressed so quickly after 2012?",
           choices: [
             "New mathematical theories of intelligence",
-            "Large labelled datasets, parallel hardware, and training networks at much greater scale",
+            "Large labeled datasets, parallel hardware, and training networks at much greater scale",
             "Faster internet connections and cloud storage",
             "Increased government funding for AI research",
           ],

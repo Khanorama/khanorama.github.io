@@ -52,7 +52,7 @@ const OPERATOR_AST_NAMES: Record<string, string[]> = {
 
 /**
  * Trailing whitespace and a trailing newline are not mistakes worth failing a
- * beginner for, so both are normalised away before comparison.
+ * beginner for, so both are normalized away before comparison.
  */
 export function normalizeOutput(text: string): string {
   return text

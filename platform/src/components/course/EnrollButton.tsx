@@ -17,7 +17,7 @@ const PRIMARY =
   "inline-flex items-center rounded-control bg-accent px-6 py-3 font-sans text-sm font-semibold text-ink-inverse shadow-card transition-all hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-card-hover";
 
 /**
- * Enrol, or continue if already enrolled.
+ * Enroll, or continue if already enrolled.
  *
  * Enrolling writes one record and moves straight into the course. There is
  * no confirmation step, because the course is free and leaving is just not
@@ -31,7 +31,7 @@ export function EnrollButton({ courseId, courseSlug }: EnrollButtonProps) {
 
   const learnUrl = courseLearnUrl(courseSlug);
 
-  // No accounts configured: nothing to enrol into, so just let people in.
+  // No accounts configured: nothing to enroll into, so just let people in.
   if (status === "unavailable") {
     return (
       <Link href={learnUrl} className={PRIMARY}>
@@ -52,7 +52,7 @@ export function EnrollButton({ courseId, courseSlug }: EnrollButtonProps) {
     return (
       <div className="flex flex-wrap items-center gap-3">
         <Link href="/account/" className={PRIMARY}>
-          Sign in to enrol
+          Sign in to enroll
         </Link>
         <span className="font-sans text-sm text-ink-muted">
           Free, and your progress is saved to your account.
@@ -80,7 +80,7 @@ export function EnrollButton({ courseId, courseSlug }: EnrollButtonProps) {
         router.push(learnUrl);
       }}
     >
-      {busy ? "Enrolling" : "Enrol for free"}
+      {busy ? "Enrolling" : "Enroll for free"}
     </button>
   );
 }

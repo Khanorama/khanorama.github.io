@@ -50,7 +50,7 @@ export default function AboutPage() {
               <li key={member.email} {...reveal(index * 70)}>
                 {/*
                   Plain img rather than next/image: a static export disables
-                  optimisation anyway, so the component would add weight
+                  optimization anyway, so the component would add weight
                   without doing its job. Dimensions are set to reserve space
                   and stop the text jumping as photos load.
 

@@ -58,12 +58,12 @@ export const unit3: Unit = {
       title: "Data Collection and Preparation",
       kind: "lesson",
       summary:
-        "Acquisition, cleaning, preprocessing and labelling, and the human cost hiding in the last one.",
+        "Acquisition, cleaning, preprocessing and labeling, and the human cost hiding in the last one.",
       estimatedMinutes: 25,
       objectives: [
         "Describe the steps between raw data and training data",
-        "Explain what data labelling involves and who does it",
-        "Recognise how collection decisions become model behaviour",
+        "Explain what data labeling involves and who does it",
+        "Recognize how collection decisions become model behavior",
       ],
       blocks: [],
     },
@@ -107,7 +107,7 @@ export const unit3: Unit = {
       estimatedMinutes: 30,
       objectives: [
         "Assess a real dataset for coverage and gaps",
-        "Predict how a dataset's composition shapes model behaviour",
+        "Predict how a dataset's composition shapes model behavior",
         "Write a short, specific account of a dataset's limitations",
       ],
       blocks: [],

@@ -33,7 +33,7 @@ export const unit2: Unit = {
       objectives: [
         "Define machine learning and place it within AI",
         "Contrast traditional programming with machine learning",
-        "Recognise problems that machine learning suits and problems it does not",
+        "Recognize problems that machine learning suits and problems it does not",
       ],
       blocks: [],
     },
@@ -108,7 +108,7 @@ export const unit2: Unit = {
       objectives: [
         "Choose a learning type for an unfamiliar problem",
         "Identify what data a given approach would require",
-        "Recognise when a problem is not a machine learning problem at all",
+        "Recognize when a problem is not a machine learning problem at all",
       ],
       blocks: [],
     },

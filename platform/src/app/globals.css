@@ -10,16 +10,16 @@
   The neutrals are deliberately warm. A pure white page reads like a form to
   fill in; a faintly warm paper under navy ink reads like a book, which is
   nearer what this is. The brand blue and green stay cool against it, so they
-  carry further than they did on grey.
+  carry further than they did on gray.
 
-  Colour carries meaning rather than decoration:
+  Color carries meaning rather than decoration:
     - Navy is structure. Chrome, headers, the frame around the work.
     - Blue is action. If it is blue you can click it.
     - Green is earned progress. Never branding inside the app, never decor.
     - Amber marks code that is supposed to fail.
     - Serif is instruction, sans is interface, mono is code.
 
-  Every colour token below is defined twice: once for light, once for dark.
+  Every color token below is defined twice: once for light, once for dark.
   Components reference the semantic name only, so a block never needs to know
   which theme is active.
 */
@@ -72,7 +72,7 @@
   --color-white: #ffffff;
   --color-black: #000000;
 
-  /* Surfaces. Cool rather than neutral grey, so the page reads as branded. */
+  /* Surfaces. Cool rather than neutral gray, so the page reads as branded. */
   --color-paper: #fefdfb;
   --color-surface: #f7f4ee;
   --color-surface-raised: #efeae1;
@@ -86,7 +86,7 @@
   --color-ink-faint: #6d7a88;
   --color-ink-inverse: #ffffff;
 
-  /* Navy: the structural colour. Headers and framing. */
+  /* Navy: the structural color. Headers and framing. */
   --color-navy: #0b2038;
   --color-navy-raised: #15314f;
   --color-navy-line: #23466c;
@@ -116,7 +116,7 @@
 
   /*
     Wordmark on navy. The header is navy in both themes, so these two are
-    deliberately NOT redefined in the dark block: the light-mode brand colours
+    deliberately NOT redefined in the dark block: the light-mode brand colors
     would sink into the navy field.
   */
   --color-brand-blue-bright: #4d9bff;
@@ -185,7 +185,7 @@
 
       snap       decelerating hard, the default. Leaves fast, lands gently,
                  which is what reads as responsive rather than sluggish.
-      soft       symmetric, for things that have no direction, like colour.
+      soft       symmetric, for things that have no direction, like color.
       overshoot  passes the target and comes back. Reserved for something
                  arriving or succeeding, never for something leaving.
 
@@ -224,7 +224,7 @@
 
   Tailwind only emits keyframes it believes are reachable from an
   --animate-* token, and two of these are referenced from plain rules
-  instead. Declaring them at the top level takes that judgement out of the
+  instead. Declaring them at the top level takes that judgment out of the
   build: they are always in the stylesheet.
 */
 @keyframes rise {
@@ -335,13 +335,13 @@ html.dark {
 
 @layer components {
   /*
-    Applied to the banded page headers. Sits over the surface colour rather
+    Applied to the banded page headers. Sits over the surface color rather
     than replacing it, so the band still reads as the same tone underneath.
 
     The wash lives on a pseudo-element rather than the section's own
     background so it can move independently of the content sitting on it.
     isolation creates a stacking context, which is what lets z-index: -1
-    sit above the section's background colour instead of disappearing
+    sit above the section's background color instead of disappearing
     behind it; inset: -12% keeps the scaled edges outside the visible band.
   */
   .brand-glow {
@@ -523,9 +523,9 @@ html.dark {
   /*
     Background only, deliberately.
 
-    Forcing a colour here repainted every selected character the same ink,
+    Forcing a color here repainted every selected character the same ink,
     which flattened syntax highlighting the moment a student selected code:
-    strings, keywords and numbers all turned one colour. The selection
+    strings, keywords and numbers all turned one color. The selection
     background is chosen to keep text legible on top, so overriding the
     foreground buys nothing and destroys real information.
   */

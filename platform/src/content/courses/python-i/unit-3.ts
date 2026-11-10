@@ -6,7 +6,7 @@ import type { Lesson, Unit } from "@/content/types";
  * Corrections and additions, kept visible so they are reviewable:
  *   - The notebooks write statements as `number = 10;`. Semicolons are a habit
  *     from C and Java and are not idiomatic Python. Removed.
- *   - Indentation was 2 spaces in places. Normalised to 4, per PEP 8, since
+ *   - Indentation was 2 spaces in places. Normalized to 4, per PEP 8, since
  *     indentation is syntax in Python and students copy what they are shown.
  *   - None of the three lessons had a single exercise. All exercises here are
  *     written for this platform.

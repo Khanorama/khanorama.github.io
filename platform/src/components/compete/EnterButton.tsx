@@ -18,7 +18,7 @@ const QUIET = `${BASE} border border-line-strong bg-paper text-ink`;
  * gate, not a security boundary. The registration link is in the page
  * source either way.
  *
- * The disabled states are plain text rather than a greyed-out button. A
+ * The disabled states are plain text rather than a grayed-out button. A
  * button you cannot press is a small lie about what is available, and
  * "Registration opens nearer the date" tells a student more than a dead
  * control does.

@@ -27,7 +27,7 @@ import { tags } from "@lezer/highlight";
 /**
  * Code highlighting, deliberately near-monochrome.
  *
- * Most editor themes colour a dozen token types, which turns a beginner's
+ * Most editor themes color a dozen token types, which turns a beginner's
  * first program into confetti and implies distinctions they cannot read yet.
  * This uses three signals only: literals are green, keywords are blue,
  * commentary recedes. Everything else is body ink.

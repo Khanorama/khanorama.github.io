@@ -14,7 +14,7 @@ interface CourseGateProps {
 }
 
 /**
- * Keeps course material behind an account and an enrolment.
+ * Keeps course material behind an account and an enrollment.
  *
  * This is a product gate, not a security boundary, and the distinction
  * matters. The site is a static export, so every lesson, solution and
@@ -83,7 +83,7 @@ export function CourseGate({
           You have not enrolled yet
         </h2>
         <p className="font-reading text-reading mt-2 text-ink-muted">
-          Enrol in {courseTitle} from its overview page and this opens up.
+          Enroll in {courseTitle} from its overview page and this opens up.
         </p>
         <Link
           href={`/courses/${courseSlug}/`}

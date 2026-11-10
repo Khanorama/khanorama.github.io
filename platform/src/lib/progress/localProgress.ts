@@ -264,7 +264,7 @@ export function mergeProgress(
     };
   }
 
-  // Enrolment is a union: joining on either device counts, and the earlier
+  // Enrollment is a union: joining on either device counts, and the earlier
   // date wins so the record reflects when they actually started.
   const enrollments: Record<string, CourseEnrollment> = { ...b.enrollments };
   for (const [courseId, entry] of Object.entries(a.enrollments ?? {})) {

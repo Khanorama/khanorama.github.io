@@ -43,11 +43,11 @@ export const unit5: Unit = {
       title: "How Computers Understand Images",
       kind: "lesson",
       summary:
-        "Pixels, resolution and colour channels: an image as the model receives it.",
+        "Pixels, resolution and color channels: an image as the model receives it.",
       estimatedMinutes: 20,
       objectives: [
         "Describe an image as a numerical array",
-        "Explain colour channels and resolution",
+        "Explain color channels and resolution",
         "Say what a feature is in a visual context",
       ],
       blocks: [],

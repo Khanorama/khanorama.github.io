@@ -43,11 +43,11 @@ export const unit6: Unit = {
       title: "How Machines Process Language",
       kind: "lesson",
       summary:
-        "Tokenisation, normalisation and the unglamorous preprocessing that everything else sits on.",
+        "Tokenisation, normalization and the unglamorous preprocessing that everything else sits on.",
       estimatedMinutes: 20,
       objectives: [
         "Explain what tokenisation does and why",
-        "Describe text normalisation and stop words",
+        "Describe text normalization and stop words",
         "Say why tokens are not the same as words",
       ],
       blocks: [],
