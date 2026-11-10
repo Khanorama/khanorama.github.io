@@ -90,6 +90,11 @@ export const UPCOMING: UpcomingCourse[] = [
     level: "Intermediate",
     blurb:
       "Regression, exploratory analysis, and building a model of your own. Python I first.",
-    art: "/art/ai.webp",
+    /*
+      Not the brain. That belongs to AI Fundamentals, and with both on the
+      same shelf the shared picture made two different courses look like
+      one thing listed twice.
+    */
+    art: "/art/regression.svg",
   },
 ];

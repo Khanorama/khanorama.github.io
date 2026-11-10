@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="A scatter of points with a fitted line rising through them">
+  <!--
+    Course art for Machine Learning with Python.
+
+    A scatter with a line fitted through it, which is what the course is
+    actually about: regression and exploratory analysis. It deliberately
+    avoids the brain used by AI Fundamentals, since the two sat next to
+    each other on the catalog shelf wearing the same picture.
+
+    Colors are fixed rather than themed. This is loaded through an <img>,
+    so it is a separate document that inherits nothing from the page and
+    cannot read the site's custom properties.
+
+    They are also mid-luminance rather than the site's bright accents, and
+    the strokes are heavier than a chart this size would normally need.
+    Both are because of where it is drawn: upcoming cards render their art
+    at 55% opacity, and the first version used the bright blue and green
+    meant for dark backgrounds, which washed out to a smudge on the pale
+    paper. A color near the middle of the range has somewhere to go against
+    both backgrounds.
+  -->
+
+  <!-- Axes. Muted enough to recede, dark enough to read on pale paper. -->
+  <path d="M20 10 L20 78 L88 78"
+        fill="none" stroke="#5b6b7c" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Ticks, which make it read as a chart rather than a corner. -->
+  <g stroke="#5b6b7c" stroke-width="2" stroke-linecap="round" opacity="0.8">
+    <path d="M17 62 L20 62" />
+    <path d="M17 44 L20 44" />
+    <path d="M17 26 L20 26" />
+    <path d="M38 78 L38 81" />
+    <path d="M56 78 L56 81" />
+    <path d="M74 78 L74 81" />
+  </g>
+
+  <!-- The fitted line. Drawn under the points so they sit on top of it. -->
+  <path d="M26 68 L84 26"
+        fill="none" stroke="#10985f" stroke-width="3.5" stroke-linecap="round" />
+
+  <!-- The observations. Spread either side of the line, as real data is. -->
+  <g fill="#1f6fd0">
+    <circle cx="30" cy="70" r="3.8" />
+    <circle cx="37" cy="58" r="3.8" />
+    <circle cx="42" cy="66" r="3.8" />
+    <circle cx="49" cy="54" r="3.8" />
+    <circle cx="55" cy="59" r="3.8" />
+    <circle cx="61" cy="45" r="3.8" />
+    <circle cx="68" cy="50" r="3.8" />
+    <circle cx="75" cy="36" r="3.8" />
+    <circle cx="81" cy="30" r="3.8" />
+  </g>
+
+  <!-- One point well off the trend. Unit 3 spends a lesson on these. -->
+  <circle cx="33" cy="22" r="3.8" fill="#1f6fd0" opacity="0.5" />
+</svg>
