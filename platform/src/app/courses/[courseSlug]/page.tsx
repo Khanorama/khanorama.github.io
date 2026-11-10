@@ -116,9 +116,9 @@ export default async function CourseOverviewPage({
                 <span className="inline-flex shrink-0 items-center rounded-full border border-warning-line bg-warning-soft px-2 py-0.5 font-sans text-[10px] font-semibold tracking-[0.08em] uppercase text-warning">
                   In development
                 </span>
-                {ready} of {lessons.length} lessons are written. The rest are
-                planned and listed below, and your progress is kept as they
-                arrive.
+                {ready === lessons.length
+                  ? "All lessons are written. The course is being reviewed before it opens properly, and your progress is kept either way."
+                  : `${ready} of ${lessons.length} lessons are written. The rest are planned and listed below, and your progress is kept as they arrive.`}
               </p>
             )}
 
