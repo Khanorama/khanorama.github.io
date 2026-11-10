@@ -43,8 +43,8 @@ export const aiFundamentals: Course = {
   description:
     "AI Fundamentals explains the machinery behind the tools everyone is suddenly using. You will learn what counts as intelligence in a machine, how a model learns from data, what a neural network is really doing, and how computers came to see images and read language. It finishes on the part that matters most: what these systems get wrong, who they affect, and where they are already being used.",
   level: "Beginner",
-  status: "inDevelopment",
-  estimatedHours: 19,
+  status: "available",
+  estimatedHours: 20,
   /*
     Shared with the "Machine Learning with Python" entry in UPCOMING, which
     is a collision worth resolving rather than living with: the two now sit
