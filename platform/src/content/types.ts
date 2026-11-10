@@ -13,6 +13,12 @@
  *   sandbox    "##SANDBOX AREA##" cells, ungraded free play
  *   written    prose answers (Progress Check problem 5), self-assessed
  *
+ * Two further blocks were added for the conceptual courses, where there is no
+ * code to run and therefore nothing for five of the seven blocks above to do:
+ *
+ *   quiz       one multiple-choice question, graded
+ *   figure     a diagram, which is the only way to teach some of this
+ *
  * Content lives in the repo as typed data, not in Firestore. Curriculum is then
  * versioned, reviewable in a diff, and cannot be broken by a bad write at
  * runtime. Firestore only ever stores per-student state.
@@ -167,6 +173,65 @@ export interface WrittenBlock extends BlockBase {
   modelAnswer: string;
 }
 
+/**
+ * A diagram.
+ *
+ * Conceptual courses live or die on these: the anatomy of a neural network,
+ * the shape of a pipeline and the flow from input to output are pictures
+ * before they are sentences, and prose alone makes a reader rebuild the
+ * picture themselves.
+ *
+ * Figures are authored as inline SVG rather than linked as image files, which
+ * buys two things that matter here. The markup is part of the page, so a
+ * diagram can use the theme's own custom properties and is correct in light
+ * and dark without maintaining two exports of it. And it scales to any
+ * viewport without a second asset.
+ *
+ * The svg string is injected as markup. That is safe in this one direction
+ * and only because of where it comes from: figures are typed data committed
+ * to this repository and reviewed in a diff, never anything a student or a
+ * remote service supplies. Nothing on the platform may ever put a runtime
+ * value into this field.
+ *
+ * `src` is the escape hatch for a real photograph or a screenshot, which
+ * should not be hand-drawn as vectors. Exactly one of svg or src is set.
+ */
+export interface FigureBlock extends BlockBase {
+  kind: "figure";
+  /** Inline SVG markup, authored in this repo. Theme-aware. */
+  svg?: string;
+  /** A file under public/, for photographs and screenshots. */
+  src?: string;
+  /** Required. A figure nobody can see is a figure nobody can read. */
+  alt: string;
+  caption?: string;
+  /** Rendered width cap in px; defaults to the column width. */
+  maxWidth?: number;
+}
+
+/**
+ * One multiple-choice question, graded.
+ *
+ * This is the conceptual courses' equivalent of an exercise, and the reason
+ * their progress means anything: without it the only gradeable block in a
+ * no-code lesson is a written answer the student marks themselves.
+ *
+ * It carries the same honest limit as every other check here. On a static
+ * export the correct answer ships inside the bundle, so this is practice,
+ * never a secure assessment. See LessonKind below for the same note.
+ */
+export interface QuizBlock extends BlockBase {
+  kind: "quiz";
+  /** The question. Markdown. */
+  prompt: string;
+  /** Two or more options, in the order they are shown. */
+  choices: string[];
+  /** Index into choices. */
+  answer: number;
+  /** Why that answer is right, shown once the student has committed. */
+  explanation: string;
+}
+
 export type Block =
   | ProseBlock
   | ExampleBlock
@@ -174,16 +239,20 @@ export type Block =
   | ErrorDemoBlock
   | ExerciseBlock
   | SandboxBlock
-  | WrittenBlock;
+  | WrittenBlock
+  | FigureBlock
+  | QuizBlock;
 
 /** Blocks that contribute to a lesson's completion percentage. */
-export type GradedBlock = ExerciseBlock | PredictBlock | WrittenBlock;
+export type GradedBlock =
+  ExerciseBlock | PredictBlock | WrittenBlock | QuizBlock;
 
 export function isGraded(block: Block): block is GradedBlock {
   return (
     block.kind === "exercise" ||
     block.kind === "predict" ||
-    block.kind === "written"
+    block.kind === "written" ||
+    block.kind === "quiz"
   );
 }
 
@@ -192,20 +261,36 @@ export function isGraded(block: Block): block is GradedBlock {
 /**
  * What a student is being asked to do, which drives the label in the outline.
  *
- *   lesson         taught material        -> "Lesson"
- *   progressCheck  practice between units -> "Activity"
- *   assessment     graded quiz or exam    -> "Assessment"
+ *   lesson         taught material         -> "Lesson"
+ *   progressCheck  practice between units  -> "Activity"
+ *   connection     applying it to the real world
+ *   unitQuiz       the end-of-unit check
+ *   assessment     graded quiz or exam     -> "Assessment"
+ *
+ * The conceptual courses close each unit with two entries rather than one
+ * progress check: a connection, where the student takes what the unit taught
+ * and reads something real with it, and a quiz. Splitting them keeps two
+ * different jobs apart. A connection cannot be marked right or wrong and is
+ * the better test of understanding; a quiz can be, and is what makes a unit's
+ * completion a fact rather than a feeling.
+ *
+ * unitQuiz is a lesson kind and quiz is a block kind. A unitQuiz lesson is
+ * mostly quiz blocks, but a taught lesson may carry one too, and a
+ * connection is free to end with a couple.
  *
  * Nothing is an assessment yet. Graded exams cannot be made cheat-proof on a
  * static client, where every expected answer ships in the bundle, so they stay
  * instructor-run until there is a server-side grader. The kind exists so the
  * outline can represent them when that changes.
  */
-export type LessonKind = "lesson" | "progressCheck" | "assessment";
+export type LessonKind =
+  "lesson" | "progressCheck" | "connection" | "unitQuiz" | "assessment";
 
 export const LESSON_KIND_LABEL: Record<LessonKind, string> = {
   lesson: "Lesson",
   progressCheck: "Activity",
+  connection: "Real-world connection",
+  unitQuiz: "Unit quiz",
   assessment: "Assessment",
 };
 
@@ -252,6 +337,15 @@ export interface Course {
   highlights: CourseHighlight[];
   /** Rough total, shown on the overview. */
   estimatedHours: number;
+  /**
+   * Catalog illustration, served from public/. Optional: a course without
+   * one simply has no picture on its card.
+   *
+   * It belongs on the course rather than in the catalog because the catalog
+   * previously chose it with a hard-coded check on the slug, which meant
+   * adding a second course silently produced a card with a hole in it.
+   */
+  art?: string;
   units: Unit[];
 }
 
@@ -308,7 +402,9 @@ export function isLessonComplete(
   if (!progress) return false;
   const graded = gradedBlocks(lesson);
   if (graded.length === 0) return Boolean(progress.completedAt);
-  return graded.every((block) => progress.blocks[block.id]?.status === "passed");
+  return graded.every(
+    (block) => progress.blocks[block.id]?.status === "passed",
+  );
 }
 
 export function courseCompletion(

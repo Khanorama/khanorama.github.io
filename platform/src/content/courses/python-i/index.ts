@@ -30,6 +30,7 @@ export const pythonI: Course = {
   level: "Beginner",
   status: "available",
   estimatedHours: 8,
+  art: "/art/python.webp",
   highlights: [
     {
       title: "You write code in every lesson",

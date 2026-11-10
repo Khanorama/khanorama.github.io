@@ -11,6 +11,12 @@ import { LESSON_KIND_LABEL, type LessonKind } from "@/content/types";
 const STYLES: Record<LessonKind, string> = {
   lesson: "border-line bg-surface text-ink-faint",
   progressCheck: "border-accent-line bg-accent-soft text-accent",
+  // A connection is something you do, so it shares the action colour with a
+  // progress check. A unit quiz counts towards the unit, so it takes the
+  // green the system already reserves for earned progress rather than the
+  // amber that means "this one is graded and you only get one go".
+  connection: "border-accent-line bg-accent-soft text-accent",
+  unitQuiz: "border-success-line bg-success-soft text-success",
   assessment: "border-warning-line bg-warning-soft text-warning",
 };
 

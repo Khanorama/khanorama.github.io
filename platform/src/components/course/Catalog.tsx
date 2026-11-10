@@ -7,7 +7,7 @@ import { isEnrolled } from "@/lib/progress/localProgress";
 import { readUserHint, useAuth } from "@/lib/auth/AuthProvider";
 import { courseUrl, lessonUrl } from "@/content/registry";
 import { UPCOMING } from "@/content/site";
-import type { LessonKind } from "@/content/types";
+import type { CourseStatus, LessonKind } from "@/content/types";
 
 export interface CatalogLesson {
   id: string;
@@ -25,6 +25,7 @@ export interface CatalogCourse {
   title: string;
   subtitle: string;
   level: string;
+  status: CourseStatus;
   unitCount: number;
   art?: string;
   lessons: CatalogLesson[];
@@ -34,7 +35,9 @@ function Arrow({ dir }: { dir: "left" | "right" }) {
   return (
     <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4">
       <path
-        d={dir === "left" ? "M12.5 4.5L7 10l5.5 5.5" : "M7.5 4.5L13 10l-5.5 5.5"}
+        d={
+          dir === "left" ? "M12.5 4.5L7 10l5.5 5.5" : "M7.5 4.5L13 10l-5.5 5.5"
+        }
         fill="none"
         stroke="currentColor"
         strokeWidth="2"
@@ -101,6 +104,11 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
       next,
       started,
       total: course.lessons.length,
+      // A course can be open while it is still being written, which is a
+      // different thing from being finished, and the card has to say so.
+      // Without this an outline that is one unit deep looks identical to a
+      // complete course until a student is several clicks in.
+      ready: course.lessons.filter((lesson) => lesson.written).length,
       // Enrolment is a fact about an account, so it has to be read as one.
       // The local record outlives a sign-out, which is why a signed-out
       // visitor was still being shown a half-finished course and invited to
@@ -186,59 +194,70 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
           onScroll={sync}
           className="mt-1 flex snap-x snap-mandatory gap-4 overflow-x-auto pt-4 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {withProgress.map(({ course, done, total, started, enrolled }) => {
-            const fraction = total === 0 ? 0 : done / total;
-            return (
-              <Link
-                key={course.id}
-                data-card
-                href={courseUrl(course.slug)}
-                className="press group flex w-[17rem] shrink-0 snap-start flex-col rounded-card border border-line bg-paper p-6 shadow-card hover:-translate-y-1 hover:border-accent-line hover:shadow-card-hover"
-              >
-                {course.art && (
-                  <img
-                    src={course.art}
-                    alt=""
-                    width={88}
-                    height={88}
-                    className="h-22 w-22 self-start"
-                    style={{ height: "5.5rem", width: "5.5rem" }}
-                  />
-                )}
-
-                <span className="mt-5 inline-flex w-fit rounded-full border border-line bg-surface px-2 py-0.5 font-sans text-[10px] font-semibold tracking-[0.08em] uppercase text-ink-faint">
-                  {course.level}
-                </span>
-
-                <h3 className="mt-3 font-sans text-xl font-semibold text-ink group-hover:text-accent">
-                  {course.title}
-                </h3>
-                <p className="mt-2 font-sans text-sm leading-relaxed text-ink-muted">
-                  {course.subtitle}
-                </p>
-
-                <div className="mt-auto pt-6">
-                  {enrolled ? (
-                    <>
-                      <div className="h-1 overflow-hidden rounded-full bg-surface-raised">
-                        <div
-                          className="h-full rounded-full bg-success transition-[width] duration-500"
-                          style={{ width: `${Math.round(fraction * 100)}%` }}
-                        />
-                      </div>
-                      <p className="mt-2 font-sans text-xs text-ink-faint tabular-nums">
-                        {started ? `${done} of ${total} lessons` : "Enrolled"}
-                      </p>
-                    </>
-                  ) : (
-                    <p className="font-sans text-xs text-ink-faint">
-                      {course.unitCount} units, {total} lessons
-                    </p>
+          {withProgress.map(
+            ({ course, done, total, started, enrolled, ready }) => {
+              const fraction = total === 0 ? 0 : done / total;
+              return (
+                <Link
+                  key={course.id}
+                  data-card
+                  href={courseUrl(course.slug)}
+                  className="press group flex w-[17rem] shrink-0 snap-start flex-col rounded-card border border-line bg-paper p-6 shadow-card hover:-translate-y-1 hover:border-accent-line hover:shadow-card-hover"
+                >
+                  {course.art && (
+                    <img
+                      src={course.art}
+                      alt=""
+                      width={88}
+                      height={88}
+                      className="h-22 w-22 self-start"
+                      style={{ height: "5.5rem", width: "5.5rem" }}
+                    />
                   )}
-                </div>
-              </Link>
-            );
-          })}
+
+                  <div className="mt-5 flex flex-wrap items-center gap-1.5">
+                    <span className="inline-flex w-fit rounded-full border border-line bg-surface px-2 py-0.5 font-sans text-[10px] font-semibold tracking-[0.08em] uppercase text-ink-faint">
+                      {course.level}
+                    </span>
+                    {course.status === "inDevelopment" && (
+                      <span className="inline-flex w-fit rounded-full border border-warning-line bg-warning-soft px-2 py-0.5 font-sans text-[10px] font-semibold tracking-[0.08em] uppercase text-warning">
+                        In development
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="mt-3 font-sans text-xl font-semibold text-ink group-hover:text-accent">
+                    {course.title}
+                  </h3>
+                  <p className="mt-2 font-sans text-sm leading-relaxed text-ink-muted">
+                    {course.subtitle}
+                  </p>
+
+                  <div className="mt-auto pt-6">
+                    {enrolled ? (
+                      <>
+                        <div className="h-1 overflow-hidden rounded-full bg-surface-raised">
+                          <div
+                            className="h-full rounded-full bg-success transition-[width] duration-500"
+                            style={{ width: `${Math.round(fraction * 100)}%` }}
+                          />
+                        </div>
+                        <p className="mt-2 font-sans text-xs text-ink-faint tabular-nums">
+                          {started ? `${done} of ${total} lessons` : "Enrolled"}
+                        </p>
+                      </>
+                    ) : (
+                      <p className="font-sans text-xs text-ink-faint">
+                        {course.status === "inDevelopment"
+                          ? `${ready} of ${total} lessons ready`
+                          : `${course.unitCount} units, ${total} lessons`}
+                      </p>
+                    )}
+                  </div>
+                </Link>
+              );
+            },
+          )}
 
           {UPCOMING.map((course) => (
             <div

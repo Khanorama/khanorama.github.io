@@ -3,6 +3,8 @@ import { RunnableExample } from "@/components/blocks/RunnableExample";
 import { ExerciseBlock } from "@/components/blocks/ExerciseBlock";
 import { PredictBlock } from "@/components/blocks/PredictBlock";
 import { WrittenBlock } from "@/components/blocks/WrittenBlock";
+import { QuizBlock } from "@/components/blocks/QuizBlock";
+import { Figure } from "@/components/blocks/Figure";
 import type { Block } from "@/content/types";
 
 type Rendered =
@@ -121,6 +123,31 @@ export function LessonBody({
                 blockId={block.id}
                 prompt={<Markdown>{block.prompt}</Markdown>}
                 code={block.code}
+                choices={block.choices}
+                answer={block.answer}
+                explanation={<Markdown>{block.explanation}</Markdown>}
+              />
+            );
+
+          case "figure":
+            return (
+              <Figure
+                key={block.id}
+                svg={block.svg}
+                src={block.src}
+                alt={block.alt}
+                maxWidth={block.maxWidth}
+                caption={block.caption}
+              />
+            );
+
+          case "quiz":
+            return (
+              <QuizBlock
+                key={block.id}
+                lessonId={lessonId}
+                blockId={block.id}
+                prompt={<Markdown>{block.prompt}</Markdown>}
                 choices={block.choices}
                 answer={block.answer}
                 explanation={<Markdown>{block.explanation}</Markdown>}

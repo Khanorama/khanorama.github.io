@@ -25,8 +25,9 @@ function buildCatalog(): CatalogCourse[] {
     title: course.title,
     subtitle: course.subtitle,
     level: course.level,
+    status: course.status,
     unitCount: course.units.length,
-    art: course.slug === "python-i" ? "/art/python.webp" : undefined,
+    art: course.art,
     lessons: course.units.flatMap((unit) =>
       unit.lessons.map((lesson) => ({
         id: lesson.id,

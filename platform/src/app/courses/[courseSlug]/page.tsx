@@ -45,7 +45,29 @@ export default async function CourseOverviewPage({
   if (!course) notFound();
 
   const lessons = courseLessons(course);
-  const checks = lessons.filter((l) => l.kind === "progressCheck").length;
+
+  /*
+    Taught lessons are counted apart from the things that close a unit,
+    because a reader deciding whether to start wants to know how much
+    material there is, not how many entries the outline has.
+
+    Which kinds close a unit differs by course. Python I uses progress
+    checks; the conceptual courses use a real-world connection and a quiz.
+    Counting them together under one honest label beats either hard-coding
+    one course's vocabulary or printing a zero for the other.
+  */
+  const closers = lessons.filter(
+    (l) =>
+      l.kind === "progressCheck" ||
+      l.kind === "connection" ||
+      l.kind === "unitQuiz",
+  ).length;
+  const closerLabel = course.units[0]?.lessons.some(
+    (l) => l.kind === "progressCheck",
+  )
+    ? "Progress checks"
+    : "Activities and quizzes";
+  const ready = lessons.filter((l) => l.blocks.length > 0).length;
 
   return (
     <>
@@ -74,12 +96,12 @@ export default async function CourseOverviewPage({
               <div>
                 <dt className="inline text-ink-muted">Lessons </dt>
                 <dd className="inline font-semibold text-ink">
-                  {lessons.length - checks}
+                  {lessons.length - closers}
                 </dd>
               </div>
               <div>
-                <dt className="inline text-ink-muted">Progress checks </dt>
-                <dd className="inline font-semibold text-ink">{checks}</dd>
+                <dt className="inline text-ink-muted">{closerLabel} </dt>
+                <dd className="inline font-semibold text-ink">{closers}</dd>
               </div>
               <div>
                 <dt className="inline text-ink-muted">About </dt>
@@ -89,18 +111,32 @@ export default async function CourseOverviewPage({
               </div>
             </dl>
 
+            {course.status === "inDevelopment" && (
+              <p className="mt-6 flex flex-wrap items-center gap-2 font-sans text-sm text-ink-muted">
+                <span className="inline-flex shrink-0 items-center rounded-full border border-warning-line bg-warning-soft px-2 py-0.5 font-sans text-[10px] font-semibold tracking-[0.08em] uppercase text-warning">
+                  In development
+                </span>
+                {ready} of {lessons.length} lessons are written. The rest are
+                planned and listed below, and your progress is kept as they
+                arrive.
+              </p>
+            )}
+
             <div className="mt-7">
               <EnrollButton courseId={course.id} courseSlug={course.slug} />
             </div>
           </div>
 
-          <img
-            src="/art/python.webp"
-            alt=""
-            width={150}
-            height={150}
-            className="hidden justify-self-end md:block"
-          />
+          {course.art && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={course.art}
+              alt=""
+              width={150}
+              height={150}
+              className="hidden justify-self-end md:block"
+            />
+          )}
         </div>
       </section>
 
