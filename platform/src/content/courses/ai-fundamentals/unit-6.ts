@@ -383,7 +383,7 @@ Early embeddings gave each word one fixed vector, which cannot be right. "Bank" 
 
 **Contextual embeddings** fixed this. The representation of a word is computed from the sentence it appears in, so "bank" near "river" lands somewhere different from "bank" near "deposit". The same word gets different numbers in different sentences.
 
-This is the capability that attention mechanisms provide, and it is one of the main reasons modern language models work as well as they do. How attention actually achieves it is the second unit of AI Specializations.`,
+This is the capability that attention mechanisms provide, and it is one of the main reasons modern language models work as well as they do. How attention actually achieves it opens AI Specializations.`,
         },
         {
           id: "b5",
@@ -484,7 +484,7 @@ Predicting the word after "The keys to the cabinet ___" means looking back at "k
 
 It also restored parallelism. Every position can be computed at the same time, which is what made training on internet-scale text possible.
 
-The 2017 paper that introduced the **transformer** took this to its conclusion by removing recurrence altogether and using attention alone, and essentially all modern language models descend from it. How attention works mechanically, and what a transformer is built from, are the first two units of AI Specializations.`,
+The 2017 paper that introduced the **transformer** took this to its conclusion by removing recurrence altogether and using attention alone, and essentially all modern language models descend from it. How attention works mechanically, and what a transformer is built from, are the first unit of AI Specializations.`,
         },
         {
           id: "b5",

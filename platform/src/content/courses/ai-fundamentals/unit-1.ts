@@ -478,7 +478,7 @@ AI is usually sorted into three levels by how broad its capability is. The disti
 
 **Superintelligence**, or ASI, would exceed human ability across essentially everything. It is a hypothetical beyond a hypothetical.
 
-The trap is assuming capability implies generality. A large language model that writes passable essays, explains code and drafts an email feels general. It is still narrow: it was trained to predict text, and everything it does is that one capability pointed at different problems. Unit 7 of AI Specializations returns to this argument properly.`,
+The trap is assuming capability implies generality. A large language model that writes passable essays, explains code and drafts an email feels general. It is still narrow: it was trained to predict text, and everything it does is that one capability pointed at different problems. Unit 8 of AI Specializations returns to this argument properly.`,
         },
         {
           id: "b4",
@@ -587,7 +587,7 @@ Systems do get updated, but by being retrained and redeployed as a new version, 
           ],
           answer: 1,
           explanation:
-            "Your correction became part of the context for that conversation, so later replies in the same conversation take it into account. The model itself is unchanged, and an identical question in a fresh conversation can produce the identical error. This matters a great deal in Unit 9 of AI Specializations, where it explains some of why hallucinations are hard to stamp out.",
+            "Your correction became part of the context for that conversation, so later replies in the same conversation take it into account. The model itself is unchanged, and an identical question in a fresh conversation can produce the identical error. This matters a great deal in Unit 7 of AI Specializations, where it explains some of why hallucinations are hard to stamp out.",
         },
       ],
     },

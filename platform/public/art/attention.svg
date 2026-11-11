@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="One position connected to several others by lines of differing weight, with one much stronger than the rest">
+  <!--
+    Course art for AI Specializations.
+
+    The attention pattern, which is what the course opens on and the thing
+    AI Fundamentals ends by promising. One position draws from several
+    others, and the line weights are the attention weights: one source
+    dominates and the rest contribute a little. It is the same picture as
+    the figure in lesson 1.3, reduced until it still reads at 88 pixels.
+
+    Deliberately not a brain. That belongs to AI Fundamentals, and the two
+    courses sit next to each other on the same shelf.
+
+    Colors are fixed and mid-luminance for the reasons in regression.svg:
+    this loads through an <img>, so it inherits nothing from the page, and
+    it has to hold up on both the warm paper and the dark navy.
+  -->
+
+  <!-- The positions being attended to. -->
+  <g fill="#1f6fd0">
+    <circle cx="16" cy="22" r="5" opacity="0.45" />
+    <circle cx="34" cy="16" r="5" opacity="0.45" />
+    <circle cx="54" cy="16" r="6.5" />
+    <circle cx="74" cy="22" r="5" opacity="0.45" />
+  </g>
+
+  <!-- The weights. One source carries most of it. -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M48 76 Q30 56 18 28" stroke="#5b6b7c" stroke-width="1.6" opacity="0.5" />
+    <path d="M48 76 Q38 50 34 22" stroke="#5b6b7c" stroke-width="2.2" opacity="0.55" />
+    <path d="M48 76 Q50 48 54 24" stroke="#10985f" stroke-width="6" />
+    <path d="M48 76 Q64 54 73 28" stroke="#5b6b7c" stroke-width="1.6" opacity="0.5" />
+  </g>
+
+  <!-- The position doing the looking. -->
+  <circle cx="48" cy="80" r="7.5" fill="#10985f" />
+</svg>

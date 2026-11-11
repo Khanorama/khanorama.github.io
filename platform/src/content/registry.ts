@@ -1,9 +1,10 @@
 import { pythonI } from "@/content/courses/python-i";
 import { aiFundamentals } from "@/content/courses/ai-fundamentals";
+import { aiSpecializations } from "@/content/courses/ai-specializations";
 import type { Course, Lesson, Unit } from "@/content/types";
 
 /** Every course the platform knows about. */
-export const courses: Course[] = [pythonI, aiFundamentals];
+export const courses: Course[] = [pythonI, aiFundamentals, aiSpecializations];
 
 export function getCourse(slug: string): Course | undefined {
   return courses.find((course) => course.slug === slug);
