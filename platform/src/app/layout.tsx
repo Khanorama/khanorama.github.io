@@ -85,6 +85,25 @@ export default function RootLayout({
         />
       </head>
       <body>
+        {/*
+          Skip link, first in the DOM so it is the first thing focus
+          reaches.
+
+          Without it, a keyboard user tabs through the whole header and, on
+          most pages, several nav groups before reaching any content, on
+          every single page. That is what WCAG means by bypassing blocks.
+
+          It is hidden until focused rather than hidden outright: sr-only
+          keeps it off the screen while leaving it in the accessibility
+          tree and the tab order, and focus:not-sr-only brings it back into
+          view the moment someone tabs to it.
+        */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-control focus:bg-accent focus:px-4 focus:py-2.5 focus:font-sans focus:text-sm focus:font-semibold focus:text-ink-inverse"
+        >
+          Skip to content
+        </a>
         <AuthProvider>
           {/* Renders nothing; mirrors progress to the account when signed in. */}
           <ProgressSync />

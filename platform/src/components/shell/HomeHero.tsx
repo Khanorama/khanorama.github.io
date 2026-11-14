@@ -83,7 +83,13 @@ export function HomeHero() {
           animation-delay with !important, which an inline style must not
           be able to beat.
         */}
-        <p
+        {/*
+          An h1 rather than a p. It is the page's heading in every sense
+          except the markup, and a home page with no h1 at all leaves a
+          screen reader user with nothing to orient on. The styling is
+          unchanged; only the element is different.
+        */}
+        <h1
           className="font-brand animate-rise text-6xl font-black tracking-tight whitespace-nowrap sm:text-7xl md:text-8xl"
           style={{ animationDelay: "60ms" }}
         >
@@ -99,7 +105,7 @@ export function HomeHero() {
           >
             CODE
           </span>
-        </p>
+        </h1>
 
         <p
           className="font-brand animate-rise mt-5 text-sm font-bold tracking-[0.18em] uppercase text-ink-muted sm:text-base"
@@ -112,9 +118,9 @@ export function HomeHero() {
           className="font-reading animate-rise mx-auto mt-6 max-w-xl text-lg leading-relaxed text-ink-muted"
           style={{ animationDelay: "240ms" }}
         >
-          Courses, competitions and resources for anyone learning to code,
-          from a first line to a foundation worth building on. Free, and
-          taught by people who remember being beginners.
+          Courses, competitions and resources for anyone learning to code, from
+          a first line to a foundation worth building on. Free, and taught by
+          people who remember being beginners.
         </p>
 
         <div

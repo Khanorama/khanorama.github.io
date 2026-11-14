@@ -20,7 +20,7 @@ export default function SupportPage() {
         lede="Be part of a powerful cause."
       />
 
-      <main className="mx-auto max-w-2xl px-6 pt-12 pb-16">
+      <main id="main" tabIndex={-1} className="mx-auto max-w-2xl px-6 pt-12 pb-16">
         <section {...reveal()}>
           <h2 className="font-sans text-sm font-semibold tracking-wide uppercase text-accent">
             Volunteer with us

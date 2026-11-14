@@ -41,6 +41,7 @@ const GROUPS: { heading: string; links: { label: string; href: string }[] }[] =
         { label: "Privacy", href: "/privacy/" },
         { label: "Terms", href: "/terms/" },
         { label: "Cookies and storage", href: "/cookies/" },
+        { label: "Accessibility", href: "/accessibility/" },
       ],
     },
   ];

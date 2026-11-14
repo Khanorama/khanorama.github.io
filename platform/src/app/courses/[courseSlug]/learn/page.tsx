@@ -64,7 +64,7 @@ export default async function CourseLearnPage({
         courseSlug={course.slug}
         courseTitle={course.title}
       >
-        <main className="mx-auto max-w-2xl px-6 pt-10 pb-16">
+        <main id="main" tabIndex={-1} className="mx-auto max-w-2xl px-6 pt-10 pb-16">
           <div className="flex items-baseline justify-between gap-4">
             <h1 className="text-2xl font-semibold text-ink">{course.title}</h1>
             <Link

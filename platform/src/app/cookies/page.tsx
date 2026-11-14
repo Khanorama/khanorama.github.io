@@ -63,7 +63,7 @@ export default function CookiesPage() {
         lede="There are no cookies. Here is what there is instead."
       />
 
-      <main className="mx-auto max-w-2xl px-6 pt-12 pb-16">
+      <main id="main" tabIndex={-1} className="mx-auto max-w-2xl px-6 pt-12 pb-16">
         <p className="font-reading text-reading text-ink" {...reveal()}>
           This site sets no cookies, of any kind, at any point. We checked by
           loading it fresh and looking. What it does use is a small amount of

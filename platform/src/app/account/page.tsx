@@ -10,7 +10,7 @@ export default function AccountPage() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-2xl px-6 pt-12 pb-16">
+      <main id="main" tabIndex={-1} className="mx-auto max-w-2xl px-6 pt-12 pb-16">
         <AccountPanel />
       </main>
     </>

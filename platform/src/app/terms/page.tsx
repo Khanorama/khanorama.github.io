@@ -63,7 +63,7 @@ export default function TermsPage() {
         lede="What you can expect from us, and what we ask of you."
       />
 
-      <main className="mx-auto max-w-2xl px-6 pt-12 pb-16">
+      <main id="main" tabIndex={-1} className="mx-auto max-w-2xl px-6 pt-12 pb-16">
         <p className="font-reading text-reading text-ink" {...reveal()}>
           By using leapcode.org you agree to what is on this page. It is short
           on purpose. If you disagree with any of it, the honest answer is to

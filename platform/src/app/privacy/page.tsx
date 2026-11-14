@@ -63,7 +63,7 @@ export default function PrivacyPage() {
         lede="What we collect, why we collect it, and how to get rid of it."
       />
 
-      <main className="mx-auto max-w-2xl px-6 pt-12 pb-16">
+      <main id="main" tabIndex={-1} className="mx-auto max-w-2xl px-6 pt-12 pb-16">
         <p className="font-reading text-reading text-ink" {...reveal()}>
           {ORG_LEGAL_NAME} is {ORG_DESCRIPTION} running free coding courses.
           This page describes what happens to your information when you use

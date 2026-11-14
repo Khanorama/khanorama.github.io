@@ -21,7 +21,7 @@ export default function LibraryPage() {
         art={{ src: "/art/library.webp", width: 190, height: 166 }}
       />
 
-      <main className="mx-auto max-w-2xl px-6 pt-12 pb-16">
+      <main id="main" tabIndex={-1} className="mx-auto max-w-2xl px-6 pt-12 pb-16">
         <div
           className="rounded-card border border-warning-line bg-warning-soft px-5 py-4 shadow-card"
           {...reveal()}

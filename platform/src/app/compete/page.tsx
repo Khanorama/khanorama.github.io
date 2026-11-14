@@ -47,7 +47,7 @@ export default function CompetePage() {
         lede="Hackathons, contests and challenges. Build something in a weekend, or solve problems against the clock."
       />
 
-      <main className="mx-auto max-w-3xl px-6 pt-12 pb-16">
+      <main id="main" tabIndex={-1} className="mx-auto max-w-3xl px-6 pt-12 pb-16">
         {live.length > 0 ? (
           <section>
             <h2

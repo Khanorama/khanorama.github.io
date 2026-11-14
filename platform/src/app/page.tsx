@@ -5,7 +5,7 @@ import { HomeHero } from "@/components/shell/HomeHero";
 import { Catalog, type CatalogCourse } from "@/components/course/Catalog";
 import { courses } from "@/content/registry";
 import { gradedBlocks } from "@/content/types";
-import { MISSION, SUPPORT_EMAIL } from "@/content/site";
+import { MISSION } from "@/content/site";
 
 /**
  * The home page.
@@ -47,7 +47,7 @@ export default function Home() {
     <>
       <SiteHeader />
 
-      <main>
+      <main id="main" tabIndex={-1}>
         <HomeHero />
 
         <div id="courses" className="mx-auto max-w-5xl px-6 py-14 scroll-mt-20">
@@ -129,20 +129,6 @@ export default function Home() {
           </ul>
         </section>
       </main>
-
-      <footer className="border-t border-line bg-surface">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-6 py-8">
-          <span className="font-brand text-sm font-bold tracking-[0.1em] text-ink-faint uppercase">
-            Code. Compete. Connect.
-          </span>
-          <a
-            href={`mailto:${SUPPORT_EMAIL}`}
-            className="font-sans text-sm text-accent hover:text-accent-hover"
-          >
-            {SUPPORT_EMAIL}
-          </a>
-        </div>
-      </footer>
     </>
   );
 }

@@ -140,7 +140,7 @@ export default async function CourseOverviewPage({
         </div>
       </section>
 
-      <main className="mx-auto max-w-4xl px-6 py-14">
+      <main id="main" tabIndex={-1} className="mx-auto max-w-4xl px-6 py-14">
         <p
           className="font-reading text-reading mx-auto max-w-2xl text-ink"
           {...reveal()}
