@@ -63,7 +63,11 @@ export default function PrivacyPage() {
         lede="What we collect, why we collect it, and how to get rid of it."
       />
 
-      <main id="main" tabIndex={-1} className="mx-auto max-w-2xl px-6 pt-12 pb-16">
+      <main
+        id="main"
+        tabIndex={-1}
+        className="mx-auto max-w-2xl px-6 pt-12 pb-16"
+      >
         <p className="font-reading text-reading text-ink" {...reveal()}>
           {ORG_LEGAL_NAME} is {ORG_DESCRIPTION} running free coding courses.
           This page describes what happens to your information when you use
@@ -116,6 +120,13 @@ export default function PrivacyPage() {
             back to it on another device.
           </p>
           <p>
+            <strong>Badges are not a fourth thing.</strong> A badge for
+            finishing a course is worked out from the progress above each time
+            the page loads, and the date on it is read from when you passed the
+            last lesson. Nothing extra is stored about you to make one, and
+            nothing is recorded when you earn one.
+          </p>
+          <p>
             Your password is handled by Google&rsquo;s authentication service
             and stored hashed. Nobody at LeapCode can see it, and we cannot
             recover it for you.
@@ -138,6 +149,12 @@ export default function PrivacyPage() {
             Python in the lessons executes on your own device, not on a server.
             The only reason any of it reaches us is so your work is still there
             when you come back.
+          </p>
+          <p>
+            Courses in other languages, including the Java course being written,
+            are intended to work the same way. If we ever add one that has to
+            run your code on a server instead, we will say so on this page
+            before that course opens rather than after.
           </p>
         </Section>
 
