@@ -84,11 +84,54 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+/**
+ * Where Firebase sends the student after they click the link in the email.
+ *
+ * Without this, confirming drops them on Firebase's own generic success
+ * page with no route back to the site: they have done what was asked and
+ * are now stranded somewhere that is not LeapCode.
+ *
+ * The origin is read from the page rather than configured, so it is
+ * correct in development and in production without a second setting to
+ * keep in step. It must be an authorized domain in the Firebase console;
+ * if it is not, Firebase rejects the whole send, which is why the callers
+ * below fall back to sending without it.
+ */
+function returnToAccount() {
+  return { url: `${window.location.origin}/account/`, handleCodeInApp: false };
+}
+
+/**
+ * Sends the confirmation email, preferring one that can get back here.
+ *
+ * A worse email beats no email: if the continue URL is refused, usually
+ * because the domain has not been authorized, this retries without it
+ * rather than leaving the student with nothing in their inbox.
+ */
+async function sendVerification(
+  mod: Awaited<ReturnType<typeof authModule>>,
+  target: User,
+) {
+  try {
+    await mod.sendEmailVerification(target, returnToAccount());
+  } catch {
+    await mod.sendEmailVerification(target);
+  }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<AuthStatus>(
     isFirebaseConfigured ? "loading" : "unavailable",
   );
   const [user, setUser] = useState<User | null>(null);
+  /*
+    Kept apart from `user` on purpose. Firebase mutates the User object in
+    place when it is reloaded and does not fire onAuthStateChanged, so the
+    reference React holds never changes and nothing re-renders. Reading
+    emailVerified into its own piece of state is what lets the banner
+    actually disappear.
+  */
+  const [verified, setVerified] = useState(false);
 
   useEffect(() => {
     if (!isFirebaseConfigured) return;
@@ -105,6 +148,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (canceled) return;
         unsubscribe = onAuthStateChanged(auth, (next) => {
           setUser(next);
+          setVerified(Boolean(next?.emailVerified));
           setStatus(next ? "signedIn" : "signedOut");
           writeUserHint(next);
         });
@@ -121,6 +165,55 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  /*
+    Notices that the student has confirmed their address.
+
+    Clicking the link in the email verifies the account on Firebase's
+    servers, but this tab is still holding the token it was given at
+    sign-in, which says the address is unconfirmed. Nothing pushes an
+    update: onAuthStateChanged does not fire for this, so without asking,
+    the banner keeps telling someone who has just done what was asked that
+    they have not done it. The stale token can live for about an hour.
+
+    Asking on return is enough, and it is the moment that matters: the
+    student clicks the link, lands back here or switches back to this tab,
+    and the answer is already correct. Polling on a timer would cost
+    requests for every signed-in reader to catch a case that only happens
+    once per account.
+
+    It stops entirely once verified, so a confirmed account never checks
+    again.
+  */
+  useEffect(() => {
+    if (!user || verified) return;
+
+    let dropped = false;
+
+    async function check() {
+      try {
+        await user!.reload();
+        if (!dropped) setVerified(Boolean(user!.emailVerified));
+      } catch {
+        // Offline, or the account is gone. If it is gone, the auth
+        // listener signs them out on its own and this is moot.
+      }
+    }
+
+    function onVisible() {
+      if (!document.hidden) void check();
+    }
+
+    void check();
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", onVisible);
+
+    return () => {
+      dropped = true;
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", onVisible);
+    };
+  }, [user, verified]);
+
   const signUp = useCallback(
     async (name: string, email: string, password: string) => {
       const [mod, auth] = await Promise.all([authModule(), loadAuth()]);
@@ -135,7 +228,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Sent, but not enforced. Blocking a student from their first lesson
       // over an unread email would cost more than it protects.
       try {
-        await mod.sendEmailVerification(credential.user);
+        await sendVerification(mod, credential.user);
       } catch {
         // Rate limited or offline. The account still exists and works.
       }
@@ -215,14 +308,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const resendVerification = useCallback(async () => {
     const [mod, auth] = await Promise.all([authModule(), loadAuth()]);
-    if (auth.currentUser) await mod.sendEmailVerification(auth.currentUser);
+    if (auth.currentUser) await sendVerification(mod, auth.currentUser);
   }, []);
 
   const value = useMemo<AuthContextValue>(
     () => ({
       status,
       user,
-      needsVerification: Boolean(user && !user.emailVerified),
+      needsVerification: Boolean(user) && !verified,
       signUp,
       signIn,
       signInWithGoogle,
@@ -234,6 +327,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [
       status,
       user,
+      verified,
       signUp,
       signIn,
       signInWithGoogle,
