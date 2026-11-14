@@ -203,9 +203,15 @@ export default function PrivacyPage() {
             page.
           </p>
           <p>
-            We are a small volunteer team, so this is a manual process rather
-            than a button. We would rather say that plainly than imply an
-            automated system we do not have.
+            <strong>You can also do it yourself.</strong> Signed in, go to your{" "}
+            <Link
+              href="/account/"
+              className="text-accent transition-colors duration-[var(--dur-base)] ease-soft hover:text-accent-hover"
+            >
+              account page
+            </Link>{" "}
+            and choose &ldquo;delete your account&rdquo;. It happens immediately
+            and nobody has to read an email first.
           </p>
         </Section>
 

@@ -3,6 +3,8 @@
 import { useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/Button";
 import { AuthForm } from "@/components/auth/AuthForm";
+import { DeleteAccount } from "@/components/auth/DeleteAccount";
+import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { useProgress, lessonCompletion } from "@/lib/progress/useProgress";
 import {
@@ -106,6 +108,37 @@ export function AccountPanel() {
   const { status, user, needsVerification, signOutNow, resendVerification } =
     useAuth();
   const [sent, setSent] = useState(false);
+  const [deleted, setDeleted] = useState(false);
+
+  /*
+    Checked before anything else, including the signed-out branch.
+
+    Deleting the account makes `user` null a moment later, which would
+    otherwise drop the student straight onto a sign-in form with no
+    explanation, looking exactly like being signed out by accident. This
+    holds the page still long enough to say what happened.
+  */
+  if (deleted) {
+    return (
+      <div className="mx-auto w-full max-w-sm">
+        <h1 className="text-2xl font-semibold text-ink">Account deleted</h1>
+        <p className="font-reading text-reading mt-3 text-ink">
+          Your account and everything saved with it are gone. Nothing of yours
+          is left on our side.
+        </p>
+        <p className="mt-3 font-sans text-sm text-ink-muted">
+          The courses are still free to read without an account, and you are
+          welcome back any time.
+        </p>
+        <Link
+          href="/"
+          className="press mt-6 inline-flex items-center rounded-control border border-line-strong bg-paper px-4 py-2.5 font-sans text-sm font-semibold text-ink hover:border-accent-line hover:bg-surface-raised"
+        >
+          Back to LeapCode
+        </Link>
+      </div>
+    );
+  }
 
   if (status === "loading") {
     return (
@@ -190,6 +223,8 @@ export function AccountPanel() {
       <Button variant="secondary" className="mt-6" onClick={signOutNow}>
         Sign out
       </Button>
+
+      <DeleteAccount onDeleted={() => setDeleted(true)} />
     </div>
   );
 }

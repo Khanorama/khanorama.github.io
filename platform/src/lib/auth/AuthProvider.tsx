@@ -10,7 +10,14 @@ import {
   type ReactNode,
 } from "react";
 import type { User } from "firebase/auth";
-import { authModule, isFirebaseConfigured, loadAuth } from "@/lib/firebase/client";
+import {
+  authModule,
+  firestoreModule,
+  isFirebaseConfigured,
+  loadAuth,
+  loadFirestore,
+} from "@/lib/firebase/client";
+import { resetProgress } from "@/lib/progress/localProgress";
 
 /**
  * "unavailable" is a real, supported state, not an error.
@@ -71,6 +78,8 @@ interface AuthContextValue {
   signOutNow: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   resendVerification: () => Promise<void>;
+  /** Irreversible. Removes the stored progress, then the account itself. */
+  deleteAccount: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -163,6 +172,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await mod.signInWithPopup(auth, provider);
   }, []);
 
+  /**
+   * Deletes the account and everything stored with it.
+   *
+   * ORDER MATTERS AND IS NOT NEGOTIABLE. The Firestore document goes
+   * first, then the auth record. The security rule on that document keys
+   * on request.auth.uid, so deleting the account first would leave the
+   * progress sitting there permanently unreachable: no one could ever
+   * authenticate as that uid again to remove it. Deleting the document
+   * first means a failure anywhere leaves the account intact and the
+   * student able to try again or to email us.
+   *
+   * If the Firestore delete is refused, this throws without touching the
+   * account. That is the safe direction to fail in, and it is also what
+   * happens if the updated rules have not been published yet.
+   */
+  const deleteAccount = useCallback(async () => {
+    const [mod, auth] = await Promise.all([authModule(), loadAuth()]);
+    const current = auth.currentUser;
+    if (!current) throw new Error("Not signed in.");
+
+    const [store, db] = await Promise.all([firestoreModule(), loadFirestore()]);
+    await store.deleteDoc(store.doc(db, "users", current.uid));
+
+    await mod.deleteUser(current);
+
+    // Local copies last, once the remote ones are definitely gone. Doing
+    // this first would wipe the student's work and then leave it on the
+    // server if the delete failed.
+    resetProgress();
+  }, []);
+
   const signOutNow = useCallback(async () => {
     const [mod, auth] = await Promise.all([authModule(), loadAuth()]);
     await mod.signOut(auth);
@@ -187,6 +227,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signIn,
       signInWithGoogle,
       signOutNow,
+      deleteAccount,
       resetPassword,
       resendVerification,
     }),
@@ -197,6 +238,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signIn,
       signInWithGoogle,
       signOutNow,
+      deleteAccount,
       resetPassword,
       resendVerification,
     ],

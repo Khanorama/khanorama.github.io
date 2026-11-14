@@ -19,7 +19,16 @@ service cloud.firestore {
                             && request.resource.data.keys().hasOnly(['progress', 'updatedAt'])
                             && request.resource.data.progress is map;
 
-      allow delete: if false;
+      // A student can delete their own record, which is what makes the
+      // "delete my account" button on the account page work. It stays
+      // scoped to their own uid like every other rule here, so this grants
+      // nobody access to anybody else's row.
+      //
+      // The app deletes this document BEFORE deleting the auth account,
+      // and that order is required rather than tidy: the rule above keys
+      // on request.auth.uid, so once the account is gone the document can
+      // never be reached again by anyone.
+      allow delete: if request.auth != null && request.auth.uid == uid;
     }
   }
 }
