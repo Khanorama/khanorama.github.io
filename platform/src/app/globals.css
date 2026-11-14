@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./fonts.css";
 
 /*
   LeapCode design system.
@@ -157,7 +158,7 @@
   --color-warning-soft: #fdf2df;
   --color-warning-line: #ecd3a0;
 
-  /* Typefaces, wired to next/font variables in layout.tsx. */
+  /* Typefaces. The --font-* variables come from fonts.css. */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-reading: var(--font-reading-serif), Georgia, "Times New Roman", serif;
   --font-mono: var(--font-mono-code), ui-monospace, "SFMono-Regular", monospace;
