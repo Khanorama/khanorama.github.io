@@ -83,7 +83,15 @@
   /* Ink. Faint is for metadata only, never body copy. */
   --color-ink: #14202f;
   --color-ink-muted: #4a5868;
-  --color-ink-faint: #6d7a88;
+  /*
+    Darkened from #6d7a88 to clear WCAG AA. Faint is used at 12px and 10px
+    for metadata, which is normal-size text for contrast purposes, so it
+    needs 4.5:1 rather than the 3:1 that large text gets. The old value
+    managed 4.31 on paper and 3.99 on the banded surface, so it failed on
+    exactly the sections where most of it appears. This clears 4.5 against
+    paper, surface and surface-raised alike.
+  */
+  --color-ink-faint: #5b6773;
   --color-ink-inverse: #ffffff;
 
   /* Navy: the structural color. Headers and framing. */

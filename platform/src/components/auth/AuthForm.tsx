@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { MINIMUM_AGE } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { authErrorMessage, isAuthCancellation } from "@/lib/auth/errors";
@@ -194,6 +195,35 @@ export function AuthForm() {
         >
           {busy ? "Working" : copy.action}
         </Button>
+
+        {/*
+          Consent, stated rather than collected as a tick.
+
+          A pre-ticked box is not consent under any regime that takes the
+          word seriously, and an unticked one here would only add a step
+          between a student and a free course without telling them anything
+          the sentence does not. What matters is that the terms are named
+          and reachable at the moment of signing up, which they now are.
+        */}
+        {mode === "signUp" && (
+          <p className="font-sans text-xs leading-relaxed text-ink-faint">
+            By creating an account you agree to our{" "}
+            <Link
+              href="/terms/"
+              className="text-accent transition-colors duration-[var(--dur-base)] ease-soft hover:text-accent-hover"
+            >
+              terms of use
+            </Link>{" "}
+            and{" "}
+            <Link
+              href="/privacy/"
+              className="text-accent transition-colors duration-[var(--dur-base)] ease-soft hover:text-accent-hover"
+            >
+              privacy policy
+            </Link>
+            . Accounts are for ages {MINIMUM_AGE} and over.
+          </p>
+        )}
       </form>
 
       <div className="mt-5 space-y-1.5 font-sans text-sm text-ink-muted">

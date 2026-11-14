@@ -98,3 +98,23 @@ export const UPCOMING: UpcomingCourse[] = [
     art: "/art/regression.svg",
   },
 ];
+
+/**
+ * Who operates this, for the legal pages.
+ *
+ * LeapCode is a student-run organization and is not incorporated, which
+ * the terms say plainly rather than implying a company that does not
+ * exist. If that changes, this is the one place to update it.
+ */
+export const ORG_LEGAL_NAME = "LeapCode";
+export const ORG_DESCRIPTION = "an unincorporated, student-run organization";
+export const GOVERNING_STATE = "Illinois";
+
+/** Minimum age for an account. Set at 13 to stay clear of COPPA. */
+export const MINIMUM_AGE = 13;
+
+/**
+ * Shown on the legal pages. Update whenever either page changes in
+ * substance, not for a typo.
+ */
+export const POLICY_UPDATED = "14 November 2026";

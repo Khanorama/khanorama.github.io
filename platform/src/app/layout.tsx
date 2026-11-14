@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Source_Serif_4, JetBrains_Mono, Montserrat } from "next/font/google";
+import {
+  Inter,
+  Source_Serif_4,
+  JetBrains_Mono,
+  Montserrat,
+} from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth/AuthProvider";
 import { ProgressSync } from "@/lib/progress/ProgressSync";
+import { SiteFooter } from "@/components/shell/SiteFooter";
 
 // Interface face: neutral, excellent at small sizes.
 const inter = Inter({
@@ -83,6 +89,13 @@ export default function RootLayout({
           {/* Renders nothing; mirrors progress to the account when signed in. */}
           <ProgressSync />
           {children}
+          {/*
+            In the layout rather than in each page, so the legal links are
+            reachable from every route including ones added later. It sits
+            outside the page transition on purpose: the footer is chrome and
+            should not slide in behind the content on every navigation.
+          */}
+          <SiteFooter />
         </AuthProvider>
       </body>
     </html>
