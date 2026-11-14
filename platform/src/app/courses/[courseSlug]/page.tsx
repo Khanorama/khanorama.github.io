@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/shell/SiteHeader";
 import { EnrollButton } from "@/components/course/EnrollButton";
+import { CourseComplete } from "@/components/course/CourseComplete";
 import { RoadmapUnit } from "@/components/course/RoadmapUnit";
 import { courses, getCourse } from "@/content/registry";
 import { reveal } from "@/lib/motion/reveal";
@@ -110,6 +111,8 @@ export default async function CourseOverviewPage({
                 </dd>
               </div>
             </dl>
+
+            <CourseComplete courseSlug={course.slug} />
 
             {course.status === "inDevelopment" && (
               <p className="mt-6 flex flex-wrap items-center gap-2 font-sans text-sm text-ink-muted">
