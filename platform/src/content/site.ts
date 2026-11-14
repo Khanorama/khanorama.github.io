@@ -117,4 +117,4 @@ export const MINIMUM_AGE = 13;
  * Shown on the legal pages. Update whenever either page changes in
  * substance, not for a typo.
  */
-export const POLICY_UPDATED = "14 November 2026";
+export const POLICY_UPDATED = "November 14, 2026";

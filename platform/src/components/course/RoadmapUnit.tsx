@@ -30,7 +30,7 @@ export interface RoadmapUnitData {
  * The open/close animation uses a 0fr -> 1fr grid row rather than a max-height
  * guess. Height therefore resolves to the content's real height, so a short
  * unit does not open to the same box as a long one and nothing snaps at the
- * end of the transition. Honoured for reduced motion, where it cuts straight
+ * end of the transition. Honored for reduced motion, where it cuts straight
  * to the open state.
  */
 export function RoadmapUnit({

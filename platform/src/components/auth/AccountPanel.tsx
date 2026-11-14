@@ -23,7 +23,7 @@ import { courseLessons, gradedBlocks } from "@/content/types";
  * This read the single hard-coded course it was written against, which was
  * correct while there was only one and silently wrong the moment there were
  * two: a student enrolled in both saw one of them and no indication the
- * other existed. Enrolment is already recorded per course, so the panel can
+ * other existed. Enrollment is already recorded per course, so the panel can
  * simply ask.
  */
 function CourseProgress() {
