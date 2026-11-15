@@ -4,8 +4,23 @@
     {
       "name": "platform",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--prefix", "platform"],
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--prefix",
+        "platform"
+      ],
       "port": 3000
+    },
+    {
+      "name": "platform-export",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "platform/scripts/serve-export.mjs",
+        "platform/out",
+        "4000"
+      ],
+      "port": 4000
     }
   ]
 }
