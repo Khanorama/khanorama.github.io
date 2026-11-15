@@ -245,7 +245,7 @@ export function AuthForm() {
                 onClick={() => switchTo("reset")}
                 className="text-accent hover:text-accent-hover"
               >
-                Forgotten your password?
+                Forgot your password?
               </button>
             </p>
           </>
@@ -266,7 +266,7 @@ export function AuthForm() {
       <p className="mt-8 border-t border-line pt-4 font-sans text-xs text-ink-faint">
         Accounts are free, and you need one to take a course. You can{" "}
         <Link href="/" className="text-accent hover:text-accent-hover">
-          look through what is on offer
+          look through the courses
         </Link>{" "}
         before you decide.
       </p>
