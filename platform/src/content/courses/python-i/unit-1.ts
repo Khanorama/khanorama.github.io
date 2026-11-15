@@ -6,7 +6,7 @@ import type { Lesson, Unit } from "@/content/types";
  * Corrections applied while porting, kept visible so they are reviewable:
  *   - The notebooks title this unit two different ways ("Variables & Basic
  *     Functions" in L1 and the progress check, "Variables & Datatypes" in L2
- *     and L3). Standardised on the latter, which matches what is taught.
+ *     and L3). Standardized on the latter, which matches what is taught.
  *   - L3 closed by pointing forward to Integer/Float/Boolean, which is L2 and
  *     comes before it. Stale pointer, removed.
  *   - A paragraph about functions, duplicated from L1, was sitting inside the
@@ -311,7 +311,7 @@ The value is twelve either way. The type is what changed, and the trailing \`.0\
       kind: "prose",
       markdown: `## Booleans
 
-A **Boolean** has only two possible values: \`True\` or \`False\`. Both must be capitalised. They represent whether something is the case, and they are what every decision in a program ultimately rests on.
+A **Boolean** has only two possible values: \`True\` or \`False\`. Both must be capitalized. They represent whether something is the case, and they are what every decision in a program ultimately rests on.
 
 You rarely type \`True\` yourself. Far more often a Boolean is the *result* of a question:
 

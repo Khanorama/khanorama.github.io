@@ -605,7 +605,7 @@ const progressCheck: Lesson = {
     {
       id: "intro",
       kind: "prose",
-      markdown: `Five problems covering the whole unit. Match the expected output exactly, including capitalisation.`,
+      markdown: `Five problems covering the whole unit. Match the expected output exactly, including capitalization.`,
     },
     {
       id: "p1",

@@ -261,7 +261,7 @@ print(numbers[::-1])`,
 | \`.sort()\` | sorts the list in place |
 | \`.reverse()\` | reverses the list in place |
 
-\`len()\` is a plain function, written \`len(items)\`, while the rest are methods written \`items.sort()\`. The inconsistency is historical and simply has to be memorised.`,
+\`len()\` is a plain function, written \`len(items)\`, while the rest are methods written \`items.sort()\`. The inconsistency is historical and simply has to be memorized.`,
     },
     {
       id: "methods-example",

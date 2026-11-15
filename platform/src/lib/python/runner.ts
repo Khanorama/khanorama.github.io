@@ -1,7 +1,7 @@
 /**
  * Main-thread driver for the Python worker.
  *
- * Owns worker lifecycle, serialises requests, and enforces the execution
+ * Owns worker lifecycle, serializes requests, and enforces the execution
  * timeout. Because Python in the worker cannot be interrupted once it is
  * spinning (see the note in pyodide-worker.js), a timeout is handled by
  * destroying the worker outright and starting a clean one.
@@ -48,7 +48,7 @@ export class PythonRunner {
   private nextId = 1;
   private status: RunnerStatus = "idle";
   private listeners = new Set<(status: RunnerStatus) => void>();
-  /** Serialises work; Pyodide holds one interpreter, so runs cannot overlap. */
+  /** Serializes work; Pyodide holds one interpreter, so runs cannot overlap. */
   private queue: Promise<unknown> = Promise.resolve();
 
   onStatusChange(listener: (status: RunnerStatus) => void): () => void {
@@ -110,7 +110,7 @@ export class PythonRunner {
   }
 
   /**
-   * Starts downloading and initialising Python ahead of first use. Worth
+   * Starts downloading and initializing Python ahead of first use. Worth
    * calling as soon as a lesson with code opens, since the first load is
    * several seconds and would otherwise land on the first Run click.
    */

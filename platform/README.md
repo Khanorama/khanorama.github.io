@@ -84,7 +84,7 @@ To switch them on:
 ### A note on the keys
 
 The `NEXT_PUBLIC_FIREBASE_*` values are public. They ship inside the client
-bundle by design and identify the project; they do not authorise anything.
+bundle by design and identify the project; they do not authorize anything.
 The security boundary is `firestore.rules`, which restricts every student to
 their own document and rejects any field the client does not send. Do not put
 a service account key or any admin credential in these variables.

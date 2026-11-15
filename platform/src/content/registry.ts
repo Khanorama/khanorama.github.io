@@ -73,7 +73,7 @@ export function allLessonParams(): Array<{
  *
  * Lessons live under /learn/ so the taught material shares one namespace
  * with the outline, and so no unit slug can ever collide with a route
- * segment. Centralised because these paths are built in five places and
+ * segment. Centralized because these paths are built in five places and
  * drifting apart would produce links that quietly 404 in a static export.
  */
 export function courseUrl(courseSlug: string): string {

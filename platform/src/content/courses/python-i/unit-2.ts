@@ -621,7 +621,7 @@ const progressCheck: Lesson = {
   objectives: [
     "Combine two modules in one program",
     "Write a function that processes user input",
-    "Use string methods to handle inconsistent capitalisation",
+    "Use string methods to handle inconsistent capitalization",
   ],
   blocks: [
     {
@@ -695,7 +695,7 @@ print(math.sqrt(number))`,
 
 *Skills: input(), string methods, writing and calling functions*
 
-Define a function that takes a string and prints the index where \`"he"\` appears in it. It must ignore capitalisation, so \`"HEllo"\` behaves the same as \`"hello"\`.
+Define a function that takes a string and prints the index where \`"he"\` appears in it. It must ignore capitalization, so \`"HEllo"\` behaves the same as \`"hello"\`.
 
 Then read a line of input and call your function with it.
 
@@ -727,7 +727,7 @@ HEllo there
           name: "lower",
           atLeast: 1,
           message:
-            "Use lower() so capitalisation does not matter. Checking both cases by hand does not scale.",
+            "Use lower() so capitalization does not matter. Checking both cases by hand does not scale.",
         },
         {
           kind: "callCount",
