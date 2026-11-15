@@ -1,0 +1,15 @@
+{
+  "name": "leapcode-roster",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local admin report: every account, its progress and its badges.",
+  "scripts": {
+    "report": "tsx roster.ts",
+    "demo": "tsx roster.ts --demo"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.6.0",
+    "tsx": "^4.21.1"
+  }
+}

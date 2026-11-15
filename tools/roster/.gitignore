@@ -1,0 +1,14 @@
+# A service account key grants full read and write over the entire Firebase
+# project, bypassing every security rule. One must never reach the
+# repository, so every .json here is ignored by default and the handful that
+# belong in git are allowed back by name. Adding a file means allowing it
+# deliberately, which is the right way round for a directory that is
+# expected to contain a credential.
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+
+node_modules/
+# Generated reports contain real student data.
+out/
