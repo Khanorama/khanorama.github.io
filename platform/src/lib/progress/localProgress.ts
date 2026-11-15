@@ -1,4 +1,8 @@
-import type { BlockProgress, LessonProgress } from "@/content/types";
+import type {
+  BlockProgress,
+  ExerciseStatus,
+  LessonProgress,
+} from "@/content/types";
 
 /**
  * The progress store.
@@ -57,15 +61,129 @@ export function setRemoteSink(sink: RemoteSink | null): void {
   remoteSink = sink;
 }
 
+/* --------------------------------------------------------------- coercion */
+
+/*
+ * Progress arrives from two places this code does not control: localStorage,
+ * which a student can edit, and their Firestore document, which they can
+ * write to directly with their own token. The security rules require only
+ * that `progress` is a map, so the shape inside it is a claim rather than a
+ * guarantee, and a TypeScript cast checks nothing at runtime.
+ *
+ * That cannot inject anything: every value here renders as a React child and
+ * is escaped on the way out. What it can do is crash a lesson. mergeProgress
+ * calls Object.keys(lesson.blocks) and Math.max(a.attempts, b.attempts), so a
+ * missing `blocks` throws and a string `attempts` poisons the count with NaN.
+ * Either one would leave a student staring at an error boundary on their own
+ * work, with no way to clear it from inside the page.
+ *
+ * So the shape is rebuilt field by field instead of trusted. Malformed
+ * entries are dropped individually rather than failing the whole document: a
+ * student with one bad lesson record keeps the rest of their course.
+ */
+
+const BLOCK_STATUSES: readonly ExerciseStatus[] = [
+  "notStarted",
+  "attempted",
+  "passed",
+];
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+/** Dates are only ever compared as strings and shown as-is, so any non-empty string will do. */
+function coerceDate(value: unknown): string | undefined {
+  return typeof value === "string" && value !== "" ? value : undefined;
+}
+
+function coerceBlock(value: unknown): BlockProgress | null {
+  if (!isRecord(value)) return null;
+
+  // An unreadable status is never promoted to "passed". The record exists at
+  // all, so something happened here, which is what "attempted" means.
+  const status = BLOCK_STATUSES.includes(value.status as ExerciseStatus)
+    ? (value.status as ExerciseStatus)
+    : "attempted";
+
+  const attempts =
+    typeof value.attempts === "number" && Number.isFinite(value.attempts)
+      ? Math.max(0, Math.floor(value.attempts))
+      : 0;
+
+  return {
+    status,
+    attempts,
+    // Capped on the way in as well as on the way out, so an oversized
+    // document cannot be loaded back and rewritten over the 1MB limit.
+    code:
+      typeof value.code === "string"
+        ? value.code.slice(0, MAX_STORED_CODE)
+        : undefined,
+    passedAt: coerceDate(value.passedAt),
+  };
+}
+
+function coerceLesson(value: unknown): LessonProgress | null {
+  if (!isRecord(value)) return null;
+
+  const blocks: Record<string, BlockProgress> = {};
+  if (isRecord(value.blocks)) {
+    for (const [blockId, entry] of Object.entries(value.blocks)) {
+      const block = coerceBlock(entry);
+      if (block) blocks[blockId] = block;
+    }
+  }
+
+  return {
+    startedAt: coerceDate(value.startedAt),
+    completedAt: coerceDate(value.completedAt),
+    blocks,
+  };
+}
+
+/**
+ * Rebuilds a ProgressState from an untrusted value.
+ *
+ * Total: every input returns a usable state, including null, a string, or an
+ * array. Documents written before enrollment existed simply have no
+ * enrollments, which falls out of this rather than needing its own case.
+ */
+export function coerceProgress(value: unknown): ProgressState {
+  if (!isRecord(value)) return EMPTY;
+
+  const lessons: Record<string, LessonProgress> = {};
+  if (isRecord(value.lessons)) {
+    for (const [lessonId, entry] of Object.entries(value.lessons)) {
+      const lesson = coerceLesson(entry);
+      if (lesson) lessons[lessonId] = lesson;
+    }
+  }
+
+  const enrollments: Record<string, CourseEnrollment> = {};
+  if (isRecord(value.enrollments)) {
+    for (const [courseId, entry] of Object.entries(value.enrollments)) {
+      if (!isRecord(entry)) continue;
+      // Being enrolled is the fact that matters and the date is not shown
+      // anywhere, so an unreadable one falls back rather than discarding the
+      // enrollment and quietly dropping a student out of their course.
+      enrollments[courseId] = {
+        enrolledAt: coerceDate(entry.enrolledAt) ?? EPOCH,
+      };
+    }
+  }
+
+  return { lessons, enrollments };
+}
+
+const EPOCH = new Date(0).toISOString();
+
 function parse(raw: string | null): ProgressState {
   if (!raw) return EMPTY;
   try {
-    const parsed = JSON.parse(raw) as ProgressState;
-    if (!parsed || typeof parsed !== "object" || !parsed.lessons) return EMPTY;
-    // Documents written before enrollment existed have no such field.
-    return { ...parsed, enrollments: parsed.enrollments ?? {} };
+    return coerceProgress(JSON.parse(raw));
   } catch {
-    // Corrupted or from an older shape. Start clean rather than crash a lesson.
+    // Not even JSON. Start clean rather than crash a lesson.
     return EMPTY;
   }
 }

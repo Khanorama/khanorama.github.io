@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { firestoreModule, loadFirestore } from "@/lib/firebase/client";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import {
+  coerceProgress,
   getSnapshot,
   mergeProgress,
   replaceState,
@@ -113,8 +114,11 @@ export function ProgressSync() {
           loadFirestore(),
         ]);
         const snapshot = await getDoc(doc(db, "users", uid));
-        const stored = snapshot.data()?.progress as ProgressState | undefined;
-        if (stored?.lessons) remote = { ...stored, enrollments: stored.enrollments ?? {} };
+        // Rebuilt rather than cast. The security rules require only that
+        // `progress` is a map, so everything inside it is this account's own
+        // claim about the shape, and a cast would check none of it at
+        // runtime. mergeProgress below reads .blocks and .attempts directly.
+        remote = coerceProgress(snapshot.data()?.progress);
       } catch (error) {
         // Could not read. Treat the account as empty rather than block the
         // lesson; the merge below still preserves local work.
