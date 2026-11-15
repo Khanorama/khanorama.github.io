@@ -12,7 +12,7 @@ import type { Firestore } from "firebase/firestore";
  * and when the project is not configured at all the SDK is never fetched.
  *
  * The config values are public by design. They ship inside any client-side
- * Firebase app and identify the project rather than authorise anything; the
+ * Firebase app and identify the project rather than authorize anything; the
  * real security boundary is firestore.rules.
  *
  * In a static export these are inlined at build time, so the deploy workflow

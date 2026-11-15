@@ -420,7 +420,7 @@ Three things changed at roughly the same time:
 
 **Scale.** With the first two in place, it became possible to train networks far larger than before, and it turned out that bigger networks trained on more data kept getting better.
 
-In 2012 a neural network called AlexNet won the ImageNet image recognition competition by a margin so wide that the field reorganised around the approach within about two years.`,
+In 2012 a neural network called AlexNet won the ImageNet image recognition competition by a margin so wide that the field reorganized around the approach within about two years.`,
         },
         {
           id: "b6",

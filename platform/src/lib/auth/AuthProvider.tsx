@@ -244,12 +244,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   /**
    * Google sign-in, through a popup rather than a redirect.
    *
-   * signInWithRedirect needs the Firebase auth domain to write storage in a
-   * third-party context on the way back, which Safari and Chrome now block
-   * by default. The app is served from leapcode.org while the auth domain is
-   * a firebaseapp.com address, so redirect would fail for a large share of
-   * students, and fail silently: they would land back on the page still
-   * signed out with nothing to read. A popup keeps the exchange first-party.
+   * This was once the only option that worked. The auth domain was a
+   * firebaseapp.com address while the site was served from leapcode.org, so
+   * signInWithRedirect had to write storage in a third-party context on the
+   * way back, which Safari and Chrome block by default. It failed silently:
+   * a student landed back on the page still signed out with nothing to
+   * read. The auth domain is now auth.leapcode.org, a subdomain of the
+   * site, so that obstacle is gone.
+   *
+   * The popup stays anyway. Redirect would mean calling getRedirectResult
+   * on load and holding the page in a pending state until it answers, on
+   * every page, for the few students arriving back from Google. There is no
+   * longer a reason to pay that, and a popup resolves where it was called.
    *
    * Nothing here creates a profile record. onAuthStateChanged fires exactly
    * as it does for email sign-in, so progress sync and the name hint already

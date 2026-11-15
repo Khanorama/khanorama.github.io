@@ -101,7 +101,14 @@ jobs:
           # A static export inlines them at build time, so they must be set
           # HERE rather than at runtime.
           NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
-          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+          # Not a secret and deliberately not read from one. This is the
+          # address students see Google name when they sign in, so it is
+          # part of how the site presents itself and belongs where it can
+          # be reviewed in a diff. It is a Firebase Hosting custom domain
+          # pointed at this project; changing it needs the matching entry
+          # in Firebase Authentication's authorized domains and in the
+          # Google OAuth client's redirect URIs, or sign-in breaks.
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: auth.leapcode.org
           NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
           NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
           NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}

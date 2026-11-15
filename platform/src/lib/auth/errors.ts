@@ -32,7 +32,7 @@ const MESSAGES: Record<string, string> = {
   "auth/account-exists-with-different-credential":
     "You already have an account with that email address, set up with a password. Sign in with your password instead.",
   "auth/unauthorized-domain":
-    "Google sign-in is not authorised for this web address yet. This is a setup problem, not something you did.",
+    "Google sign-in is not authorized for this web address yet. This is a setup problem, not something you did.",
 
   // The four below are setup problems rather than student mistakes. They
   // say so plainly, because a student seeing "check your password" when the

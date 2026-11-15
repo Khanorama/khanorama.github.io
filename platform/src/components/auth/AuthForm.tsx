@@ -277,7 +277,7 @@ export function AuthForm() {
 /**
  * Google's G, drawn at its official four colors.
  *
- * Kept fixed across light and dark rather than recoloured to the palette:
+ * Kept fixed across light and dark rather than recolored to the palette:
  * it identifies someone else's service, and a navy or monochrome G would
  * read as a different button. This is the one mark on the site that does
  * not take the design system's colors, and that is deliberate.
