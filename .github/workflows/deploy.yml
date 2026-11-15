@@ -9,12 +9,19 @@ name: Deploy to GitHub Pages
 #
 # WHAT GETS PUBLISHED is controlled by the SITE_MODE repository variable:
 #
-#   renovation  (default)  the holding page with the countdown
-#   platform               the full learning platform
+#   platform  (default)  the full learning platform
+#   renovation           the holding page with the countdown
 #
-# The default is deliberately "renovation" so that enabling Actions, or any
-# ordinary push to main, cannot put the platform live before you mean to.
-# Launching is a one-line change to that variable, not a code change.
+# The default was "renovation" until the site went public, so that enabling
+# Actions, or an ordinary push to main, could not put an unfinished platform
+# live. That default has done its job and is now the wrong way round: with
+# the platform public, a push that quietly replaced it with a countdown page
+# would be an outage, so the default keeps the platform up and taking it
+# down is the deliberate act.
+#
+# To put the holding page back, either set SITE_MODE to renovation, which
+# sticks across pushes, or run this workflow with mode=renovation for a
+# one-off that the next push undoes.
 
 on:
   push:
@@ -60,7 +67,7 @@ jobs:
         run: |
           mode="$INPUT_MODE"
           if [ -z "$mode" ] || [ "$mode" = "auto" ]; then
-            mode="${SITE_MODE:-renovation}"
+            mode="${SITE_MODE:-platform}"
           fi
           if [ "$mode" != "renovation" ] && [ "$mode" != "platform" ]; then
             echo "::error::SITE_MODE must be 'renovation' or 'platform', got '$mode'"
