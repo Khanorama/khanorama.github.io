@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { DeleteAccount } from "@/components/auth/DeleteAccount";
 import { Badges } from "@/components/course/Badges";
+import { OrganizerLink } from "@/components/admin/OrganizerLink";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { useProgress, lessonCompletion } from "@/lib/progress/useProgress";
@@ -197,6 +198,8 @@ export function AccountPanel() {
       </div>
 
       <Badges />
+
+      <OrganizerLink />
 
       {needsVerification && (
         <div className="mt-4 rounded-card border border-warning-line bg-warning-soft px-4 py-3">

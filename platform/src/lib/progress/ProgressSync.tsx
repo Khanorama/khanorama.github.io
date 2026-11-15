@@ -71,6 +71,11 @@ export function ProgressSync() {
     }
 
     const uid = user.uid;
+    // Copied into the document on each write because the client SDK cannot
+    // read another account's Authentication record, so without it the roster
+    // page can only show opaque uids. Self-reported and self-writable: it
+    // labels a row, it does not prove who anyone is.
+    const label = user.displayName?.trim().slice(0, 80);
     let canceled = false;
     let timer: ReturnType<typeof setTimeout> | null = null;
     let pending: ProgressState | null = null;
@@ -83,7 +88,14 @@ export function ProgressSync() {
         ]);
         await setDoc(
           doc(db, "users", uid),
-          { progress: stripUndefined(state), updatedAt: new Date().toISOString() },
+          {
+            progress: stripUndefined(state),
+            updatedAt: new Date().toISOString(),
+            // Omitted rather than written empty: the rules accept the field
+            // only as a string, and a student with no name set has nothing
+            // to put there.
+            ...(label ? { name: label } : {}),
+          },
           { merge: true },
         );
         setSyncStatus({ state: "synced" });

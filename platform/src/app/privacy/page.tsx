@@ -110,8 +110,10 @@ export default function PrivacyPage() {
             your account needs it. We do not send newsletters.
           </p>
           <p>
-            <strong>The name you give us.</strong> Shown back to you so the site
-            can greet you. It does not have to be your real name.
+            <strong>The name you give us.</strong> Shown back to you so the
+            site can greet you, saved alongside your progress, and shown to
+            LeapCode organizers so they can tell one account from another. It
+            does not have to be your real name.
           </p>
           <p>
             <strong>Your course progress.</strong> Which lessons you have
@@ -244,9 +246,13 @@ export default function PrivacyPage() {
 
         <Section heading="Security, honestly" delay={200}>
           <p>
-            Access to your progress is restricted to your own signed-in account,
-            enforced by rules on the database rather than only by the app.
-            Passwords are hashed by Google and never reach us.
+            Other students cannot see your progress. Rules on the database
+            enforce that rather than only the app. LeapCode organizers can see
+            it: the people who run the courses can open a roster listing every
+            account, what it has finished and what badges it has earned, and
+            they can read the code you submitted to an exercise. They cannot
+            change your work or sign in as you. Passwords are hashed by Google
+            and never reach us.
           </p>
           <p>
             We are students running this in our spare time, not a security team.
