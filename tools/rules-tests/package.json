@@ -1,0 +1,17 @@
+{
+  "name": "leapcode-rules-tests",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Emulator tests for platform/firestore.rules.",
+  "scripts": {
+    "pretest": "cp ../../platform/firestore.rules ./firestore.rules",
+    "test": "firebase emulators:exec --only firestore --project demo-leapcode \"node --test rules.test.mjs\""
+  },
+  "dependencies": {
+    "@firebase/rules-unit-testing": "^5.0.0",
+    "firebase": "^12.0.0",
+    "firebase-tools": "^14.24.0"
+  },
+  "//": "firebase is pinned to 12 because that is what @firebase/rules-unit-testing peers on. It is only the client that drives the emulator here; the rules under test are evaluated by the emulator itself, so this version does not need to track the one the platform ships."
+}

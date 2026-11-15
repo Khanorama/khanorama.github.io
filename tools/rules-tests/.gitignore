@@ -1,0 +1,7 @@
+node_modules/
+*.log
+firebase-debug.log
+firestore-debug.log
+
+# Copied from platform/firestore.rules by the pretest step.
+firestore.rules
