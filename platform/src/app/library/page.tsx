@@ -18,7 +18,6 @@ export default function LibraryPage() {
         eyebrow="Coming soon"
         title="The Library"
         lede="Free resources for anyone studying computer science."
-        art={{ src: "/art/library.webp", width: 190, height: 166 }}
       />
 
       <main id="main" tabIndex={-1} className="mx-auto max-w-2xl px-6 pt-12 pb-16">
