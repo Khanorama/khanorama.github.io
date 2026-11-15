@@ -21,7 +21,7 @@ export function AccountLink() {
   if (status === "signedOut" || !user) {
     return (
       <Link
-        href="/account"
+        href="/account/"
         className="press rounded-control px-2.5 py-1.5 font-sans text-sm text-on-navy-muted hover:bg-navy-raised hover:text-on-navy"
       >
         Sign in
@@ -33,7 +33,7 @@ export function AccountLink() {
 
   return (
     <Link
-      href="/account"
+      href="/account/"
       className="press flex max-w-[11rem] items-center gap-2 rounded-control px-2 py-1.5 hover:bg-navy-raised"
       title={label}
     >

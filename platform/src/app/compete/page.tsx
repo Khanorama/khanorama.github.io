@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { SiteHeader } from "@/components/shell/SiteHeader";
 import { PageHero } from "@/components/shell/PageHero";
 import { EnterButton } from "@/components/compete/EnterButton";
+import { CreateAccountButton } from "@/components/compete/CreateAccountButton";
 import { reveal } from "@/lib/motion/reveal";
 import { DISCORD_INVITE, SUPPORT_EMAIL } from "@/content/site";
 import {
@@ -224,12 +224,7 @@ function NothingYet() {
         >
           Hear about it first
         </a>
-        <Link
-          href="/account"
-          className="press inline-flex items-center rounded-control border border-line-strong bg-paper px-5 py-2.5 font-sans text-sm font-semibold text-ink hover:-translate-y-0.5 hover:border-accent-line hover:bg-surface-raised"
-        >
-          Create an account
-        </Link>
+        <CreateAccountButton />
       </div>
       <p className="mt-5 font-sans text-xs text-ink-faint">
         Announcements go out on the Discord.

@@ -71,7 +71,7 @@ export function EnterButton({ competition }: { competition: Competition }) {
 
   if (status === "signedOut") {
     return (
-      <Link href="/account" className={QUIET}>
+      <Link href="/account/" className={QUIET}>
         Sign in to enter
       </Link>
     );
