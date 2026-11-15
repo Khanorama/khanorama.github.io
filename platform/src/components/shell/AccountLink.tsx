@@ -10,6 +10,16 @@ import { useAuth } from "@/lib/auth/AuthProvider";
  * sign-in link that leads to a dead end. Shows nothing while the auth state
  * is still resolving either, because flashing "Sign in" at someone who is
  * already signed in reads as being logged out.
+ *
+ * Signed out, this is drawn as a control rather than a fifth word in the
+ * navigation. It used to share the nav's type and color exactly, so the
+ * one thing on the bar that performs an action looked like one more place
+ * to go. The outline borrows the blue from the wordmark instead of
+ * introducing a color, which keeps it attached to the brand and still
+ * lets the green current-page marker read as something else entirely.
+ *
+ * Signed in, the same outline holds the avatar and name, so the account
+ * stays one recognizable object on the bar whichever state it is in.
  */
 export function AccountLink() {
   const { status, user } = useAuth();
@@ -22,7 +32,7 @@ export function AccountLink() {
     return (
       <Link
         href="/account/"
-        className="press rounded-control px-2.5 py-1.5 font-sans text-sm text-on-navy-muted hover:bg-navy-raised hover:text-on-navy"
+        className="press rounded-control border border-brand-blue-bright/65 bg-brand-blue-bright/10 px-3 py-1.5 font-sans text-sm font-semibold text-on-navy transition-colors duration-[var(--dur-base)] ease-soft hover:border-brand-blue-bright/90 hover:bg-brand-blue-bright/20"
       >
         Sign in
       </Link>
@@ -34,7 +44,7 @@ export function AccountLink() {
   return (
     <Link
       href="/account/"
-      className="press flex max-w-[11rem] items-center gap-2 rounded-control px-2 py-1.5 hover:bg-navy-raised"
+      className="press flex max-w-[11rem] items-center gap-2 rounded-control border border-navy-line px-2 py-1 transition-colors duration-[var(--dur-base)] ease-soft hover:border-brand-blue-bright/65 hover:bg-navy-raised"
       title={label}
     >
       <span
@@ -43,7 +53,7 @@ export function AccountLink() {
       >
         {label.charAt(0).toUpperCase()}
       </span>
-      <span className="truncate font-sans text-sm text-on-navy-muted">
+      <span className="truncate font-sans text-sm font-medium text-on-navy">
         {label}
       </span>
     </Link>

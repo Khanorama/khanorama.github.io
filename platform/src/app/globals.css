@@ -413,6 +413,19 @@ html.dark {
   }
 
   /*
+    The page you are on. The same underline the hover sweep draws, held
+    open instead of animated, and in the wordmark's green so it reads as
+    a marker rather than a hover state that got stuck. Keyed off
+    aria-current, so the thing that tells a screen reader where it is is
+    the same thing that tells everyone else.
+  */
+  .nav-link[aria-current="page"]::after {
+    transform: scaleX(1);
+    transform-origin: left;
+    background-color: var(--color-brand-green-bright);
+  }
+
+  /*
     Page entrance. Deliberately the smallest move in the system: a route
     change already redraws everything, so anything larger reads as the page
     lurching rather than arriving.

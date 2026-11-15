@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { AccountLink } from "@/components/shell/AccountLink";
@@ -32,8 +33,12 @@ interface SiteHeaderProps {
  */
 export function SiteHeader({ courseTitle, courseHref }: SiteHeaderProps) {
   const scrolled = useScrolled();
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
+
+  const isCurrent = (href: string) =>
+    pathname.replace(/\/+$/, "") === href.replace(/\/+$/, "");
 
   // Escape closes it, which is the one keyboard affordance a disclosure
   // like this is always expected to have and never gets for free.
@@ -96,14 +101,15 @@ export function SiteHeader({ courseTitle, courseHref }: SiteHeaderProps) {
             <Link
               key={item.href}
               href={item.href}
-              className="nav-link rounded-control px-2.5 py-1.5 font-sans text-sm text-on-navy-muted transition-colors duration-[var(--dur-base)] ease-soft hover:text-on-navy"
+              aria-current={isCurrent(item.href) ? "page" : undefined}
+              className="nav-link rounded-control px-2.5 py-1.5 font-sans text-sm font-medium text-on-navy transition-colors duration-[var(--dur-base)] ease-soft hover:bg-navy-raised"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-1 sm:ml-2">
+        <div className="ml-auto flex items-center gap-2 sm:ml-3">
           <AccountLink />
           <ThemeToggle />
           <MenuButton
@@ -141,7 +147,13 @@ export function SiteHeader({ courseTitle, courseHref }: SiteHeaderProps) {
               href={item.href}
               onClick={() => setMenuOpen(false)}
               tabIndex={menuOpen ? undefined : -1}
-              className="rounded-control px-2 py-3 font-sans text-sm text-on-navy-muted transition-colors duration-[var(--dur-base)] ease-soft hover:bg-navy-raised hover:text-on-navy"
+              aria-current={isCurrent(item.href) ? "page" : undefined}
+              className={[
+                "rounded-control px-2 py-3 font-sans text-sm font-medium transition-colors duration-[var(--dur-base)] ease-soft hover:bg-navy-raised",
+                isCurrent(item.href)
+                  ? "text-brand-green-bright"
+                  : "text-on-navy",
+              ].join(" ")}
               style={
                 menuOpen
                   ? { animation: `settle var(--dur-base) var(--ease-snap) ${index * 45}ms backwards` }
