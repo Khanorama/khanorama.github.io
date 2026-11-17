@@ -32,7 +32,7 @@ export function AccountLink() {
     return (
       <Link
         href="/account/"
-        className="press rounded-control border border-brand-blue-bright/65 bg-brand-blue-bright/10 px-3 py-1.5 font-sans text-sm font-semibold text-on-navy transition-colors duration-[var(--dur-base)] ease-soft hover:border-brand-blue-bright/90 hover:bg-brand-blue-bright/20"
+        className="press rounded-control border border-brand-blue-bright/65 bg-brand-blue-bright/10 px-3 py-1.5 font-sans text-sm font-semibold whitespace-nowrap text-on-navy transition-colors duration-[var(--dur-base)] ease-soft hover:border-brand-blue-bright/90 hover:bg-brand-blue-bright/20"
       >
         Sign in
       </Link>

@@ -7,12 +7,20 @@ import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { AccountLink } from "@/components/shell/AccountLink";
 
 /**
- * Carried over from the original site. These pages are the organization,
- * not the course software, and a visitor who has never heard of LeapCode
- * needs them before a list of courses means anything.
+ * Carried over from the original site, in its order: About, Courses,
+ * Library, Support, with Compete added where it belongs among them. Most
+ * of these are the organization rather than the course software, and a
+ * visitor who has never heard of LeapCode needs them before a list of
+ * courses means anything.
+ *
+ * Courses is the exception and has to be here. The original nav had the
+ * tab; dropping it left the catalog reachable only by scrolling the home
+ * page, so every other page in the site was a dead end for the one thing
+ * a visitor came to find.
  */
 const NAV = [
   { href: "/about/", label: "About" },
+  { href: "/courses/", label: "Courses" },
   { href: "/compete/", label: "Compete" },
   { href: "/library/", label: "Library" },
   { href: "/support/", label: "Support" },
@@ -96,7 +104,7 @@ export function SiteHeader({ courseTitle, courseHref }: SiteHeaderProps) {
           </>
         )}
 
-        <nav className="ml-auto hidden items-center gap-1 sm:flex">
+        <nav className="ml-auto hidden items-center gap-1 md:flex">
           {NAV.map((item) => (
             <Link
               key={item.href}
@@ -109,7 +117,7 @@ export function SiteHeader({ courseTitle, courseHref }: SiteHeaderProps) {
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-2 sm:ml-3">
+        <div className="ml-auto flex items-center gap-2 md:ml-3">
           <AccountLink />
           <ThemeToggle />
           <MenuButton
@@ -121,9 +129,15 @@ export function SiteHeader({ courseTitle, courseHref }: SiteHeaderProps) {
       </div>
 
       {/*
-        The small-screen menu. Until now the three organization links were
-        simply absent below the sm breakpoint, which left About, Library and
-        Support unreachable from every page but the home page.
+        The small-screen menu, holding the same five links as the bar.
+
+        It used to take over below sm, which stopped fitting once Courses
+        made a fifth item: between 640px and roughly 760px the row ran out
+        of width and the account control folded onto a second line, making
+        the header visibly taller than it is anywhere else. The inline nav
+        now waits for md and this takes everything narrower, which is the
+        honest answer to five items plus a wordmark, an account and a
+        theme toggle.
 
         It is absolutely positioned rather than part of the header's flow so
         opening it overlays the page instead of shoving it down, and it
@@ -133,7 +147,7 @@ export function SiteHeader({ courseTitle, courseHref }: SiteHeaderProps) {
       <div
         id={menuId}
         className={[
-          "absolute inset-x-0 top-full origin-top border-b border-navy-line bg-navy shadow-header sm:hidden",
+          "absolute inset-x-0 top-full origin-top border-b border-navy-line bg-navy shadow-header md:hidden",
           "transition-[opacity,transform] duration-[var(--dur-base)] ease-snap",
           menuOpen
             ? "visible translate-y-0 opacity-100"
@@ -194,7 +208,7 @@ function MenuButton({
       aria-expanded={open}
       aria-controls={controls}
       aria-label={open ? "Close menu" : "Open menu"}
-      className="press inline-flex h-8 w-8 items-center justify-center rounded-control text-on-navy-muted hover:bg-navy-raised hover:text-on-navy sm:hidden"
+      className="press inline-flex h-8 w-8 items-center justify-center rounded-control text-on-navy-muted hover:bg-navy-raised hover:text-on-navy md:hidden"
     >
       <span className="relative block h-3 w-4" aria-hidden="true">
         <span

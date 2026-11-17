@@ -22,7 +22,7 @@ const GROUPS: { heading: string; links: { label: string; href: string }[] }[] =
     {
       heading: "Learn",
       links: [
-        { label: "Courses", href: "/#courses" },
+        { label: "Courses", href: "/courses/" },
         { label: "Compete", href: "/compete/" },
         { label: "Library", href: "/library/" },
       ],
